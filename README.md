@@ -16,7 +16,7 @@ fonctionnelle par ce biais présente de nombreux avantages:
 - Nullement besoin de se familiariser avec les bases du langage pour commencer   
     Avec un langage fonctionnel pur, vous ne pouvez espérer afficher une variable ou lire un
     élément du DOM sans avoir recours aux monads. Ici, on triche légèrement; on apprend à
-    purifier notre code au fur et à mesure. De plus, il est toujours plus facile de retomber
+    purifier notre code au fur et à mesure. De plus, il sera toujours plus facile de retomber
     sur ses pattes en cas de nécessité dans la mesure où nous évoluerons dans un paradigme
     mixte. 
 
