@@ -28,8 +28,8 @@ fonctionnelle par ce biais présente de nombreux avantages:
     milieu d'une autoroute ou tenter de faire des claquettes en ballerines. Il faut avoir
     recourt à des `bind` intempestifs afin de garder `this` sous contrôle; il n'y a pour
     l'instant pas de notion de classes, et quand bien même, il nous faut mettre en oeuvre des
-    astuces pour pallier aux conséquences subtilement suprenantes d'un eventuel oubli du
-    mot-clé `this`. De plus, la notion d'attributs privées passe par l'utilisation de
+    astuces pour pallier aux conséquences subtilement suprenantes d'un éventuel oubli du
+    mot-clé `this`. De plus, la notion d'attributs privés passe par l'utilisation de
     *closures*. Voilà pourquoi pour bon nombre d'entre-nous, le paradigme fonctionnel apparaît
     comme bien plus naturel. 
 
