@@ -2,57 +2,60 @@
 
 # Avant-propos
 
-Ce livre traite de programmation fonctionnelle de manière générale. Afin d'appuyer le propos, nous
-utiliserons le plus populaire des langages fonctionnels: JavaScript. Certains d'entre-vous jugeront
-le choix douteux en ce qu'il s'oppose au courant actuel qui prône un JavaScript davantage impératif.
-Toutefois, je crois sincèrement que l'apprentissage de la programmation fonctionnelle par ce biais
-présente de nombreux avantages:
+Ce livre traite de programmation fonctionnelle de manière générale. Afin d'appuyer le propos,
+nous utiliserons le plus populaire des langages fonctionnels: JavaScript. Certains d'entre-vous
+jugeront le choix douteux en ce qu'il s'oppose au courant actuel qui prône un JavaScript
+davantage impératif.  Toutefois, je crois sincèrement que l'apprentissage de la programmation
+fonctionnelle par ce biais présente de nombreux avantages:
 
 - Vous l'utilisez quotidiennement au boulot   
-    La mise en application des connaissances théoriques que vous allez acquérir peut être faites sur
-    des projets réels et complets plutôt que sur de petites séances nocturnes au moyen d'un
-    quelconque langage fonctionnel plus ou moins ésotérique. 
+    La mise en application des connaissances théoriques que vous allez acquérir peut être
+    faites sur des projets réels et complets plutôt que sur de petites séances nocturnes au
+    moyen d'un quelconque langage fonctionnel plus ou moins ésotérique. 
 
 - Nullement besoin de se familiariser avec les bases du langage pour commencer   
-    Avec un langage fonctionnel pur, vous ne pouvez espérer afficher une variable ou lire un élément
-    du DOM sans avoir recours aux monads. Ici, on triche légèrement; on apprend à purifier notre code
-    au fur et à mesure. De plus, il est toujours plus facile de retomber sur ses pattes en cas de
-    nécessité dans la mesure où nous évoluerons dans un paradigme mixte. 
+    Avec un langage fonctionnel pur, vous ne pouvez espérer afficher une variable ou lire un
+    élément du DOM sans avoir recours aux monads. Ici, on triche légèrement; on apprend à
+    purifier notre code au fur et à mesure. De plus, il est toujours plus facile de retomber
+    sur ses pattes en cas de nécessité dans la mesure où nous évoluerons dans un paradigme
+    mixte. 
 
-* The language is fully capable of writing top notch functional code.
+- Ce langage est clairement apte à écrire du code fonctionnel de haute qualité
 
-    We have all the features we need to mimic a language like Scala or Haskell with the help of a
-    tiny library or two. Object-oriented programming currently dominates the industry, but it's
-    clearly awkward in JavaScript. It's akin to camping off of a highway or tap dancing in galoshes.
-    We have to `bind` all over the place lest `this` change out from under us, we don't have
-    classes[^Yet], we have various work arounds for the quirky behavior when the `new` keyword is
-    forgotten, private members are only available via closures. To a lot of us, FP feels more
-    natural anyways.
+    Toutes les fonctionnalités du Scala ou de l'Haskell peuvent être amenées avec l'aide d'une
+    ou deux petites bibliothèques. La programmation orientée objet 'classique' domine
+    majoritairement l'industrie mais convient assez mal au JavaScript. Autant camper au
+    milieu d'une autoroute ou tenter de faire des claquettes en ballerines. Il faut avoir
+    recourt à des `bind` intempestifs afin de garder `this` sous contrôle; il n'y a pour
+    l'instant pas de notion de classes, et quand bien même, il nous faut mettre en oeuvre des
+    astuces pour pallier aux conséquences subtilement suprenantes d'un éventuel oubli du
+    mot-clé `this`. De plus, la notion d'attributs privés passe par l'utilisation de
+    *closures*. Voilà pourquoi pour bon nombre d'entre-nous, le paradigme fonctionnel apparaît
+    comme bien plus naturel. 
 
-    That said, typed functional languages will, without a doubt, be the best place to code in the style
-    presented by this book. JavaScript will be our means of learning a paradigm, where you apply it is
-    up to you. Luckily, the interfaces are mathematical and, as such, ubiquitous. You'll find yourself
-    at home with swiftz, scalaz, haskell, purescript, and other mathematically inclined environments.
+    Ceci étant dit, les langages fonctionnels typés statiquement reflètent sans aucun doute
+    encore mieux les concepts présentés dans ce livre. Le JavaScript est ici un outil
+    d'apprentissage; appliquez ensuite ces notions où bon vous semblera. Par chance, la
+    machinerie repose sur des théories mathématiques et demeure par conséquent universelle.
+    Vous vous sentirez à l'aise avec Swift, Scala, Haskell, Purescript et tout autre
+    environnement où les Mathématiques prédominent.
 
+# Gitbook (Pour plus de confort)
 
-# Gitbook (for a better reading experience)
-
-http://drboolean.gitbooks.io/mostly-adequate-guide/
+**à venir**
 
 ### EPUB
 
-https://www.gitbook.com/download/epub/book/drboolean/mostly-adequate-guide
+**à venir**
 
 ### Mobi (Kindle)
 
-https://www.gitbook.com/download/mobi/book/drboolean/mostly-adequate-guide
-
-### Do it yourself
+### Soyez grand et faites-le vous-même
 
 ```
-git clone https://github.com/DrBoolean/mostly-adequate-guide.git
+git clone https://github.com/MostlyAdequate/mostly-adequate-guide-fr
 
-cd mostly-adequate-guide/
+cd mostly-adequate-guide-fr/
 npm install gitbook-cli -g
 gitbook init
 
@@ -62,79 +65,87 @@ brew cask install calibre
 gitbook mobi . ./functional.mobi
 ```
 
-# Other Languages
+# Autres langues
 
-* [中文版](https://github.com/llh911001/mostly-adequate-guide-chinese)
+- [English (original)](https://github.com/MostlyAdequate/mostly-adequate-guide)
+- [Russian](https://github.com/MostlyAdequate/mostly-adequate-guide-ru)
+- [中文版](https://github.com/llh911001/mostly-adequate-guide-chinese)
 
 
-# Table of Contents
+# Sommaire
 
-## Part 1
+## Partie 1
 
-* [Chapter 1: What ever are we doing?](ch1.md)
+* [Chapitre 1: De quoi s'agit-il exactement ?](ch1.md)
   * [Introductions](ch1.md#introductions)
-  * [A brief encounter](ch1.md#a-brief-encounter)
-* [Chapter 2: First Class Functions](ch2.md)
-  * [A quick review](ch2.md#a-quick-review)
-  * [Why favor first class?](ch2.md#why-favor-first-class)
-* [Chapter 3: Pure Happiness with Pure Functions](ch3.md)
-  * [Oh to be pure again](ch3.md#oh-to-be-pure-again)
-  * [Side effects may include...](ch3.md#side-effects-may-include)
-  * [8th grade math](ch3.md#8th-grade-math)
-  * [The case for purity](ch3.md#the-case-for-purity)
-  * [In Summary](ch3.md#in-summary)
-* [Chapter 4: Currying](ch4.md)
+  * [Première confrontation](ch1.md#a-brief-encounter)
+* [Chapitre 2: Les fonctions dites First-Class](ch2.md)
+  * [Bref résumé](ch2.md#a-quick-review)
+  * [De l'importance du premier ordre](ch2.md#why-favor-first-class)
+* [Chapitre 3: Du pur bonheur avec du pur fonctionnel](ch3.md)
+  * [Soyez pur à nouveau](ch3.md#oh-to-be-pure-again)
+  * [Les effets de bord c'est aussi...](ch3.md#side-effects-may-include)
+  * [BAC + 8 de Maths](ch3.md#8th-grade-math)
+  * [Plaidoyer en faveur de la pureté](ch3.md#the-case-for-purity)
+  * [En bref](ch3.md#in-summary)
+* [Chapitre 4: Curryfication](ch4.md)
   * [Can't live if livin' is without you](ch4.md#cant-live-if-livin-is-without-you)
-  * [More than a pun / Special sauce](ch4.md#more-than-a-pun--special-sauce)
-  * [In Summary](ch4.md#in-summary)
-* [Chapter 5: Coding by Composing](ch5.md)
-  * [Functional Husbandry](ch5.md#functional-husbandry)
+  * [Plus qu'un jeu de mots / la sauce du chef](ch4.md#more-than-a-pun--special-sauce)
+  * [En bref](ch4.md#in-summary)
+* [Chapitre 5: Composer c'est coder](ch5.md)
+  * [L'élevage de fonctions](ch5.md#functional-husbandry)
   * [Pointfree](ch5.md#pointfree)
-  * [Debugging](ch5.md#debugging)
-  * [Category Theory](ch5.md#category-theory)
-  * [In Summary](ch5.md#in-summary)
-* [Chapter 6: Example Application](ch6.md)
-  * [Declarative Coding](ch6.md#declarative-coding)
-  * [A flickr of functional programming](ch6.md#a-flickr-of-functional-programming)
-  * [A Principled Refactor](ch6.md#a-principled-refactor)
-  * [In Summary](ch6.md#in-summary)
+  * [Débuggage](ch5.md#debugging)
+  * [La théorie des Catégories](ch5.md#category-theory)
+  * [En bref](ch5.md#in-summary)
+* [Chapitre 6: Exemple d'application](ch6.md)
+  * [Un code déclaratif](ch6.md#declarative-coding)
+  * [Flickr en programmation fonctionnelle](ch6.md#a-flickr-of-functional-programming)
+  * [Un refactor s'impose](ch6.md#a-principled-refactor)
+  * [En bref](ch6.md#in-summary)
 
-## Part 2
+## Partie 2
 
-* [Chapter 7: Hindley-Milner and Me](ch7.md)
-  * [What's your type?](ch7.md#whats-your-type)
-  * [Tales from the cryptic](ch7.md#tales-from-the-cryptic)
-  * [Narrowing the possibility](ch7.md#narrowing-the-possibility)
-  * [Free as in theorem](ch7.md#free-as-in-theorem)
-  * [In Summary](ch7.md#in-summary)
-* [Chapter 8: Tupperware](ch8.md)
-  * [The Mighty Container](ch8.md#the-mighty-container)
-  * [My First Functor](ch8.md#my-first-functor)
-  * [Schrödinger’s Maybe](ch8.md#schrodingers-maybe)
-  * [Pure Error Handling](ch8.md#pure-error-handling)
-  * [Old McDonald had Effects…](ch8.md#old-mcdonald-had-effects)
-  * [Asynchronous Tasks](ch8.md#asynchronous-tasks)
-  * [A Spot of Theory](ch8.md#a-spot-of-theory)
-  * [In Summary](ch8.md#in-summary)
-* [Chapter 9: Monadic Onions](ch9.md)
-  * [Pointy Functor Factory](ch9.md#pointy-functor-factory)
-  * [Mixing Metaphors](ch9.md#mixing-metaphors)
+* [Chapitre 7: Hindley-Milner et Moi](ch7.md)
+  * [Quel est ton type ?](ch7.md#whats-your-type)
+  * [Récit d'un mystérieux monde](ch7.md#tales-from-the-cryptic)
+  * [Restreindre les possibilités](ch7.md#narrowing-the-possibility)
+  * [Des théorèmes à la pelle](ch7.md#free-as-in-theorem)
+  * [En bref](ch7.md#in-summary)
+* [Chapitre 8: Tupperware](ch8.md)
+  * [La boîte qui déboîte](ch8.md#the-mighty-container)
+  * [Mon premier Foncteur](ch8.md#my-first-functor)
+  * [Schrödinger, une histoire de Maybe](ch8.md#schrodingers-maybe)
+  * [Gestion d'erreur pure](ch8.md#pure-error-handling)
+  * [Le vieux McDonald à des effets](ch8.md#old-mcdonald-had-effects)
+  * [Les tâches asynchrones](ch8.md#asynchronous-tasks)
+  * [Un brin de théorie](ch8.md#a-spot-of-theory)
+  * [En bref](ch8.md#in-summary)
+* [Chapitre 9: Monade ou Oignon ?](ch9.md)
+  * [La fabrique à Foncteurs pointés](ch9.md#pointy-functor-factory)
+  * [Mélangeons les métaphores](ch9.md#mixing-metaphors)
   * [My chain hits my chest](ch9.md#my-chain-hits-my-chest)
-  * [Theory](ch9.md#theory)
-  * [In Summary](ch9.md#in-summary)
-* [Chapter 10: Applicative Functors](ch10.md)
-  * [Applying Applicatives](ch10.md#applying-applicatives)
-  * [Ships in bottles](ch10.md#ships-in-bottles)
-  * [Coordination Motivation](ch10.md#coordination-motivation)
+  * [Théorie](ch9.md#theory)
+  * [En bref](ch9.md#in-summary)
+* [Chapitre 10: Foncteur applicatif](ch10.md)
+  * [Appliquer des applicatives](ch10.md#applying-applicatives)
+  * [Des navires en bouteille](ch10.md#ships-in-bottles)
+  * [Coordination et motivation](ch10.md#coordination-motivation)
   * [Bro, do you even lift?](ch10.md#bro-do-you-even-lift)
-  * [Free can openers](ch10.md#free-can-openers)
-  * [Laws](ch10.md#laws)
-  * [In Summary](ch10.md#in-summary)
+  * [Ouvre-bouteille gratuit](ch10.md#free-can-openers)
+  * [Lois](ch10.md#laws)
+  * [En bref](ch10.md#in-summary)
 
 
-# Plans for the future
+# Planification
 
-* Part 1 is a guide to the basics. I'm updating as I find errors since this is the initial draft. Feel free to help!
-* Part 2 will address type classes like functors and monads all the way through to traversable. I hope to squeeze in transformers and a pure application.
-* Part 3 will start to dance the fine line between practical programming and academic absurdity. We'll look at comonads, f-algebras, free monads, yoneda, and other categorical constructs.
+- La première partie introduit les notions de base. Elle est mise à jour fréquemment lorsque
+  des erreurs sont trouvées. Toute aide est la bienvenue !
 
+- La seconde partie expose des types plus complets tels que les Foncteurs ou les Monades.
+  J'espère trouver le temps de parler des transformeurs et de présenter une pure application
+  concrète.
+
+- La dernière partie sera à cheval entre le savoir pratique et les absurdités académiques. Nous
+  traiterons des comonades, des f-algebres, des monades libres, du lemme de Yoneda et d'autres
+  éléments propres à la théorie des catégories.
