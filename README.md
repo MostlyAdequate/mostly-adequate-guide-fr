@@ -78,7 +78,7 @@ gitbook mobi . ./functional.mobi
 
 * [Chapitre 1: De quoi s'agit-il exactement ?](ch1.md)
   * [Introductions](ch1.md#introductions)
-  * [Première confrontation](ch1.md#premiere-confrontation)
+  * [Première confrontation](ch1.md#premi-re-confrontation)
 * [Chapitre 2: Les fonctions dites First-Class](ch2.md)
   * [Bref résumé](ch2.md#a-quick-review)
   * [De l'importance du premier ordre](ch2.md#why-favor-first-class)

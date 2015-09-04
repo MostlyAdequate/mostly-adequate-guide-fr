@@ -35,12 +35,14 @@ sera la notre, notre utopie fonctionnelle.
 
 <!--BREAK-->
 
-## A brief encounter
+## Première confrontation
 
-Let's start with a touch of insanity. Here is a seagull application. When flocks conjoin they
-become a larger flock and when they breed they increase by the number of seagulls with whom
-they're breeding. Now this is not intended to be good Object-Oriented code, mind you, it is
-here to highlight the perils of our modern, assignment based approach. Behold:
+Démarrons avec un petit grain de folie. Voici une application de mouettes. Lorsque deux volées
+fusionnent (`conjoin`) elles deviennent un plus grand groupe (somme des tailles des groupes)
+et, lorsqu'elles se reproduisent (`breed`), le groupe s'en voit grossi conformément (produit
+des tailles des groupes). Gardez à l'esprit que le code suivant n'illustre en rien de bonnes
+pratiques d'orienté objet. Il met en avant les risques que tente de prévenir de notre nouvelle
+approche basée sur l'assignation. Voyez plutôt:
 
 ```js 
 var Flock = function(n) { 
@@ -66,15 +68,17 @@ var result = flock_a.conjoin(flock_c)
 //=> 32 
 ```
 
-Who on earth would craft such a ghastly abomination? It is unreasonably difficult to keep track
-of the mutating internal state. And, good heavens, the answer is even incorrect! It should have
-been `16`, but `flock_a` wound up permanently altered in the process. Poor `flock_a`. This is
-anarchy in the I.T.! This is wild animal arithmetic!
+Qui donc sur Terre aurait envie d'écrire une telle abomination ? Il est incroyablement
+difficile de garder la trace de l'état interne des objets en raison de sa mutabilité. De plus ô
+Seigneur, le résultat est incorrect ! Cela devrait être `16` mais l'appel de méthode sur
+`flock_a` à deux reprises a complètement altéré le processus. Pauvre `flock_a`. C'est
+l'anarchie dans le code ! Rien de plus qu'une bête sauvage arithmétique. 
 
-If you don't understand this program, it's okay, neither do I. The point is that state and
-mutable values are hard to follow even in such a small example.
+Si vous ne comprenez pas ce bout de programme, c'est pardonné car moi non plus. Le principal
+soucis c'est que les états et les valeurs mutables sont durs à suivre même sur un exemple aussi
+trivial. 
 
-Let's try again with a more functional approach:
+Essayons de nouveau avec cette fois, une approche plus fonctionnelle:
 
 ```js 
 var conjoin = function(flock_x, flock_y) { 
@@ -94,13 +98,13 @@ var result = conjoin(
 //=>16 
 ```
 
-Well, we got the right answer this time. There's much less code. The function nesting is a tad
-confusing...[^we'll remedy this situation in ch5]. It's better, but let's dig deeper. There are
-benefits to calling a spade a spade. Had we done so, we might have seen we're just working with
-simple addition (`conjoin`) and multiplication (`breed`).
+Parfait, nous obtenons un résultat cohérent cette fois-ci. Il y a moins de code. L'imbrication
+des appels est un poil moins confuse...[^Nous remédierons complétement à cela au cours du ch5].
+C'est mieux, mais on peut encore aller plus loin. Il y des avantages à appeler un chat un chat.
+En réalité, nous ne travaillons qu'avec de simples additions (`conjoin`) et produits (`breed`). 
 
-There's really nothing special at all about these two functions other than their names. Let's
-rename our custom functions to reveal their true identity.
+Il n'y a rien de réellement particulier à propos de ces deux fonctions hormis peut-être leur
+nom. Changeons cela et dévoilons leur réelle identité.
 
 ```js 
 var add = function(x, y) { 
@@ -119,7 +123,8 @@ var result = add(
 ); 
 //=>16
 ``` 
-And with that, we gain the knowledge of the ancients:
+
+Et grâce à cela, la sagesse des anciens nous apparaît: 
 
 ```js 
 // associativité 
@@ -135,10 +140,10 @@ add(x, 0) == x;
 multiply(x, add(y,z)) == add(multiply(x, y), multiply(x, z)); 
 ```
 
-Ah yes, those old faithful mathematical properties should come in handy. Don't worry if you
-didn't know them right off the top of your head. For a lot of us, it's been a while since we've
-reviewed this information. Let's see if we can use these properties to simplify our little
-seagull program.
+Ah oui au fait, ces vieilles mais fidèles propriétés mathématiques vont s'avérer fort utiles à
+partir de maintenant. Ne vous inquiétez pas si vous ne les connaissez pas sur le bout des
+doigts. Pour la plupart d'entre-nous, il s'agit là d'un lointain souvenir. Voyons toutefois en
+quoi peuvent-elles rendre nos histoires de mouettes plus simple.
 
 ```js 
 // Ligne d'origine
@@ -153,35 +158,36 @@ add(multiply(flock_b, flock_a), multiply(flock_a, flock_b));
 multiply(flock_b, add(flock_a, flock_a));
 ```
 
-Brilliant! We didn't have to write a lick of custom code other than our calling function. We
-include `add` and `multiply` definitions here for completeness, but there is really no need to
-write them - we surely have an `add` and `multiply` provided by some previously written
-library.
+Magnifique ! Nullement besoin d'autre chose que nos propres fonctions. Ajoutons les definitions
+de `add` et `multiply` pour l'intégrité et on obtient une petite bibliothèque de code. C'est
+toutefois inutile ici, nous trouverons sûrement des méthodes `add` et `multiply` dans une
+bibliothèque existante. 
 
-You may be thinking "how very strawman of you to put such a mathy example up front". Or "real
-programs are not this simple and cannot be reasoned about in such a way". I've chosen this
-example because most of us already know about addition and multiplication so it's easy to see
-how math can be of use to us here.
+Vous devez sans doute vous dire "belle arnaque ton exemple purement mathématique" ou encore
+"les vrais programmes ne sont jamais aussi simples et ce raisonnement ne tient pas debout".
+J'ai choisi précisément cet exemple parce que la plupart d'entre-vous connaissent l'addition
+et la multiplication; c'est donc facile d'y voir l'utilité des Mathématiques. 
 
-Don't despair, throughout this book, we'll sprinkle in some category theory, set theory, and
-lambda calculus to write real world examples that achieve the same simplicity and results as
-our flock of seagulls example. You needn't be a mathematician either, it will feel just like
-using a normal framework or api.
+Ne désespérez pas, ce livre sera parsemé de théorie des catégories, théories des ensembles et
+de lambda calcul. De fait, nous viendrons à bout d'exemples réels avec la même simplicité que
+dans ce cas sur les mouettes. Vous n'avez pas néanmoins besoin d'être un mathématicien; ce sera
+comme utiliser n'importe quel framework ou api.
 
-It may come as a surprise to hear that we can write full, everyday applications along the lines
-of the functional analog above. Programs that have sound properties. Programs that are terse,
-yet easy to reason about. Programs that don't reinvent the wheel at every turn. Lawlessness is
-good if you're a criminal, but in this book, we'll want to acknowledge and obey the laws of
-math.
+C'est peut-être suprenant de se dire que l'on peut écrire des applications "normales" avec les
+même principes fonctionnels vus plus haut. Des applications pointues. Des programmes concis,
+cependant peu évidents à se représenter. Ou encore de simples applications qui ne réinventent
+pas la roue. L'anarchie a son intérêt si vous êtes un criminel, toutefois dans ce livre, nous
+souhaitons embrasser et obéir les lois des Mathématiques. 
 
-We'll want to use the theory where every piece tends to fit together so politely. We'll want to
-represent our specific problem in terms of generic, composable bits and then exploit their
-properties for our own selfish benefit. It will take a bit more discipline than the "anything
-goes" approach of imperative[^We'll go over the precise definition of imperative later in the
-book, but for now it's anything other than functional programming] programming, but the payoff
-of working within a principled, mathematical framework will astound you.
+Ce que nous voulons, c'est une théorie au sein de laquelle chaque pièce semble s'emboîter
+parfaitement. Nous souhaitons représenter des problèmes particuliers à partir de méthodes
+génériques pour ensuite les exploiter pour notre propre dessein. Cela demandera plus de rigueur
+que l'approche naïve et précipitée qu'offre la programmation impérative[^Nous donnerons une
+définition précise de la programmation impérative plus tard; pour l'instant, considérez qu'il
+s'agit de tout ce qui n'est pas de la programmation fonctionnelle], mais les bénéfices d'une
+approche fonctionnelle au sein d'une théorie mathématique vous laisserons sans voix.  
 
-We've seen a flicker of our functional north star, but there are a few concrete concepts to
-grasp before we can really begin our journey.
+Nous avons légèrement fait briller notre étoile dans un univers fonctionnel, mais il nous reste
+quelques concepts clés à aborder avant de réellement entâmer notre aventure. 
 
-[Chapter 2: First Class Functions](ch2.md)
+[Chapitre 2: Les fonctions dites First-Class](ch2.md)
