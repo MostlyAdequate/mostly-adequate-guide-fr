@@ -1,6 +1,6 @@
-<img src="images/cover.png"/>
+![cover](images/cover.png)
 
-# Avant-propos
+## Avant-propos
 
 Ce livre traite de programmation fonctionnelle de manière générale. Afin d'appuyer le propos,
 nous utiliserons le plus populaire des langages fonctionnels: JavaScript. Certains d'entre-vous
@@ -8,19 +8,19 @@ jugeront le choix douteux en ce qu'il s'oppose au courant actuel qui prône un J
 davantage impératif.  Toutefois, je crois sincèrement que l'apprentissage de la programmation
 fonctionnelle par ce biais présente de nombreux avantages:
 
-- Vous l'utilisez quotidiennement au boulot   
+- **Vous l'utilisez quotidiennement au boulot**   
     La mise en application des connaissances théoriques que vous allez acquérir peut être
     faites sur des projets réels et complets plutôt que sur de petites séances nocturnes au
     moyen d'un quelconque langage fonctionnel plus ou moins ésotérique. 
 
-- Nullement besoin de se familiariser avec les bases du langage pour commencer   
+- **Nullement besoin de se familiariser avec les bases du langage pour commencer** 
     Avec un langage fonctionnel pur, vous ne pouvez espérer afficher une variable ou lire un
     élément du DOM sans avoir recours aux monads. Ici, on triche légèrement; on apprend à
     purifier notre code au fur et à mesure. De plus, il sera toujours plus facile de retomber
     sur ses pattes en cas de nécessité dans la mesure où nous évoluerons dans un paradigme
     mixte. 
 
-- Ce langage est clairement apte à écrire du code fonctionnel de haute qualité
+- **Ce langage est clairement apte à écrire du code fonctionnel de haute qualité**
 
     Toutes les fonctionnalités du Scala ou de l'Haskell peuvent être amenées avec l'aide d'une
     ou deux petites bibliothèques. La programmation orientée objet 'classique' domine
@@ -40,17 +40,13 @@ fonctionnelle par ce biais présente de nombreux avantages:
     Vous vous sentirez à l'aise avec Swift, Scala, Haskell, Purescript et tout autre
     environnement où les Mathématiques prédominent.
 
-# Gitbook (Pour plus de confort)
+## Gitbook (Pour plus de confort)
 
-**à venir**
+- Lire en ligne *à venir*
+- Télécharger EPUB *à venir*
+- Télécharger Mobi (Kindle) *à venir*
 
-### EPUB
-
-**à venir**
-
-### Mobi (Kindle)
-
-### Soyez grand et faites-le vous-même
+## Soyez grand et faites-le vous-même
 
 ```
 git clone https://github.com/MostlyAdequate/mostly-adequate-guide-fr
@@ -67,10 +63,13 @@ gitbook mobi . ./functional.mobi
 
 # Autres langues
 
-- [English (original)](https://github.com/MostlyAdequate/mostly-adequate-guide)
-- [Russian](https://github.com/MostlyAdequate/mostly-adequate-guide-ru)
-- [中文版](https://github.com/llh911001/mostly-adequate-guide-chinese)
-
+- [English (Anglais)](https://github.com/MostlyAdequate/mostly-adequate-guide) version originale par Brian Lonsdorf @DrBoolean
+- [中文版 (Chinois)](https://github.com/llh911001/mostly-adequate-guide-chinese)  par Linghao
+Li @llh911001
+- [Русский (Russe)](https://github.com/MostlyAdequate/mostly-adequate-guide-ru) par Maksim
+Filippov @maksimf
+- [Português (Portuguais)](https://github.com/MostlyAdequate/mostly-adequate-guide-pt-BR) par
+Palmer Oliveira @expalmer
 
 # Sommaire
 
@@ -78,10 +77,10 @@ gitbook mobi . ./functional.mobi
 
 * [Chapitre 1: De quoi s'agit-il exactement ?](ch1.md)
   * [Introductions](ch1.md#introductions)
-  * [Première confrontation](ch1.md#premi-re-confrontation)
+  * [Première confrontation](ch1.md#première-confrontation)
 * [Chapitre 2: Les fonctions dites First-Class](ch2.md)
-  * [Bref résumé](ch2.md#a-quick-review)
-  * [De l'importance du premier ordre](ch2.md#why-favor-first-class)
+  * [Bref résumé](ch2.md#bref-résumé)
+  * [De l'importance du premier ordre](ch2.md#de-l-importance-du-premier-ordre)
 * [Chapitre 3: Du pur bonheur avec du pur fonctionnel](ch3.md)
   * [Soyez pur à nouveau](ch3.md#oh-to-be-pure-again)
   * [Les effets de bord c'est aussi...](ch3.md#side-effects-may-include)
@@ -139,13 +138,13 @@ gitbook mobi . ./functional.mobi
 
 # Planification
 
-- La première partie introduit les notions de base. Elle est mise à jour fréquemment lorsque
-  des erreurs sont trouvées. Toute aide est la bienvenue !
+- **La première partie** introduit les notions de base. Elle est mise à jour fréquemment
+  lorsque des erreurs sont trouvées. Toute aide est la bienvenue !
 
-- La seconde partie expose des types plus complets tels que les Foncteurs ou les Monades.
+- **La seconde partie** expose des types plus complets tels que les Foncteurs ou les Monades.
   J'espère trouver le temps de parler des transformeurs et de présenter une pure application
   concrète.
 
-- La dernière partie sera à cheval entre le savoir pratique et les absurdités académiques. Nous
-  traiterons des comonades, des f-algebres, des monades libres, du lemme de Yoneda et d'autres
-  éléments propres à la théorie des catégories.
+- **La dernière partie** sera à cheval entre le savoir pratique et les absurdités académiques.
+  Nous traiterons des comonades, des f-algebres, des monades libres, du lemme de Yoneda et
+  d'autres éléments propres à la théorie des catégories.
