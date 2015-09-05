@@ -80,7 +80,7 @@ Palmer Oliveira @expalmer
   * [Première confrontation](ch1.md#première-confrontation)
 * [Chapitre 2: Les fonctions dites First-Class](ch2.md)
   * [Bref résumé](ch2.md#bref-résumé)
-  * [De l'importance du premier ordre](ch2.md#de-l-importance-du-premier-ordre)
+  * [De l'importance du premier ordre](ch2.md#de-limportance-du-premier-ordre)
 * [Chapitre 3: Du pur bonheur avec du pur fonctionnel](ch3.md)
   * [Soyez pur à nouveau](ch3.md#oh-to-be-pure-again)
   * [Les effets de bord c'est aussi...](ch3.md#side-effects-may-include)
