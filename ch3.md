@@ -65,9 +65,16 @@ Dans la portion impure, `checkAge` dépend d'une variable mutable `minimum` afin
 le résultat. En d'autres termes, la fonction dépend de l'état courant du système et introduit
 dans le même temps un environnement externe difficile à considérer.
 
-It might not seem like a lot in this example, but this reliance upon state is one of the largest contributors to system complexity[^http://www.curtclifton.net/storage/papers/MoseleyMarks06a.pdf]. This `checkAge` may return different results depending on factors external to input, which not only disqualifies it from being pure, but also puts our minds through the ringer each time we're reasoning about the software.
+Cela peut sembler anodin dans cet exemple mais pouvoir se fier ainsi à l'état des variables est
+une condition nécessaire à l'élaboration de systèmes complexes
+[^http://www.curtclifton.net/storage/papers/MoseleyMarks06a.pdf]. Selon ses entrées la fonction
+`checkAge` peut retourner des résultats différents ce qui d'une part n'est pas conforme à la
+notion de pureté mais qui d'autre part, force votre esprit à être en alerte dès lors qu'une
+modification minime doit s'opérer sur le programme. 
 
-Its pure form, on the other hand, is completely self sufficient. We can  also make `minimum` immutable, which preserves the purity as the state will never change. To do this, we must create an object to freeze.
+Dans sa forme pure en revanche, la fonction est totalement autonome et hermétique. Il est aussi
+possible de rendre `minimum` immutable, renforçant dans le même temps la pureté de la fonction.
+Pour ce faire, créons un objet à geler. 
 
 ```js
 var immutableState = Object.freeze({
@@ -75,24 +82,34 @@ var immutableState = Object.freeze({
 });
 ```
 
-## Side effects may include...
+## Les effets de bords c'est aussi...
 
-Let's look more at these "side effects" to improve our intuition. So what is this undoubtedly nefarious *side effect* mentioned in the definition of *pure function*? We'll be referring to *effect* as anything that occurs in our computation besides the calculation of a result.
+Jetons un oeil plus attentif à ces "effets de bords". Quels sont donc ces abominables *effets
+de bord* que l'on mentionne dans la définition de *fonction pure* ? Nous désignerons par effet
+tout ce qui peut arriver au cours d'une exécution en dehors du calcul d'un résultat. 
 
-There's nothing intrinsically bad about effects and we'll be using them all over the place in the chapters to come. It's that *side* part that bears the negative connotation. Water alone is not an inherent larvae incubator, it's the *stagnant* part that yields the swarms, and I assure you, *side* effects are a similar breeding ground in your own programs.
+Il n'y a rien d'intrinsèquement mauvais dans les effets si bien que nous les
+utiliserons bientôt à tout va dans les prochains chapitres. C'est la partie sur le *bord* qui a
+mauvaise réputation. L'eau seule n'a rien d'un incubateur à larves, ce sont les parties
+*stagnantes* qui créent des marais répugnants, et je vous l'assure, les effets de *bord* sont
+en tout point similaire pour votre programme.
 
->A *side effect* is a change of system state or *observable interaction* with the outside world that occurs during the calculation of a result.
+> Un *effet de bord* est un changement de l'état du système ou une *intéraction visible* avec le
+> monde extérieur qui se produit lors du calcul d'un résultat.
 
-Side effects may include, but are not limited to
+Ceci inclut mais n'est pas limité à / aux :
 
-  * changing the file system
-  * inserting a record into a database
-  * making an http call
-  * mutations
-  * printing to the screen / logging
-  * obtaining user input
-  * querying the DOM
-  * accessing system state
+- Modifier un fichier du système
+- Ajouter une entrée à une base de données
+- Effectuer une requête http
+- Assignations et changements d'état de variables
+- Afficher à l'écran ou dans la console
+- Demander une entrée utilisateur
+- Accéder au DOM
+- Accéder à une information de l'environnement système
+
+La liste continue ainsi de suite. Toutes intéractions avec le monde en dehors d'une fonction
+est une effet de bord, ce qui vous laisse entrevoir la commodité qu'ils constituent. 
 
 And the list goes on and on. Any interaction with the world outside of a function is a side effect, which is a fact that may prompt you to suspect the practicality of programming without them. The philosophy of functional programming postulates that side effects are a primary cause of incorrect behavior.
 
