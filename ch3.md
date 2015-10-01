@@ -94,7 +94,7 @@ mauvaise réputation. L'eau seule n'a rien d'un incubateur à larves, ce sont le
 *stagnantes* qui créent des marais répugnants, et je vous l'assure, les effets de *bord* sont
 en tout point similaire pour votre programme.
 
-> Un *effet de bord* est un changement de l'état du système ou une *intéraction visible* avec le
+> Un *effet de bord* est un changement de l'état du système ou une *interaction visible* avec le
 > monde extérieur qui se produit lors du calcul d'un résultat.
 
 Ceci inclut mais n'est pas limité à / aux :
@@ -108,43 +108,58 @@ Ceci inclut mais n'est pas limité à / aux :
 - Accéder au DOM
 - Accéder à une information de l'environnement système
 
-La liste continue ainsi de suite. Toutes intéractions avec le monde en dehors d'une fonction
-est une effet de bord, ce qui vous laisse entrevoir la commodité qu'ils constituent. 
+La liste continue ainsi de suite. Toutes interactions avec le monde en dehors d'une fonction
+est un effet de bord, ce qui vous laisse entrevoir la commodité qu'ils constituent. Toutefois,
+l'un des postulats de la programmation fonctionnelle stipule que les effets de bords sont
+généralement la cause de comportements hasardeux. 
 
-And the list goes on and on. Any interaction with the world outside of a function is a side effect, which is a fact that may prompt you to suspect the practicality of programming without them. The philosophy of functional programming postulates that side effects are a primary cause of incorrect behavior.
+Il ne s'agit pas de ne pas les utiliser, mais plutôt, d'apprendre à les contenir et à s'en
+servir de façon contrôlée. Nous aborderons les monades et foncteurs au cours des prochains
+chapitres cependant pour l'instant, veillons à bien séparer ces fonctions piégeuses des autres
+plus pures.
 
-It is not that we're forbidden to use them, rather we want to contain them and run them in a controlled way. We'll learn how to do this when we get to functors and monads in later chapters, but for now, let's try to keep these insidious functions separate from our pure ones.
+Les effets de bord empêchent une fonction d'être pure, ça tombe sous le sens : les fonctions
+pures par définition doivent nécessairement retourner la même sortie par rapport à des entrées
+données ce qui ne peut être garanti dès lors que la fonction se repose sur autre chose que son
+corps local. 
 
-Side effects disqualify a function from being *pure* and it makes sense: pure functions, by definition, must always return the same output given the same input, which is not possible to guarantee when dealing with matters outside our local function.
+Analysons plus attentivement pourquoi nous insistons autant sur cette histoire de même sortie
+pour une même entrée. Rhabillez-vous, nous partons faire des Mathématiques de haut vol. 
 
-Let's take a closer look at why we insist on the same output per input. Pop your collars, we're going to look at some 8th grade math.
+## BAC+8 de Maths
 
-## 8th grade math
+Tiré et traduit de mathisfun.com:
 
-From mathisfun.com:
+> Une fonction est une relation privilégiée entre deux valeurs :
+> à chacune de ses valeurs d'entrée est associée une unique valeur de sortie.
 
-> A function is a special relationship between values:
-> Each of its input values gives back exactly one output value.
-
-In other words, it's just a relation between two values: the input and the output. Though each input has exactly one output, that output doesn't necessarily have to be unique per input. Below shows a diagram of a perfectly valid function from `x` to `y`;
+En d'autre terme, c'est simplement une relation entre deux valeurs : l'entrée et la sortie.
+Néanmoins bien qu'à chaque entrée soit associée une et une seule sortie, cette sortie n'est pas
+forcément unique à une entrée donnée. Vous trouverez ci-après un diagramme
+d'une fonction tout à fait valide qui à `x` associe `y`.
 
 <img src="images/function-sets.gif" />[^http://www.mathsisfun.com/sets/function.html]
 
-To contrast, the following diagram shows a relation that is *not* a function since the input value `5` points to several outputs:
+En comparaison, le diagramme suivant montre une relation qui n'est *pas* une fonction en ce que
+la valeur d'entrée `5` pointe sur plusieurs sorties.
 
 <img src="images/relation-not-function.gif" />[^http://www.mathsisfun.com/sets/function.html]
 
-Functions can be described as a set of pairs with the position (input, output): `[(1,2), (3,6), (5,10)]`[^It appears this function doubles its input].
+Les fonctions peuvent être décrites comme un ensemble de paires (ou couples) de la forme:
+(input, output) : `[(1,2), (3, 6), (5,10)]`[^Vous noterez que cette fonction semble doubler la
+valeur de chaque entrée]
 
-Or perhaps a table:
+Ou encore sous forme de tableau :
 <table> <tr> <th>Input</th> <th>Output</th> </tr> <tr> <td>1</td> <td>2</td> </tr> <tr> <td>2</td> <td>4</td> </tr> <tr> <td>3</td> <td>6</td> </tr> </table>
 
-Or even as a graph with `x` as the input and `y` as the output:
+Mais aussi en tant que courbe avec `x` comme entrée et `y` comme sortie:
 
 <img src="images/fn_graph.png" width="300" height="300" />
 
-
-There's no need for implementation details if the input dictates the output. Since functions are simply mappings of input to output, one could simply jot down object literals and run them with `[]` instead of `()`.
+Lorsque les entrées impliquent directement les sorties, il n'y a pas lieu de considérer les
+détails d'implémentation d'une fonction. N'étant alors qu'un ensemble d'associations d'une
+entrée à une sortie, on pourrait imaginer représenter les fonctions à l'aide d'une objet
+littéral et les appeler avec `[]` en lieu et place des habituelles `()`.
 
 ```js
 var toLowerCase = {"A":"a", "B": "b", "C": "c", "D": "d", "E": "e", "D": "d"};
@@ -158,9 +173,18 @@ isPrime[3];
 //=> true
 ```
 
-Of course, you might want to calculate instead of hand writing things out, but this illustrates a different way to think about functions.[^You may be thinking "what about functions with multiple arguments?". Indeed, that presents a bit of an inconvenience when thinking in terms of mathematics. For now, we can bundle them up in an array or just think of the `arguments` object as the input. When we learn about *currying*, we'll see how we can directly model the mathematical definition of a function.]
+Bien entendu, on préfèrera calculer plutôt que d'écrire à la main chacune des valeurs de
+sortie. Ceci illustre toutefois une façon connexe de considérer les fonctions. [^Vous vous
+posez peut-être la question des fonctions de plusieurs arguments. En effets, c'est à première
+vue plutôt déroutant d'un point de vue mathématique. Pour l'heure, nous pouvons simplement
+considérer un tableau ou une structure similaire au pseudo-objet `arguments` comme notre
+entrée. Lorsqu'on nous apprendrons à propos de la *curryfication*, nous verrons comment
+refléter au mieux la définition mathématique d'une fonction.]
 
-Here comes the dramatic reveal: Pure functions *are* mathematical functions and they're what functional programming is all about. Programming with these little angels can provide huge benefits. Let's look at some reasons why we're willing to go to great lengths to preserve purity.
+Maintenant le fin mot de l'histoire : les fonctions pures *sont* des fonctions au sens
+mathématique et c'est ce sur quoi se fonde fondamentalement la programmation fonctionnelle.
+Programmer à l'aide de ces petites bêtes sages apporte d'énormes avantages. Regardons quelques
+raisons qui justifient notre irrémédiable envie de préserver la pureté de nos fonctions.
 
 ## The case for purity
 
