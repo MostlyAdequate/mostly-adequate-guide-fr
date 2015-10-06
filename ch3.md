@@ -186,11 +186,13 @@ mathématique et c'est ce sur quoi se fonde fondamentalement la programmation fo
 Programmer à l'aide de ces petites bêtes sages apporte d'énormes avantages. Regardons quelques
 raisons qui justifient notre irrémédiable envie de préserver la pureté de nos fonctions.
 
-## The case for purity
+## Plaidoyer en en faveur de la pureté
 
-### Cacheable
+### Mise en cache
 
-For starters, pure functions can always be cached by input. This is typically done using a technique called memoization:
+En entrée de matière, soulignons que les fonctions pures peuvent mettre en cache un résultat
+associé à une certaine valeur. Cela se réalise typiquement grace à une technique appelée
+*memoization*.
 
 ```js
 var squareNumber  = memoize(function(x){ return x*x; });
@@ -198,17 +200,18 @@ var squareNumber  = memoize(function(x){ return x*x; });
 squareNumber(4);
 //=> 16
 
-squareNumber(4); // returns cache for input 4
+squareNumber(4); // retourne la valeur cachée pour l'entrée 4
 //=> 16
 
 squareNumber(5);
 //=> 25
 
-squareNumber(5); // returns cache for input 5
+squareNumber(5); // retourne la valeur cachée pour l'entrée 4
 //=> 25
 ```
 
-Here is a simplified implementation, though there are plenty of more robust versions available.
+Bien qu'il existe de nombreuses autres implémentation plus robuste, en voici une relativement
+modeste :
 
 ```js
 var memoize = function(f) {
@@ -221,8 +224,8 @@ var memoize = function(f) {
   };
 };
 ```
-
-Something to note is that you can transform some impure functions into pure ones by delaying evaluation:
+Un autre point intéressant à souligner est qu'il est possible de transformer des fonctions
+impures en fonctions pures en retardant le moment de leur évaluation :
 
 ```js
 var pureHttpCall = memoize(function(url, params){
@@ -230,15 +233,25 @@ var pureHttpCall = memoize(function(url, params){
 });
 ```
 
-The interesting thing here is that we don't actually make the http call - we instead return a function that will do so when called. This function is pure because it will always return the same output given the same input: the function that will make the particular http call given the `url` and `params`.
+Ce qui est intéressant ici c'est que nous ne faisons pas réellement l'appel http - nous
+retournons à la place une fonction qui sera à-même de le faire une fois appelée. La fonction
+englobante est pure car elle retournera toujours la même fonction d'exécution pour une même
+entrée : c'est cette fonction retournée qui s'occupera de realiser concrètement l'appel http
+correspondant à un `url` et `params` donnés. 
 
-Our `memoize` function works just fine, though it doesn't cache the results of the http call, rather it caches the generated function.
+Notre fonction `memoize` est tout à fair correcte et de fait, ne met pas en cache le résultat
+de l'appel http, mais plutôt la fonction générée. 
 
-This is not very useful yet, but we'll soon learn some tricks that will make it so. The takeaway is that we can cache every function no matter how destructive they seem.
+C'est pour l'instant fort peu utile mais nous verrons bientôt quelques astuces de grand-mère
+qui changeront cela. Ce qu'il faut en retenir, c'est qu'il nous est possible de mettre en cache
+n'importe quelle fonction, peu importe leur niveau d'impureté. 
 
-### Portable / Self-Documenting
+### Portatives et auto-documentées
 
-Pure functions are completely self contained. Everything the function needs is handed to it on a silver platter. Ponder this for a moment... How might this be beneficial? For starters, a function's dependencies are explicit and therefore easier to see and understand - no funny business going on under the hood.
+Les fonctions pures sont totalement autonomes. Tout ce dont la fonction a besoin lui est servi
+sur un plateau. Arrêtons-nous un instant... En quoi cela est-il favorable ? Premièrement, les
+dépendances d'une fonction sont explicites et par conséquent simple à voir et comprendre -
+nullement besoin de regarder la machinerie sous le capot. 
 
 ```js
 //impure
@@ -256,29 +269,56 @@ var signUp = function(Db, Email, attrs) {
 };
 ```
 
-The example here demonstrates that the pure function must be honest about its dependencies and, as such, tell us exactly what it's up to. Just from its signature, we know that it will use a `Db`, `Email`, and `attrs` which should be telling to say the least.
+L'exemple ci-dessus illutre en quoi une fonction pure se doit d'être honnête au sujet de ses
+dépendances de telle façon qu'elles nous apparaissent clairement. Au regard seulement de la
+signature, on sait que l'on aura besoin d'une `Db`, d'un `Email` et d'`attrs`.
 
-We'll learn how to make functions like this pure without merely deferring evaluation, but the point should be clear that the pure form is much more informative than its sneaky impure counterpart which is up to God knows what.
+Nous verrons comment rendre des fonctions de la sorte pure sans pour autant grandemment
+retarder leur évaluation; gardez néanmoins bien à l'esprit que la forme pure est bien plus
+claire et parlante que son insidieuse homologue impure.  
 
-Something else to notice is that we're forced to "inject" dependencies, or pass them in as arguments, which makes our app much more flexible because we've parameterized our database or mail client or what have you[^Don't worry, we'll see a way to make this less tedious than it sounds]. Should we choose to use a different Db we need only to call our function with it. Should we find ourselves writing a new application in which we'd like to reuse this reliable function, we simply give this function whatever `Db` and `Email` we have at the time.
+Force est de constater qu'il nous faut également sinon "injecter" les dépendances du moins les
+passer en paramètres ce qui rend notre application nettement plus flexible : nous avons rendu
+paramétrables notre base de données et le client mail[^Pas d'inquiétude, je vous montrerez
+comment rendre cela moins fastidieux qu'il n'y paraît]. Qu'il s'agisse de facilement changer
+notre système de base de données pour un autre ou encore de réutiliser cette fonction dans une
+application différente, cette façon de faire y répond sans problème.
 
-In a JavaScript setting, portability could mean serializing and sending functions over a socket. It could mean running all our app code in web workers. Portability is a powerful trait.
+Dans le monde du JavaScript, la portabilité peut ne signifier rien de plus que serialiser et
+envoyer nos fonctions à travers des sockets. Autrement dit, faire tourner tout le code d'une
+application dans des workers web. La portabilité est un atout puissant.
 
-Contrary to "typical" methods and procedures in imperative programming rooted deep in their environment via state, dependencies, and available effects, pure functions can be run anywhere our hearts desire.
+Contrairement aux méthodes et procédures "typiques" en progrmmation fonctionnelle profondément
+ancrées dans leur environnement d'exécution via des états, dépendances et divers effets, les
+fonctions pures peuvent s'exécuter partout où le vent nous porte.
 
-When was the last time you copied a method into a new app? One of my favorite quotes comes from Erlang creator, Joe Armstrong: "The problem with object-oriented languages is they’ve got all this implicit environment that they carry around with them. You wanted a banana but what you got was a gorilla holding the banana... and the entire jungle".
+A quand remonte la dernière fois que vous ayez copié une méthode d'une application à une autre
+? L'une de mes citations favorites de l'inventeur d'Erlang, Joe Armstrong est celle-ci: "Le
+problème avec les langages orienté objets c'est qu'il transporte tout un environnement
+implicite avec eux. Vous vouliez une banane mais vous obtenez un gorille qui tient cette
+banane... ainsi que tout la jungle". 
 
 ### Testable
 
-Next, we come to realize pure functions make testing much easier. We don't have to mock a "real" payment gateway or setup and assert the state of the world after each test. We simply give the function input and assert output.
+En outre, on en vient à réaliser que les fonctions pures rendent le test largement plus facile.
+Pas besoin de simuler une plateforme de paiement et de présumer de l'état du monde entier après
+chaque test. On donne juste à la fonction des entrées, et on vérifie sa sortie.
 
-In fact, we find the functional community pioneering new test tools that can blast our functions with generated input and assert that properties hold on the output. It's beyond the scope of this book, but I strongly encourage you to search for and try *Quickcheck* - a testing tool that is tailored for a purely functional environment.
+En réalité, de nombreux pionniers de la communauté mettent au point des outils complexes
+capables de générer des entrées et d'inférer des propriétés que doivent posséder la sortie.
+Tout ceci est bien au delà de la portée de ce livre mais je vous encourage fortement à
+rechercher et essayer *Quickcheck* - un outil de test taillé pour les environnement purement
+fonctionnels.
 
-### Reasonable
+### Raisonnable
 
-Many believe the biggest win when working with pure functions is *referential transparency*. A spot of code is referentially transparent when it can be substituted for its evaluated value without changing the behavior of the program.
+Beaucoup pensent que l'un des plus gros points forts des fonctions pures est la *transparence
+référentielle*. Un bout de code qui est référentiellement transparent peut se substituer à sa
+valeur de sortie sans avoir aucun impact sur le comportement du programme.
 
-Since pure functions always return the same output given the same input, we can rely on them to always return the same results and thus preserve referential transparency. Let's see an example.
+Comme les fonctions pures retournent toujours la même sortie selon une entrée donnée, on peut
+compter sur elles pour obtenir un resultat cohérent qui préserve la transparence référentielle.
+Voyez plutôt:
 
 ```js
 
@@ -307,9 +347,14 @@ punch(jobe, michael);
 //=> Immutable.Map({name:"Michael", hp:19, team: "green"})
 ```
 
-`decrementHP`, `isSameTeam` and `punch` are all pure and therefore referentially transparent. We can use a technique called *equational reasoning* wherein one substitutes "equals for equals" to reason about code. It's a bit like manually evaluating the code without taking into account the quirks of programmatic evaluation. Using referential transparency, let's play with this code a bit.
+`decrementHP`, `isSameTeam` et `punch` sont toutes trois pures et de fait référentiellement
+transparentes. On peut utiliser une technique appelée *raisonnement équationnel* afin de
+substituer des parties équivalentes du code et ainsi raisonner plus facilement sur ce dernier.
+C'est comme procéder à une évaluation manuelle du code sans considérer les fioritures
+contingentes d'une analyse programmatique. En utilisant la transparence référentielle, jouons
+un peu avec le code précédent.
 
-First we'll inline the function `isSameTeam`.
+Tout d'abord, développons l'appel a la fonction `isSameTeam`.
 
 ```js
 var punch = function(player, target) {
@@ -321,7 +366,8 @@ var punch = function(player, target) {
 };
 ```
 
-Since our data is immutable, we can simply replace the teams with their actual value
+Notre structure de données étant immutable, nous pouvons remplacer les équipes par leur valeur
+courante.
 
 ```js
 var punch = function(player, target) {
@@ -332,8 +378,7 @@ var punch = function(player, target) {
   }
 };
 ```
-
-We see that it is false in this case so we can remove the entire if branch
+En évaluant la condition, on se rend compte que la branche `if` est inutile.
 
 ```js
 var punch = function(player, target) {
@@ -342,7 +387,8 @@ var punch = function(player, target) {
 
 ```
 
-And if we inline `decrementHP`, we see that, in this case, punch becomes a call to decrement the `hp` by 1.
+En développant `decrementHP`, on fait apparaître que dans ce cas précis, un coup de point n'est
+seulement qu'un appel visant à décrémenter les `hp` de 1.
 
 ```js
 var punch = function(player, target) {
@@ -350,7 +396,11 @@ var punch = function(player, target) {
 };
 ```
 
-This ability to reason about code is terrific for refactoring and understanding code in general. In fact, we used this technique to refactor our flock of seagulls program. We used equational reasoning to harness the properties of addition and multiplication. Indeed, we'll be using these techniques throughout the book.
+Cette aptitude à raisonner sur le code est redoutablement efficace pour refactorer et
+comprendre le code en général. En fait nous avons déjà utiliser cette technique pour revoir
+notre programme avec les mouettes. Nous avons utilisé un raisonnement équationnel afin de tirer
+partie des propriétés de l'addition et du produit. Ainsi, nous serons amené à utiliser
+davantage ces techniques tout au long du livre.
 
 ### Parallel Code
 
