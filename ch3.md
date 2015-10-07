@@ -73,7 +73,7 @@ notion de pureté mais qui d'autre part, force votre esprit à être en alerte d
 modification minime doit s'opérer sur le programme. 
 
 Dans sa forme pure en revanche, la fonction est totalement autonome et hermétique. Il est aussi
-possible de rendre `minimum` immutable, renforçant dans le même temps la pureté de la fonction.
+possible de rendre `minimum` immuable, renforçant dans le même temps la pureté de la fonction.
 Pour ce faire, créons un objet à geler. 
 
 ```js
@@ -85,7 +85,7 @@ var immutableState = Object.freeze({
 ## Les effets de bords c'est aussi...
 
 Jetons un oeil plus attentif à ces "effets de bords". Quels sont donc ces abominables *effets
-de bord* que l'on mentionne dans la définition de *fonction pure* ? Nous désignerons par effet
+de bord* que l'on mentionne dans la définition de *fonction pure*? Nous désignerons par effet
 tout ce qui peut arriver au cours d'une exécution en dehors du calcul d'un résultat. 
 
 Il n'y a rien d'intrinsèquement mauvais dans les effets si bien que nous les
@@ -97,7 +97,7 @@ en tout point similaire pour votre programme.
 > Un *effet de bord* est un changement de l'état du système ou une *interaction visible* avec le
 > monde extérieur qui se produit lors du calcul d'un résultat.
 
-Ceci inclut mais n'est pas limité à / aux :
+Ceci inclut mais n'est pas limité à / aux:
 
 - Modifier un fichier du système
 - Ajouter une entrée à une base de données
@@ -118,7 +118,7 @@ servir de façon contrôlée. Nous aborderons les monades et foncteurs au cours 
 chapitres cependant pour l'instant, veillons à bien séparer ces fonctions piégeuses des autres
 plus pures.
 
-Les effets de bord empêchent une fonction d'être pure, ça tombe sous le sens : les fonctions
+Les effets de bord empêchent une fonction d'être pure, ça tombe sous le sens: les fonctions
 pures par définition doivent nécessairement retourner la même sortie par rapport à des entrées
 données ce qui ne peut être garanti dès lors que la fonction se repose sur autre chose que son
 corps local. 
@@ -130,10 +130,10 @@ pour une même entrée. Rhabillez-vous, nous partons faire des Mathématiques de
 
 Tiré et traduit de mathisfun.com:
 
-> Une fonction est une relation privilégiée entre deux valeurs :
+> Une fonction est une relation privilégiée entre deux valeurs:
 > à chacune de ses valeurs d'entrée est associée une unique valeur de sortie.
 
-En d'autre terme, c'est simplement une relation entre deux valeurs : l'entrée et la sortie.
+En d'autre terme, c'est simplement une relation entre deux valeurs: l'entrée et la sortie.
 Néanmoins bien qu'à chaque entrée soit associée une et une seule sortie, cette sortie n'est pas
 forcément unique à une entrée donnée. Vous trouverez ci-après un diagramme
 d'une fonction tout à fait valide qui à `x` associe `y`.
@@ -146,10 +146,10 @@ la valeur d'entrée `5` pointe sur plusieurs sorties.
 <img src="images/relation-not-function.gif" />[^http://www.mathsisfun.com/sets/function.html]
 
 Les fonctions peuvent être décrites comme un ensemble de paires (ou couples) de la forme:
-(input, output) : `[(1,2), (3, 6), (5,10)]`[^Vous noterez que cette fonction semble doubler la
+(input, output): `[(1,2), (3, 6), (5,10)]`[^Vous noterez que cette fonction semble doubler la
 valeur de chaque entrée]
 
-Ou encore sous forme de tableau :
+Ou encore sous forme de tableau:
 <table> <tr> <th>Input</th> <th>Output</th> </tr> <tr> <td>1</td> <td>2</td> </tr> <tr> <td>2</td> <td>4</td> </tr> <tr> <td>3</td> <td>6</td> </tr> </table>
 
 Mais aussi en tant que courbe avec `x` comme entrée et `y` comme sortie:
@@ -158,7 +158,7 @@ Mais aussi en tant que courbe avec `x` comme entrée et `y` comme sortie:
 
 Lorsque les entrées impliquent directement les sorties, il n'y a pas lieu de considérer les
 détails d'implémentation d'une fonction. N'étant alors qu'un ensemble d'associations d'une
-entrée à une sortie, on pourrait imaginer représenter les fonctions à l'aide d'une objet
+entrée à une sortie, on pourrait imaginer représenter les fonctions à l'aide d'un objet
 littéral et les appeler avec `[]` en lieu et place des habituelles `()`.
 
 ```js
@@ -181,7 +181,7 @@ considérer un tableau ou une structure similaire au pseudo-objet `arguments` co
 entrée. Lorsqu'on nous apprendrons à propos de la *curryfication*, nous verrons comment
 refléter au mieux la définition mathématique d'une fonction.]
 
-Maintenant le fin mot de l'histoire : les fonctions pures *sont* des fonctions au sens
+Maintenant le fin mot de l'histoire: les fonctions pures *sont* des fonctions au sens
 mathématique et c'est ce sur quoi se fonde fondamentalement la programmation fonctionnelle.
 Programmer à l'aide de ces petites bêtes sages apporte d'énormes avantages. Regardons quelques
 raisons qui justifient notre irrémédiable envie de préserver la pureté de nos fonctions.
@@ -191,7 +191,7 @@ raisons qui justifient notre irrémédiable envie de préserver la pureté de no
 ### Mise en cache
 
 En entrée de matière, soulignons que les fonctions pures peuvent mettre en cache un résultat
-associé à une certaine valeur. Cela se réalise typiquement grace à une technique appelée
+associé à une certaine valeur. Cela se réalise typiquement grâce à une technique appelée
 *memoization*.
 
 ```js
@@ -210,8 +210,8 @@ squareNumber(5); // retourne la valeur cachée pour l'entrée 4
 //=> 25
 ```
 
-Bien qu'il existe de nombreuses autres implémentation plus robuste, en voici une relativement
-modeste :
+Bien qu'il existe de nombreuses autres implémentations plus robuste, en voici une relativement
+modeste:
 
 ```js
 var memoize = function(f) {
@@ -225,7 +225,7 @@ var memoize = function(f) {
 };
 ```
 Un autre point intéressant à souligner est qu'il est possible de transformer des fonctions
-impures en fonctions pures en retardant le moment de leur évaluation :
+impures en fonctions pures en retardant le moment de leur évaluation:
 
 ```js
 var pureHttpCall = memoize(function(url, params){
@@ -236,10 +236,10 @@ var pureHttpCall = memoize(function(url, params){
 Ce qui est intéressant ici c'est que nous ne faisons pas réellement l'appel http - nous
 retournons à la place une fonction qui sera à-même de le faire une fois appelée. La fonction
 englobante est pure car elle retournera toujours la même fonction d'exécution pour une même
-entrée : c'est cette fonction retournée qui s'occupera de realiser concrètement l'appel http
+entrée: c'est cette fonction retournée qui s'occupera de réaliser concrètement l'appel http
 correspondant à un `url` et `params` donnés. 
 
-Notre fonction `memoize` est tout à fair correcte et de fait, ne met pas en cache le résultat
+Notre fonction `memoize` est tout à fait correcte et de fait, ne met pas en cache le résultat
 de l'appel http, mais plutôt la fonction générée. 
 
 C'est pour l'instant fort peu utile mais nous verrons bientôt quelques astuces de grand-mère
@@ -249,7 +249,7 @@ n'importe quelle fonction, peu importe leur niveau d'impureté.
 ### Portatives et auto-documentées
 
 Les fonctions pures sont totalement autonomes. Tout ce dont la fonction a besoin lui est servi
-sur un plateau. Arrêtons-nous un instant... En quoi cela est-il favorable ? Premièrement, les
+sur un plateau. Arrêtons-nous un instant... En quoi cela est-il favorable? Premièrement, les
 dépendances d'une fonction sont explicites et par conséquent simple à voir et comprendre -
 nullement besoin de regarder la machinerie sous le capot. 
 
@@ -269,34 +269,34 @@ var signUp = function(Db, Email, attrs) {
 };
 ```
 
-L'exemple ci-dessus illutre en quoi une fonction pure se doit d'être honnête au sujet de ses
+L'exemple ci-dessus illustre en quoi une fonction pure se doit d'être honnête au sujet de ses
 dépendances de telle façon qu'elles nous apparaissent clairement. Au regard seulement de la
 signature, on sait que l'on aura besoin d'une `Db`, d'un `Email` et d'`attrs`.
 
-Nous verrons comment rendre des fonctions de la sorte pure sans pour autant grandemment
+Nous verrons comment rendre des fonctions de la sorte pure sans pour autant grandement
 retarder leur évaluation; gardez néanmoins bien à l'esprit que la forme pure est bien plus
 claire et parlante que son insidieuse homologue impure.  
 
 Force est de constater qu'il nous faut également sinon "injecter" les dépendances du moins les
-passer en paramètres ce qui rend notre application nettement plus flexible : nous avons rendu
+passer en paramètres ce qui rend notre application nettement plus flexible: nous avons rendu
 paramétrables notre base de données et le client mail[^Pas d'inquiétude, je vous montrerez
 comment rendre cela moins fastidieux qu'il n'y paraît]. Qu'il s'agisse de facilement changer
 notre système de base de données pour un autre ou encore de réutiliser cette fonction dans une
 application différente, cette façon de faire y répond sans problème.
 
-Dans le monde du JavaScript, la portabilité peut ne signifier rien de plus que serialiser et
+Dans le monde du JavaScript, la portabilité peut ne signifier rien de plus que sérialiser et
 envoyer nos fonctions à travers des sockets. Autrement dit, faire tourner tout le code d'une
 application dans des workers web. La portabilité est un atout puissant.
 
-Contrairement aux méthodes et procédures "typiques" en progrmmation fonctionnelle profondément
+Contrairement aux méthodes et procédures "typiques" en programmation fonctionnelle profondément
 ancrées dans leur environnement d'exécution via des états, dépendances et divers effets, les
 fonctions pures peuvent s'exécuter partout où le vent nous porte.
 
-A quand remonte la dernière fois que vous ayez copié une méthode d'une application à une autre
-? L'une de mes citations favorites de l'inventeur d'Erlang, Joe Armstrong est celle-ci: "Le
-problème avec les langages orienté objets c'est qu'il transporte tout un environnement
+À quand remonte la dernière fois que vous ayez copié une méthode d'une application à une autre
+? L'une de mes citations favorites de l'inventeur d'Erlang, Joe Armstrong est celle ci: "Le
+problème avec les langages orientés objets c'est qu'il transporte tout un environnement
 implicite avec eux. Vous vouliez une banane mais vous obtenez un gorille qui tient cette
-banane... ainsi que tout la jungle". 
+banane... Ainsi que toute la jungle". 
 
 ### Testable
 
@@ -306,8 +306,8 @@ chaque test. On donne juste à la fonction des entrées, et on vérifie sa sorti
 
 En réalité, de nombreux pionniers de la communauté mettent au point des outils complexes
 capables de générer des entrées et d'inférer des propriétés que doivent posséder la sortie.
-Tout ceci est bien au delà de la portée de ce livre mais je vous encourage fortement à
-rechercher et essayer *Quickcheck* - un outil de test taillé pour les environnement purement
+Tout ceci est bien au-delà de la portée de ce livre mais je vous encourage fortement à
+rechercher et essayer *Quickcheck* - un outil de test taillé pour les environnements purement
 fonctionnels.
 
 ### Raisonnable
@@ -317,7 +317,7 @@ référentielle*. Un bout de code qui est référentiellement transparent peut s
 valeur de sortie sans avoir aucun impact sur le comportement du programme.
 
 Comme les fonctions pures retournent toujours la même sortie selon une entrée donnée, on peut
-compter sur elles pour obtenir un resultat cohérent qui préserve la transparence référentielle.
+compter sur elles pour obtenir un résultat cohérent qui préserve la transparence référentielle.
 Voyez plutôt:
 
 ```js
@@ -366,7 +366,7 @@ var punch = function(player, target) {
 };
 ```
 
-Notre structure de données étant immutable, nous pouvons remplacer les équipes par leur valeur
+Notre structure de données étant immuable, nous pouvons remplacer les équipes par leur valeur
 courante.
 
 ```js
@@ -387,7 +387,7 @@ var punch = function(player, target) {
 
 ```
 
-En développant `decrementHP`, on fait apparaître que dans ce cas précis, un coup de point n'est
+En développant `decrementHP`, on fait apparaître que dans ce cas précis, un coup de poing n'est
 seulement qu'un appel visant à décrémenter les `hp` de 1.
 
 ```js
@@ -397,22 +397,32 @@ var punch = function(player, target) {
 ```
 
 Cette aptitude à raisonner sur le code est redoutablement efficace pour refactorer et
-comprendre le code en général. En fait nous avons déjà utiliser cette technique pour revoir
+comprendre le code en général. En fait nous avons déjà utilisé cette technique pour revoir
 notre programme avec les mouettes. Nous avons utilisé un raisonnement équationnel afin de tirer
-partie des propriétés de l'addition et du produit. Ainsi, nous serons amené à utiliser
+parti des propriétés de l'addition et du produit. Ainsi, nous serons amenés à utiliser
 davantage ces techniques tout au long du livre.
 
-### Parallel Code
+### Code parallèle
 
-Finally, and here's the coup de grâce, we can run any pure function in parallel since it does not need access to shared memory and it cannot, by definition, have a race condition due to some side effect.
+Enfin, le coup de grâce, n'ayant aucun effet de bord notable ni besoin d'accès à la mémoire,
+des fonctions pures peuvent s'exécuter en parallèle plutôt aisément. 
 
-This is very much possible in a server side js environment with threads as well as in the browser with web workers though current culture seems to avoid it due to complexity when dealing with impure functions.
+C'est tout à fait possible côté serveur à l'aide de threads ou encore, côté client dans les
+navigateurs à l'aide de workers web bien que la mode actuelle tend à les éviter car juger trop
+complexes lorsqu'il s'agit de fonction impures. 
 
+## En bref
 
-## In Summary
+Nous venons de voir ce que sont les fonctions pures et pourquoi en tant que développeurs du
+monde fonctionnel elles vont constituer le coeur de notre démarche. De fait, à partir de
+maintenant nous nous efforcerons d'écrire toutes nos fonctions d'une façon pure. Nous aurons
+besoin d'outils et d'astuces supplémentaires pour le faire cependant que nous apprendrons à
+bien séparer les parties impures du reste du code plus pure. 
 
-We've seen what pure functions are and why we, as functional programmers, believe they are the cat's evening wear. From this point on, we'll strive to write all our functions in a pure way. We'll require some extra tools to help us do so, but in the meantime, we'll try to separate the impure functions from the rest of the pure code.
+Sans davantage d'atouts dans notre manche, écrire des programmes entiers à l'aide de fonction
+pure va être un tantinet difficile. Il nous faut ruser et jongler avec des tas d'arguments à
+passer çà et là;  De plus, interdit d'utiliser des états et nul besoin de mentionner tout ce qui
+touche aux effets de bord. Comment en vient-on à devenir masochiste au point décrire de tels
+programmes ? Il est temps de faire la connaissance avec la curryfication. 
 
-Writing programs with pure functions is a tad laborious without some extra tools in our belt. We have to juggle data by passing arguments all over the place, we're forbidden to use state, not to mention effects. How does one go about writing these masochistic programs? Let's acquire a new tool called curry.
-
-[Chapter 4: Currying](ch4.md)
+[Chaptitre 4: Curryfication](ch4.md)
