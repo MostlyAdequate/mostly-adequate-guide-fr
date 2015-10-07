@@ -82,9 +82,9 @@ var immutableState = Object.freeze({
 });
 ```
 
-## Les effets de bords c'est aussi...
+## Les effets de bord c'est aussi...
 
-Jetons un oeil plus attentif à ces "effets de bords". Quels sont donc ces abominables *effets
+Jetons un oeil plus attentif à ces "effets de bord". Quels sont donc ces abominables *effets
 de bord* que l'on mentionne dans la définition de *fonction pure*? Nous désignerons par effet
 tout ce qui peut arriver au cours d'une exécution en dehors du calcul d'un résultat. 
 
@@ -110,7 +110,7 @@ Ceci inclut mais n'est pas limité à / aux:
 
 La liste continue ainsi de suite. Toutes interactions avec le monde en dehors d'une fonction
 est un effet de bord, ce qui vous laisse entrevoir la commodité qu'ils constituent. Toutefois,
-l'un des postulats de la programmation fonctionnelle stipule que les effets de bords sont
+l'un des postulats de la programmation fonctionnelle stipule que les effets de bord sont
 généralement la cause de comportements hasardeux. 
 
 Il ne s'agit pas de ne pas les utiliser, mais plutôt, d'apprendre à les contenir et à s'en

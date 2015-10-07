@@ -84,7 +84,7 @@ Palmer Oliveira @expalmer
 * [Chapitre 3: Du pur bonheur avec du pur fonctionnel](ch3.md)
   * [Soyez pur à nouveau](ch3.md#soyez-pur-à-nouveau)
   * [Les effets de bord c'est aussi...](ch3.md#les-effets-de-bord-cest-aussi)
-  * [BAC + 8 de Maths](ch3.md#bac+8-de-maths)
+  * [BAC + 8 de Maths](ch3.md#bac8-de-maths)
   * [Plaidoyer en faveur de la pureté](ch3.md#plaidoyer-en-faveur-de-la-pureté)
   * [En bref](ch3.md#en-bref)
 * [Chapitre 4: Curryfication](ch4.md)
