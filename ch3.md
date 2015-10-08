@@ -109,7 +109,7 @@ Ceci inclut mais n'est pas limité à / aux:
 - Accéder à une information de l'environnement système
 
 La liste continue ainsi de suite. Toutes interactions avec le monde en dehors d'une fonction
-est un effet de bord, ce qui vous laisse entrevoir la commodité qu'ils constituent. Toutefois,
+sont des effets de bord, ce qui vous laisse entrevoir la commodité qu'ils constituent. Toutefois,
 l'un des postulats de la programmation fonctionnelle stipule que les effets de bord sont
 généralement la cause de comportements hasardeux. 
 
@@ -133,7 +133,7 @@ Tiré et traduit de mathisfun.com:
 > Une fonction est une relation privilégiée entre deux valeurs:
 > à chacune de ses valeurs d'entrée est associée une unique valeur de sortie.
 
-En d'autre terme, c'est simplement une relation entre deux valeurs: l'entrée et la sortie.
+En d'autres termes, c'est simplement une relation entre deux valeurs: l'entrée et la sortie.
 Néanmoins bien qu'à chaque entrée soit associée une et une seule sortie, cette sortie n'est pas
 forcément unique à une entrée donnée. Vous trouverez ci-après un diagramme
 d'une fonction tout à fait valide qui à `x` associe `y`.
@@ -147,7 +147,7 @@ la valeur d'entrée `5` pointe sur plusieurs sorties.
 
 Les fonctions peuvent être décrites comme un ensemble de paires (ou couples) de la forme:
 (input, output): `[(1,2), (3, 6), (5,10)]`[^Vous noterez que cette fonction semble doubler la
-valeur de chaque entrée]
+valeur de chaque entrée].
 
 Ou encore sous forme de tableau:
 <table> <tr> <th>Input</th> <th>Output</th> </tr> <tr> <td>1</td> <td>2</td> </tr> <tr> <td>2</td> <td>4</td> </tr> <tr> <td>3</td> <td>6</td> </tr> </table>
@@ -176,9 +176,9 @@ isPrime[3];
 Bien entendu, on préfèrera calculer plutôt que d'écrire à la main chacune des valeurs de
 sortie. Ceci illustre toutefois une façon connexe de considérer les fonctions. [^Vous vous
 posez peut-être la question des fonctions de plusieurs arguments. En effets, c'est à première
-vue plutôt déroutant d'un point de vue mathématique. Pour l'heure, nous pouvons simplement
+vue plutôt déroutant mathématiquement. Pour l'heure, nous pouvons simplement
 considérer un tableau ou une structure similaire au pseudo-objet `arguments` comme notre
-entrée. Lorsqu'on nous apprendrons à propos de la *curryfication*, nous verrons comment
+entrée. Lorsque nous apprendrons à propos de la *curryfication*, nous verrons comment
 refléter au mieux la définition mathématique d'une fonction.]
 
 Maintenant le fin mot de l'histoire: les fonctions pures *sont* des fonctions au sens
@@ -210,7 +210,7 @@ squareNumber(5); // retourne la valeur cachée pour l'entrée 4
 //=> 25
 ```
 
-Bien qu'il existe de nombreuses autres implémentations plus robuste, en voici une relativement
+Bien qu'il existe de nombreuses autres implémentations plus robustes, en voici une relativement
 modeste:
 
 ```js
@@ -279,7 +279,7 @@ claire et parlante que son insidieuse homologue impure.
 
 Force est de constater qu'il nous faut également sinon "injecter" les dépendances du moins les
 passer en paramètres ce qui rend notre application nettement plus flexible: nous avons rendu
-paramétrables notre base de données et le client mail[^Pas d'inquiétude, je vous montrerez
+paramétrables notre base de données et le client mail[^Pas d'inquiétude, je vous montrerai
 comment rendre cela moins fastidieux qu'il n'y paraît]. Qu'il s'agisse de facilement changer
 notre système de base de données pour un autre ou encore de réutiliser cette fonction dans une
 application différente, cette façon de faire y répond sans problème.
@@ -290,7 +290,7 @@ application dans des workers web. La portabilité est un atout puissant.
 
 Contrairement aux méthodes et procédures "typiques" en programmation fonctionnelle profondément
 ancrées dans leur environnement d'exécution via des états, dépendances et divers effets, les
-fonctions pures peuvent s'exécuter partout où le vent nous porte.
+fonctions pures peuvent s'exécuter partout où le vent les porte.
 
 À quand remonte la dernière fois que vous ayez copié une méthode d'une application à une autre
 ? L'une de mes citations favorites de l'inventeur d'Erlang, Joe Armstrong est celle ci: "Le
@@ -305,7 +305,7 @@ Pas besoin de simuler une plateforme de paiement et de présumer de l'état du m
 chaque test. On donne juste à la fonction des entrées, et on vérifie sa sortie.
 
 En réalité, de nombreux pionniers de la communauté mettent au point des outils complexes
-capables de générer des entrées et d'inférer des propriétés que doivent posséder la sortie.
+capables de générer des entrées et d'inférer des propriétés que doit posséder la sortie.
 Tout ceci est bien au-delà de la portée de ce livre mais je vous encourage fortement à
 rechercher et essayer *Quickcheck* - un outil de test taillé pour les environnements purement
 fonctionnels.
@@ -354,7 +354,7 @@ C'est comme procéder à une évaluation manuelle du code sans considérer les f
 contingentes d'une analyse programmatique. En utilisant la transparence référentielle, jouons
 un peu avec le code précédent.
 
-Tout d'abord, développons l'appel a la fonction `isSameTeam`.
+Tout d'abord, développons l'appel à la fonction `isSameTeam`.
 
 ```js
 var punch = function(player, target) {
@@ -408,8 +408,8 @@ Enfin, le coup de grâce, n'ayant aucun effet de bord notable ni besoin d'accès
 des fonctions pures peuvent s'exécuter en parallèle plutôt aisément. 
 
 C'est tout à fait possible côté serveur à l'aide de threads ou encore, côté client dans les
-navigateurs à l'aide de workers web bien que la mode actuelle tend à les éviter car juger trop
-complexes lorsqu'il s'agit de fonction impures. 
+navigateurs à l'aide de workers web bien que la mode actuelle tend à les éviter car jugés trop
+complexes lorsqu'il s'agit de fonctions impures. 
 
 ## En bref
 
@@ -417,12 +417,12 @@ Nous venons de voir ce que sont les fonctions pures et pourquoi en tant que dév
 monde fonctionnel elles vont constituer le coeur de notre démarche. De fait, à partir de
 maintenant nous nous efforcerons d'écrire toutes nos fonctions d'une façon pure. Nous aurons
 besoin d'outils et d'astuces supplémentaires pour le faire cependant que nous apprendrons à
-bien séparer les parties impures du reste du code plus pure. 
+bien séparer les parties impures du reste du code plus pur. 
 
-Sans davantage d'atouts dans notre manche, écrire des programmes entiers à l'aide de fonction
-pure va être un tantinet difficile. Il nous faut ruser et jongler avec des tas d'arguments à
+Sans davantage d'atouts dans notre manche, écrire des programmes entiers à l'aide de fonctions
+pures va être un tantinet difficile. Il nous faut ruser et jongler avec des tas d'arguments à
 passer çà et là;  De plus, interdit d'utiliser des états et nul besoin de mentionner tout ce qui
-touche aux effets de bord. Comment en vient-on à devenir masochiste au point décrire de tels
-programmes ? Il est temps de faire la connaissance avec la curryfication. 
+touche aux effets de bord. Comment en vient-on à devenir masochiste au point d'écrire de tels
+programmes ? Il est temps de faire la connaissance de la curryfication. 
 
 [Chaptitre 4: Curryfication](ch4.md)
