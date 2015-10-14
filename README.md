@@ -148,3 +148,19 @@ Palmer Oliveira @expalmer
 - **La dernière partie** sera à cheval entre le savoir pratique et les absurdités académiques.
   Nous traiterons des comonades, des f-algebres, des monades libres, du lemme de Yoneda et
   d'autres éléments propres à la théorie des catégories.
+
+# Comment contribuer ?
+
+Pour contribuer, je vous demande de procéder comme suis:
+
+- Forkez ce repository
+- Regardez parmi les issues existantes ce qui se fait
+- Rejoignez une tâche déjà en cours ou ouvrez une issue pour signalez le début d'une
+  nouvelle en décrivant votre objectif
+- Pour les traductions pensez à vérifier le sommaire sur le `README` d'accueil et
+  surtout, renseignez le `CHANGELOG` en précisant le hash du commit du repository anglais
+  source utilisé pour la traduction ainsi que sa date
+- Une fois votre travail accompli, effectuez une pull request et indiquez quelles issues sont
+  concernées
+
+Un grand merci !
