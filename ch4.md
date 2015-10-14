@@ -2,7 +2,7 @@
 
 NdT : Appelé *currying* en anglais.
 
-## Vivre sans toi n'est pas vivre
+## Can't live if livin' is without you
 
 Mon père me disait qu'il y a des choses dont on peut se passer, jusqu'au jour où on les obtient. Les fours micro-onde en font partie. Les smartphones aussi. Les plus vieux d'entre nous se rappelleront d'une vie épanouie sans Internet. Pour moi, la curryfication est une de ces choses.
 

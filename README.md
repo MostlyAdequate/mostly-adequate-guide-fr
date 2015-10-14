@@ -88,7 +88,7 @@ Palmer Oliveira @expalmer
   * [Plaidoyer en faveur de la pureté](ch3.md#plaidoyer-en-faveur-de-la-pureté)
   * [En bref](ch3.md#en-bref)
 * [Chapitre 4: Curryfication](ch4.md)
-  * [Vivre sans toi n'est pas vivre](ch4.md#vivre-sans-toi-nest-pas-vivre)
+  * [Can't live if livin' is without you](ch4.md#cant-live-if-livin-is-without-you)
   * [Plus qu'un jeu de mots ou une sauce délicieuse](ch4.md#plus-quun-jeu-de-mots-ou-une-sauce-délicieuse)
   * [En bref](ch4.md#en-bref)
 * [Chapitre 5: Composer, c'est coder](ch5.md)
