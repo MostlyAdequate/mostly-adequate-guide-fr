@@ -92,7 +92,7 @@ Ce qui est démontré ici est la possibilité de "pré-charger" une fonction ave
 
 Je vous encourage à lancer `npm install lodash`, copier le code ci-dessus et l'essayer dans le REPL. Vous pouvez aussi faire ça dans un navigateur où lodash et ramda sont disponibles.
 
-## Plus qu'un jeu de mot ou une sauce délicieuse
+## Plus qu'un jeu de mots ou une sauce délicieuse
 
 La curryfication est utile pour beaucoup de choses. Nous pouvons créer de nouvelles fonctions juste en donnant à nos fonctions de bases quelques arguments comme il a été fait pour `hasSpaces`, `findSpaces`, et `censored`.
 
@@ -120,7 +120,7 @@ Lorsque l'on parle de *fonctions pures*, on dit qu'elles prennent une entrée et
 
 Peu importe si la sortie est une nouvelle fonction, elle est elle-même pure. Il est autorisé de donner plus d'un argument à la fois, mais ce n'est finalement que retirer les parenthèses `()` supplémentaires à des fins pratiques.
 
-## En résumé
+## En bref
 
 La curryfication est commode et j'apprécie hautement travailler au quotidien avec des fonctions curryfiées. C'est une nouvelle corde à son arc qui rend la programmation fonctionnelle moins verbeuse et plus agréable.
 
@@ -128,7 +128,7 @@ Nous pouvons créer de nouvelles fonctions à la volée, simplement en passant u
 
 Emparons nous maintenant d'un autre outil essentiel appelé la *composition* : la fonction `compose`.
 
-[Chapitre 5: Programmer par composition](ch5.md)
+[Chapitre 5: Composer, c'est coder](ch5.md)
 
 ## Exercices
 

@@ -8,12 +8,12 @@ jugeront le choix douteux en ce qu'il s'oppose au courant actuel qui prône un J
 davantage impératif.  Toutefois, je crois sincèrement que l'apprentissage de la programmation
 fonctionnelle par ce biais présente de nombreux avantages:
 
-- **Vous l'utilisez quotidiennement au boulot**   
+- **Vous l'utilisez quotidiennement au boulot**
     La mise en application des connaissances théoriques que vous allez acquérir peut être
     faites sur des projets réels et complets plutôt que sur de petites séances nocturnes au
     moyen d'un quelconque langage fonctionnel plus ou moins ésotérique. 
 
-- **Nullement besoin de se familiariser avec les bases du langage pour commencer** 
+- **Nullement besoin de se familiariser avec les bases du langage pour commencer**
     Avec un langage fonctionnel pur, vous ne pouvez espérer afficher une variable ou lire un
     élément du DOM sans avoir recours aux monads. Ici, on triche légèrement; on apprend à
     purifier notre code au fur et à mesure. De plus, il sera toujours plus facile de retomber
@@ -88,10 +88,10 @@ Palmer Oliveira @expalmer
   * [Plaidoyer en faveur de la pureté](ch3.md#plaidoyer-en-faveur-de-la-pureté)
   * [En bref](ch3.md#en-bref)
 * [Chapitre 4: Curryfication](ch4.md)
-  * [Can't live if livin' is without you](ch4.md#cant-live-if-livin-is-without-you)
-  * [Plus qu'un jeu de mots / la sauce du chef](ch4.md#more-than-a-pun--special-sauce)
-  * [En bref](ch4.md#in-summary)
-* [Chapitre 5: Composer c'est coder](ch5.md)
+  * [Vivre sans toi n'est pas vivre](ch4.md#vivre-sans-toi-nest-pas-vivre)
+  * [Plus qu'un jeu de mots ou une sauce délicieuse](ch4.md#plus-quun-jeu-de-mots-ou-une-sauce-délicieuse)
+  * [En bref](ch4.md#en-bref)
+* [Chapitre 5: Composer, c'est coder](ch5.md)
   * [L'élevage de fonctions](ch5.md#functional-husbandry)
   * [Pointfree](ch5.md#pointfree)
   * [Débuggage](ch5.md#debugging)
