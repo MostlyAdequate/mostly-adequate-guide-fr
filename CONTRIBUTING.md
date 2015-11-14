@@ -1,6 +1,6 @@
 # Comment contribuer ?
 
-Pour contribuer, je vous demande de procéder comme suis:
+Pour contribuer, je vous demande de procéder comme suit:
 
 - Forkez ce repository
 - Regardez parmi les issues existantes ce qui se fait
