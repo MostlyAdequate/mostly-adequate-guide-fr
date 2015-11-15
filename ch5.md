@@ -56,29 +56,36 @@ last(['jumpkick', 'roundhouse', 'uppercut']);
 ```
 
 `reverse` retourne l'ordre de la liste et `head` nous permet de récupérer le premier élément de
-celle-ci. Il en résulte une fonction `last` efficace bien qu'inefficiente.
-
-`reverse` will turn the list around while `head` grabs the initial item. This results in an effective, albeit inefficient, `last` function. The sequence of functions in the composition should be apparent here. We could define a left to right version, however, we mirror the mathematical version much more closely as it stands. That's right, composition is straight from the math books. In fact, perhaps it's time to look at a property that holds for any composition.
+celle-ci. Il en résulte une fonction `last` efficace bien qu'inefficiente. L'enchaînement des
+fonctions de la composition doit apparaître clairement. En outre, en composant de droite à
+gauche l'on reflète le comportement de la composition d'un point de vue mathématique. Hé oui,
+la composition est un concept tout droit sorti des livres de maths. Peut-être serait-il
+intéressant de jetez un oeil à une propriété vérifiée par n'importe quelle composition.
 
 ```js
-// associativity
+// associativité
 var associative = compose(f, compose(g, h)) == compose(compose(f, g), h);
 // true
 ```
 
-Composition is associative, meaning it doesn't matter how you group two of them. So, should we choose to uppercase the string, we can write:
+La composition est associative: la façon de grouper deux d'entre-elles ne change pas la
+fonction composée.  De fait, on peut de façon équivalente composer `toUpperCase` des deux
+façons suivantes:
 
 ```js
 compose(toUpperCase, compose(head, reverse));
 
-// or
+// ou
 compose(compose(toUpperCase, head), reverse);
 ```
 
-Since it doesn't matter how we group our calls to `compose`, the result will be the same. That allows us to write a variadic compose and use it as follows:
+Parce que la façon de grouper nos appels n'importe pas, le résultat sera le même. Cette
+propriété intéressante nous permet ainsi d'écrire une version variadique de la fonction de
+composition et de l'utiliser comme ceci:
 
 ```js
-// previously we'd have to write two composes, but since it's associative, we can give compose as many fn's as we like and let it decide how to group them.
+// auparavant, il aurait fallu effectuer deux appels à compose, mais grâce à l'associativité,
+// il nous est possible de spécifier autant de fonctions que nous le souhaitons.
 var lastUpper = compose(toUpperCase, head, reverse);
 
 lastUpper(['jumpkick', 'roundhouse', 'uppercut']);
@@ -91,26 +98,37 @@ loudLastUpper(['jumpkick', 'roundhouse', 'uppercut']);
 //=> 'UPPERCUT!'
 ```
 
-Applying the associative property gives us this flexibility and peace of mind that the result will be equivalent. The slightly more complicated variadic definition is included with the support libraries for this book and is the normal definition you'll find in libraries like [lodash][lodash-website], [underscore][underscore-website], and [ramda][ramda-website].
+L'associativité nous assure flexibilité et séreinité quant au résultat de la composition. La
+version variadique étendue est inclue avec les différentes bibliothèques annexes de ce livre.
+C'est par ailleurs la définition classique que vous pourriez trouver dans des bibliothèques
+telles que [loadash][lodash-website], [underscore][underscore-website] et
+[ramda][ramda-website]
 
-One pleasant benefit of associativity is that any group of functions can be extracted and bundled together in their very own composition. Let's play with refactoring our previous example:
+L'un des attraits de l'associativité est de pouvoir créer de nouvelles fonctions simplement en
+utilisant et composant n'importe quelles autres fonctions existantes. Modifions un peu notre
+exemple précédent.
 
 ```js
 var loudLastUpper = compose(exclaim, toUpperCase, head, reverse);
 
-// or
+// ou
 var last = compose(head, reverse);
 var loudLastUpper = compose(exclaim, toUpperCase, last);
 
-// or
+// ou
 var last = compose(head, reverse);
 var angry = compose(exclaim, toUpperCase);
 var loudLastUpper = compose(angry, last);
 
-// more variations...
+// et plus encore...
 ```
 
-There's no right or wrong answers - we're just plugging our legos together in whatever way we please. Usually it's best to group things in a reusable way like `last` and `angry`. If familiar with Fowler's "[Refactoring][refactoring-book]", one might recognize this process as "[extract method][extract-method-refactor]"...except without all the object state to worry about.
+Il n'y a pas de bonne ou de mauvaises réponses - simplement des légos à assembler selon notre
+bon-vouloir. De façon générale il est préférable de grouper des méthodes de telles sortes que
+le résultat puisse être aisément réutiliser (comme `last` et `angry`). Ceux qui sont familiers
+du livre de Fowler à propos du "[Refactoring][refactoring-book]" reconnaîtrons la [méthode
+d'extraction][extract-method-refactor] ... cela dit sans toute la gestion des états des objets
+à considérer.
 
 ## Pointfree
 
