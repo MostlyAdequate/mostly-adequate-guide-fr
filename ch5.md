@@ -132,17 +132,21 @@ d'extraction][extract-method-refactor] ... cela dit sans toute la gestion des é
 
 ## Pointfree
 
-Pointfree style means never having to say your data. Excuse me. It means functions that never mention the data upon which they operate. First class functions, currying, and composition all play well together to create this style.
+Le style Pointfree (littéralement, "sans point") decrit un style où les données ne sont jamais
+mentionnées; ou plutôt devrais-je dire que les fonctions n'ont jamais à explicitement faire
+référence aux données qu'elles manipulent. Les fonctions de premier ordre, la curryfication et
+la composition interagissent merveilleusement bien afin de procéder ainsi, Pointfree.
 
 ```js
-//not pointfree because we mention the data: word
+//Pas Pointfree car on se réfère explicitement à `word`
 var snakeCase = function (word) {
   return word.toLowerCase().replace(/\s+/ig, '_');
 };
 
-//pointfree
+//Pointfree
 var snakeCase = compose(replace(/\s+/ig, '_'), toLowerCase);
 ```
+
 
 See how we partially applied `replace`? What we're doing is piping our data through each function of 1 argument. Currying allows us to prepare each function to just take its data, operate on it, and pass it along. Something else to notice is how we don't need the data to construct our function in the pointfree version, whereas in the pointful one, we must have our `word` available before anything else.
 
