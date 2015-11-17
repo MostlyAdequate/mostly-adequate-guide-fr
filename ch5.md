@@ -132,10 +132,10 @@ d'extraction][extract-method-refactor] ... cela dit sans toute la gestion des é
 
 ## Pointfree
 
-Le style Pointfree (littéralement, "sans point") decrit un style où les données ne sont jamais
+Le style *pointfree* (littéralement, "sans point") decrit un style où les données ne sont jamais
 mentionnées; ou plutôt devrais-je dire que les fonctions n'ont jamais à explicitement faire
 référence aux données qu'elles manipulent. Les fonctions de premier ordre, la curryfication et
-la composition interagissent merveilleusement bien afin de procéder ainsi, Pointfree.
+la composition interagissent merveilleusement bien afin de procéder ainsi, *pointfree*.
 
 ```js
 //Pas Pointfree car on se réfère explicitement à `word`
@@ -147,45 +147,58 @@ var snakeCase = function (word) {
 var snakeCase = compose(replace(/\s+/ig, '_'), toLowerCase);
 ```
 
+Voyez comment nous avons partiellement appliqué `replace`. Les données sont canalisées d'une
+fonction à l'autre. La curryfication nous permet de mettre en forme chaque fonction de façon à
+ce qu'elle n'opère que sur ses données avant de les passer à la suivante. Par ailleurs,
+soulignons qu'il n'y a nullement besoin des données pour construire la fonction composée dans
+cette version *pointfree* alors que dans la version avec point, il faut faire explicitement
+référence au `word` afin de construire la fonction.
 
-See how we partially applied `replace`? What we're doing is piping our data through each function of 1 argument. Currying allows us to prepare each function to just take its data, operate on it, and pass it along. Something else to notice is how we don't need the data to construct our function in the pointfree version, whereas in the pointful one, we must have our `word` available before anything else.
-
-Let's look at another example.
+Jetons un oeil à un autre exemple.
 
 ```js
-//not pointfree because we mention the data: name
+//Pas Pointfree car on se réfère explicitement à `name`
 var initials = function (name) {
   return name.split(' ').map(compose(toUpperCase, head)).join('. ');
 };
 
-//pointfree
+//Pointfree
 var initials = compose(join('. '), map(compose(toUpperCase, head)), split(' '));
 
 initials("hunter stockton thompson");
 // 'H. S. T'
 ```
 
-Pointfree code can again, help us remove needless names and keep us concise and generic. Pointfree is a good litmus test for functional code as it let's us know we've got small functions that take input to output. One can't compose a while loop, for instance. Be warned, however, pointfree is a double edge sword and can sometimes obfuscate intention. Not all functional code is pointfree and that is O.K. We'll shoot for it where we can and stick with normal functions otherwise.
+Un code *pointfree* sert également à retirer les noms inutiles pour ne garder qu'une essence
+concise et générique de ce dernier. En pratique, un code *pointfree* se teste facilement en ce
+qu'il s'exprime comme de petites fonctions transformant une entrée en une sortie. Difficile de
+composer une boucle *while* par exemple. Gardez toutefois une chose à l'esprit, le style
+*pointfree* est à double tranchant et peut parfois obfusquer les réelles intentions du code. Un
+code 100% fonctionnel n'est pas a priori 100% *pointfree* - et ça ne pose aucun problème. Nous
+verrons des cas où il est pertinent de conserver un style conventionnel.
 
-## Debugging
-A common mistake is to compose something like `map`, a function of two arguments, without first partially applying it.
+## Débuggage
+
+Une erreur classique consiste à composer une fonction comme `map` d'arité 2 sans partiellement
+l'appliquer à un premier argument au préalable.
 
 ```js
-//wrong - we end up giving angry an array and we partially applied map with god knows what.
+//incorrect - `angry` se voit appliqué à une liste d'élément et `map` partiellement appliqué à on ne sait trop quoi
 var latin = compose(map, angry, reverse);
 
 latin(["frog", "eyes"]);
-// error
+// erreur
 
 
-// right - each function expects 1 argument.
+// mieux - chaque fonction n'attend qu'un seul argument
 var latin = compose(map(angry), reverse);
 
 latin(["frog", "eyes"]);
 // ["EYES!", "FROG!"])
 ```
 
-If you are having trouble debugging a composition, we can use this helpful, but impure trace function to see what's going on.
+En cas de problème pour débugguer une composition, il est possible d'avoir recours à cette
+fonction utile bien qu'impure pour afficher quelques traces:
 
 ```js
 var trace = curry(function(tag, x){
@@ -199,14 +212,14 @@ dasherize('The world is a vampire');
 // TypeError: Cannot read property 'apply' of undefined
 ```
 
-Something is wrong here, let's `trace`
+Il y a un soucis ici, affichons la trace.
 
 ```js
 var dasherize = compose(join('-'), toLower, trace("after split"), split(' '), replace(/\s{2,}/ig, ' '));
 // after split [ 'The', 'world', 'is', 'a', 'vampire' ]
 ```
 
-Ah! We need to `map` this `toLower` since it's working on an array.
+Ah! Il faut *mapper* sur `toLower` étant donné qu'elle reçoit une liste
 
 ```js
 var dasherize = compose(join('-'), map(toLower), split(' '), replace(/\s{2,}/ig, ' '));
@@ -216,44 +229,62 @@ dasherize('The world is a vampire');
 // 'the-world-is-a-vampire'
 ```
 
-The `trace` function allows us to view the data at a certain point for debugging purposes. Languages like haskell and purescript have similar functions for ease of development.
+La fonction `trace` nous permet de visualiser les données à un certain point précis pour
+déceler un éventuel problème. Des langages comme Haskell et PureScript proposent des fonctions
+similaires afin de faciliter le développement.
 
-Composition will be our tool for constructing programs and, as luck would have it, is backed by a powerful theory that ensures things will work out for us. Let's examine this theory.
+La composition sera notre outil fard pour élaborer des programmes. De plus, il s'inscrit au
+sein d'une puissante théorie justifiant de la validité de nos propositions. Examinons ladite
+théorie.
 
+## La théorie des Catégories
 
-## Category theory
-
-Category theory is an abstract branch of mathematics that can formalize concepts from several different branches such as set theory, type theory, group theory, logic, and more. It primarily deals with objects, morphisms, and transformations, which mirrors programming quite closely. Here is a chart of the same concepts as viewed from each separate theory.
+La théorie des Catégories est une branche des mathématiques qui formalise différents concepts
+provenant d'autres branches et théories telles que la théorie des ensembles, la théorie des
+types, la théories des groupes, la logique et bien plus encore. Elle manipule des objets,
+des morphismes and des transformations qui reflètent les besoins de la programmation assez
+fidèlement. Ci-après un petit tableau comparatif de la perception de ces concepts au sein des
+différentes théories énoncées.
 
 <img src="images/cat_theory.png" />
 
-Sorry, I didn't mean to frighten you. I don't expect you to be intimately familiar with all these concepts. My point is to show you how much duplication we have so you can see why category theory aims to unify these things.
+Si c'est le cas, je suis navré de vous avoir effrayé. Je n'attends pas de vous que vous soyez
+intiment familier à ces concepts. Je souhaite simplement vous faire sentir l'objectif que tente
+de réaliser la théorie des Catégories en unifiant les concepts présents dans chacune des
+autres.
 
-In category theory, we have something called... a category. It is defined as a collection with the following components:
+En théorie des catégories, nous allons être amené a nous référer à... des catégories. Elles
+peuvent se voir comme des collections composées des éléments suivants:
 
-  * A collection of objects
-  * A collection of morphisms
-  * A notion of composition on the morphisms
-  * A distinguished morphism called identity
+  - Une collection d'objets
+  - Une collection de morphismes
+  - Une notion de composition de ces morphismes
+  - Un morphisme particulier appelé identité.
 
-Category theory is abstract enough to model many things, but let's apply this to types and functions, which is what we care about at the moment.
+La théorie des catégories est suffisament abstraite pour modéliser à peu près n'importe quoi.
+Appliquons-là toutefois aux types et aux fonctions car c'est pour le moment, tout ce qui nous
+intéresse.
 
-**A collection of objects**
-The objects will be data types. For instance, ``String``, ``Boolean``, ``Number``, ``Object``, etc. We often view data types as sets of all the possible values. One could look at ``Boolean`` as the set of `[true, false]` and ``Number`` as the set of all possible numeric values. Treating types as sets is useful because we can use set theory to work with them. 
+**Une collection d'objets**
+Les objets représentent nos différents type de données. Par exemple, ``String``, ``Boolean``,
+``Number``, ``Object``, etc. Il est courant de parler des types comme de l'ensemble des valeurs
+qu'ils permettent de représenter. Considérer les types comme des ensembles est fort pratique
+lorsqu'on se réfère à la théorie des ensembles pour les manipuler.
 
+**Une collection de morphismes** 
+Les morphismes vont consituer nos fonctions pures telles que nous les avons définies.
 
-**A collection of morphisms**
-The morphisms will be our standard every day pure functions.
+**Une notion de composition de ces morphismes**
+Ici, vous l'aurez compris, il s'agit de notre nouveau jouet fétiche - `compose`. Nous savons de
+plus déjà que la fonction `compose` est associative ce qui, non fortuitement, est une propriété
+que doit posséder la composition en théorie des catégories.
 
-**A notion of composition on the morphisms**
-This, as you may have guessed, is our brand new toy - `compose`. We've discussed that our `compose` function is associative which is no coincidence as it is a property that must hold for any composition in category theory.
-
-Here is an image demonstrating composition:
+Voici un petit schéma mettant en avant la composition:
 
 <img src="images/cat_comp1.png" />
 <img src="images/cat_comp2.png" />
 
-Here is a concrete example in code:
+Et ci-dessous, un petit exemple concret:
 
 ```js
 var g = function(x){ return x.length; };
@@ -261,19 +292,23 @@ var f = function(x){ return x === 4; };
 var isFourLetterWord = compose(f, g);
 ```
 
-**A distinguished morphism called identity**
-Let's introduce a useful function called `id`. This function simply takes some input and spits it back at you. Take a look:
+**Un morphisme particulier appelé identité**
+
+Faisons la connaissance d'une fonction bien pratique que nous appelerons `id`. Cette fonction
+prend simplement des entrées, et vous les recrache telles quelles. Voyez plutôt:
 
 ```js
 var id = function(x){ return x; };
 ```
 
-You might ask yourself "What in the bloody hell is that useful for?". We'll make extensive use of this function in the following chapters, but for now think of it as a function that can stand in for our value - a function masquerading as every day data.
-
-`id` must play nicely with compose. Here is a property that always holds for every unary(unary: a one argument function) function f:
+Vous vous demandez sans doute "En quoi cette stupide fonction m'avance à quelque chose ?". Nous
+ferons un usage extensif de cette fonction dans les chapitres à venir mais pour l'instant
+contentez vous de voir cette fonction comme une valeur que l'on peut passer. 
+En outre, `id` a quelques propriété intéressante face à la composition. Voici une propriété
+toujours vraie quelquesoit la fonction f d'arité un (arité un: fonction d'un seul argument):
 
 ```js
-// identity
+// identité
 compose(id, f) == compose(f, id) == f;
 // true
 ```
