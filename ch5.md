@@ -233,7 +233,7 @@ La fonction `trace` nous permet de visualiser les données à un certain point p
 déceler un éventuel problème. Des langages comme Haskell et PureScript proposent des fonctions
 similaires afin de faciliter le développement.
 
-La composition sera notre outil fard pour élaborer des programmes. De plus, il s'inscrit au
+La composition sera notre outil phare pour élaborer des programmes. De plus, il s'inscrit au
 sein d'une puissante théorie justifiant de la validité de nos propositions. Examinons ladite
 théorie.
 
@@ -313,9 +313,17 @@ compose(id, f) == compose(f, id) == f;
 // true
 ```
 
-Hey, it's just like the identity property on numbers! If that's not immediately clear, take some time with it. Understand the futility. We'll be seeing `id` used all over the place soon, but for now we see it's a function that acts as a stand in for a given value. This is quite useful when writing pointfree code.
+Hey, c'est exactement comme la propriété d'identité sur les nombres ! Si c'est encore un peu
+flou, laissez fermenter un peu dans votre esprit. Comprenez l'essentiel. Nous allons bientôt
+utiliser `id` un petit peu partout, mais pour l'instant, voyons cela comme une simple fonction
+qui retourne son entrée. C'est utile afin d'écrire du code *pointfree* nous le verrons.
 
-So there you have it, a category of types and functions. If this is your first introduction, I imagine you're still a little fuzzy on what a category is and why it's useful. We will build upon this knowledge throughout the book. As of right now, in this chapter, on this line, you can at least see it as providing us with some wisdom regarding composition - namely, the associativity and identity properties.
+Avec cela néanmoins vous avez dorénavant une catégorie de types de fonctions. Si c'est votre
+première introduction de ce type, vous êtes sans doute encore un peu déconcerté face au concept
+de catégorie et son utilité. Tout au long de ce livre, nous nous efforcerons d'en améliorer
+votre intuition. Pour le moment, alors même que vous lisez ces quelques lignes, dites-vous que
+c'est une façon de donner quelques solides justifications à l'utilisation de la composition - à
+savoir, l'associativité et les propriétés d'identité.
 
 What are some other categories, you ask? Well, we can define one for directed graphs with nodes being objects, edges being morphisms, and composition just being path concatenation. We can define with Numbers as objects and `>=` as morphisms(actually any partial or total order can be a category). There are heaps of categories, but for the purposes of this book, we'll only concern ourselves with the one defined above. We have sufficiently skimmed the surface and must move on.
 
