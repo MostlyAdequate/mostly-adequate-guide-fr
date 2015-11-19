@@ -30,7 +30,7 @@ shout("send in the clowns");
 La composition de deux fonctions est une fonction et c'est tout à fait logique: composer deux
 entités d'un même type (des fonctions dans notre cas) doit donner naissance à une nouvelle
 entité de ce type très précisément. Ce n'est pas en assemblant deux légos que vous obtiendrez
-des playmobiles. Ceci repose bien entendu sur un théorie et un ensemble de lois que nous
+des playmobiles. Ceci repose bien entendu sur une théorie et un ensemble de lois que nous
 découvrirons en temps voulus.
 
 Telle que nous l'avons définie `compose` applique `g` avant `f` et se faisant, créé un flot de
@@ -43,7 +43,7 @@ var shout = function(x){
 };
 ```
 
-Avec la composition, nous lisons de droite a gauche et non de l'intérieur vers l'extérieur.
+Avec la composition, nous lisons de droite à gauche et non de l'intérieur vers l'extérieur.
 Voyons voir un exemple où l'ordre à une importance:
 
 ```js
@@ -60,7 +60,7 @@ celle-ci. Il en résulte une fonction `last` efficace bien qu'inefficiente. L'en
 fonctions de la composition doit apparaître clairement. En outre, en composant de droite à
 gauche l'on reflète le comportement de la composition d'un point de vue mathématique. Hé oui,
 la composition est un concept tout droit sorti des livres de maths. Peut-être serait-il
-intéressant de jetez un oeil à une propriété vérifiée par n'importe quelle composition.
+intéressant de jeter un oeil à une propriété vérifiée par n'importe quelle composition.
 
 ```js
 // associativité
@@ -98,8 +98,8 @@ loudLastUpper(['jumpkick', 'roundhouse', 'uppercut']);
 //=> 'UPPERCUT!'
 ```
 
-L'associativité nous assure flexibilité et séreinité quant au résultat de la composition. La
-version variadique étendue est inclue avec les différentes bibliothèques annexes de ce livre.
+L'associativité nous assure flexibilité et sérénité quant au résultat de la composition. La
+version variadique étendue est incluse avec les différentes bibliothèques annexes de ce livre.
 C'est par ailleurs la définition classique que vous pourriez trouver dans des bibliothèques
 telles que [loadash][lodash-website], [underscore][underscore-website] et
 [ramda][ramda-website]
@@ -132,7 +132,7 @@ d'extraction][extract-method-refactor] ... cela dit sans toute la gestion des é
 
 ## Pointfree
 
-Le style *pointfree* (littéralement, "sans point") decrit un style où les données ne sont jamais
+Le style *pointfree* (littéralement, "sans point") décrit un style où les données ne sont jamais
 mentionnées; ou plutôt devrais-je dire que les fonctions n'ont jamais à explicitement faire
 référence aux données qu'elles manipulent. Les fonctions de premier ordre, la curryfication et
 la composition interagissent merveilleusement bien afin de procéder ainsi, *pointfree*.
@@ -212,7 +212,7 @@ dasherize('The world is a vampire');
 // TypeError: Cannot read property 'apply' of undefined
 ```
 
-Il y a un soucis ici, affichons la trace.
+Il y a un souci ici, affichons la trace.
 
 ```js
 var dasherize = compose(join('-'), toLower, trace("after split"), split(' '), replace(/\s{2,}/ig, ' '));
@@ -241,7 +241,7 @@ théorie.
 
 La théorie des Catégories est une branche des mathématiques qui formalise différents concepts
 provenant d'autres branches et théories telles que la théorie des ensembles, la théorie des
-types, la théories des groupes, la logique et bien plus encore. Elle manipule des objets,
+types, la théorie des groupes, la logique et bien plus encore. Elle manipule des objets,
 des morphismes and des transformations qui reflètent les besoins de la programmation assez
 fidèlement. Ci-après un petit tableau comparatif de la perception de ces concepts au sein des
 différentes théories énoncées.
@@ -249,11 +249,11 @@ différentes théories énoncées.
 <img src="images/cat_theory.png" />
 
 Si c'est le cas, je suis navré de vous avoir effrayé. Je n'attends pas de vous que vous soyez
-intiment familier à ces concepts. Je souhaite simplement vous faire sentir l'objectif que tente
+intimement familier à ces concepts. Je souhaite simplement vous faire sentir l'objectif que tente
 de réaliser la théorie des Catégories en unifiant les concepts présents dans chacune des
 autres.
 
-En théorie des catégories, nous allons être amené a nous référer à... des catégories. Elles
+En théorie des catégories, nous allons être amené à nous référer à... des catégories. Elles
 peuvent se voir comme des collections composées des éléments suivants:
 
   - Une collection d'objets
@@ -261,18 +261,18 @@ peuvent se voir comme des collections composées des éléments suivants:
   - Une notion de composition de ces morphismes
   - Un morphisme particulier appelé identité.
 
-La théorie des catégories est suffisament abstraite pour modéliser à peu près n'importe quoi.
+La théorie des catégories est suffisamment abstraite pour modéliser à peu près n'importe quoi.
 Appliquons-là toutefois aux types et aux fonctions car c'est pour le moment, tout ce qui nous
 intéresse.
 
 **Une collection d'objets**
-Les objets représentent nos différents type de données. Par exemple, ``String``, ``Boolean``,
+Les objets représentent nos différents types de données. Par exemple, ``String``, ``Boolean``,
 ``Number``, ``Object``, etc. Il est courant de parler des types comme de l'ensemble des valeurs
 qu'ils permettent de représenter. Considérer les types comme des ensembles est fort pratique
 lorsqu'on se réfère à la théorie des ensembles pour les manipuler.
 
 **Une collection de morphismes** 
-Les morphismes vont consituer nos fonctions pures telles que nous les avons définies.
+Les morphismes vont constituer nos fonctions pures telles que nous les avons définies.
 
 **Une notion de composition de ces morphismes**
 Ici, vous l'aurez compris, il s'agit de notre nouveau jouet fétiche - `compose`. Nous savons de
@@ -294,7 +294,7 @@ var isFourLetterWord = compose(f, g);
 
 **Un morphisme particulier appelé identité**
 
-Faisons la connaissance d'une fonction bien pratique que nous appelerons `id`. Cette fonction
+Faisons la connaissance d'une fonction bien pratique que nous appellerons `id`. Cette fonction
 prend simplement des entrées, et vous les recrache telles quelles. Voyez plutôt:
 
 ```js
@@ -303,9 +303,9 @@ var id = function(x){ return x; };
 
 Vous vous demandez sans doute "En quoi cette stupide fonction m'avance à quelque chose ?". Nous
 ferons un usage extensif de cette fonction dans les chapitres à venir mais pour l'instant
-contentez vous de voir cette fonction comme une valeur que l'on peut passer. 
-En outre, `id` a quelques propriété intéressante face à la composition. Voici une propriété
-toujours vraie quelquesoit la fonction f d'arité un (arité un: fonction d'un seul argument):
+contentez-vous de voir cette fonction comme une valeur que l'on peut passer. 
+En outre, `id` a quelques propriétés intéressantes face à la composition. Voici une propriété
+toujours vraie quelle que soit la fonction f d'arité un (arité un: fonction d'un seul argument):
 
 ```js
 // identité
@@ -318,26 +318,40 @@ flou, laissez fermenter un peu dans votre esprit. Comprenez l'essentiel. Nous al
 utiliser `id` un petit peu partout, mais pour l'instant, voyons cela comme une simple fonction
 qui retourne son entrée. C'est utile afin d'écrire du code *pointfree* nous le verrons.
 
-Avec cela néanmoins vous avez dorénavant une catégorie de types de fonctions. Si c'est votre
-première introduction de ce type, vous êtes sans doute encore un peu déconcerté face au concept
+Avec cela néanmoins vous avez dorénavant une catégorie de types et de fonctions. Si c'est votre
+première introduction de ce genre, vous êtes sans doute encore un peu déconcerté face au concept
 de catégorie et son utilité. Tout au long de ce livre, nous nous efforcerons d'en améliorer
 votre intuition. Pour le moment, alors même que vous lisez ces quelques lignes, dites-vous que
 c'est une façon de donner quelques solides justifications à l'utilisation de la composition - à
 savoir, l'associativité et les propriétés d'identité.
 
-What are some other categories, you ask? Well, we can define one for directed graphs with nodes being objects, edges being morphisms, and composition just being path concatenation. We can define with Numbers as objects and `>=` as morphisms(actually any partial or total order can be a category). There are heaps of categories, but for the purposes of this book, we'll only concern ourselves with the one defined above. We have sufficiently skimmed the surface and must move on.
+Quels autres sortes de catégories existe-t-il encore ? Et bien, on peut en définir une pour les
+graphes orientés dans lequel les noeuds représentent les objets, les transitions les
+morphismes, et la composition simplement la concaténation des chemins. Également pour les
+nombres en tant qu'objets, l'inégalité `>=` comme morphisme (en fait, n'importe quel ordre
+partiel ou total fait l'affaire). Il y a bien entendu des catégories plus pertinentes que
+d'autres; pour les besoins de ce livre toutefois, nous ne nous intéressons qu'à celles définies
+ci-dessus. Assez gratté en surface, creuser un peu vers les profondeurs.
 
+## En bref
 
-## In Summary
-Composition connects our functions together like a series of pipes. Data will flow through our application as it must - pure functions are input to output after all so breaking this chain would disregard output, rendering our software useless.
+La composition connecte nos fonctions ensembles comme l'on emboîte des tubes les uns dans les
+autres. Les données s'écouleront au travers de notre application contraintes par cette
+canalisation - après tout, nos fonctions pures transforment une entrée en sortie, une
+composition n'est que le prolongement d'une fonction en application.
 
-We hold composition as a design principle above all others. This is because it keeps our app simple and reasonable. Category theory will play a big part in app architecture, modelling side effects, and ensuring correctness.
+En outre, nous plaçons la composition sur un piédestal, bien au-dessus de n'importe quel
+autre principe. C'est parce qu'elle nous permet de conserver une application simple et sur
+laquelle il est aisé de raisonner. La théorie des catégories jouera de surcroît un rôle
+important dans l'architecture de nos applications, contrôlant les effets de bord tout en
+assurant une cohérence globale de celles-ci.
 
-We are now at a point where it would serve us well to see some of this in practice. Let's make an example application.
+Avec nos récentes connaissances en poche, il est de bon ton de mettre quelques-unes d'entre
+elles en pratique. 
 
-[Chapter 6: Example Application](ch6.md)
+[Chapter 6: Exemple d'application](ch6.md)
 
-## Exercises
+## Exercices
 
 ```js
 var _ = require('ramda');
@@ -353,24 +367,24 @@ var CARS = [
     {name: "Pagani Huayra", horsepower: 700, dollar_value: 1300000, in_stock: false}
   ];
 
-// Exercise 1:
+// Exercice 1:
 // ============
-// use _.compose() to rewrite the function below. Hint: _.prop() is curried.
+// utiliser _.compose() pour réecrire la fonction ci-après. Astuce: _.prop() est currifiée.
 var isLastInStock = function(cars) {
   var last_car = _.last(cars);
   return _.prop('in_stock', last_car);
 };
 
-// Exercise 2:
+// Exercice 2:
 // ============
-// use _.compose(), _.prop() and _.head() to retrieve the name of the first car
+// utiliser _.compose(), _.prop() et _.head() afin d'obtenir le nom de la première voiture.
 var nameOfFirstCar = undefined;
 
 
-// Exercise 3:
+// Exercice 3:
 // ============
-// Use the helper function _average to refactor averageDollarValue as a composition
-var _average = function(xs) { return _.reduce(_.add, 0, xs) / xs.length; }; // <- leave be
+// Utiliser la fonction _average pour refactorer averageDollarValue comme une composition.
+var _average = function(xs) { return _.reduce(_.add, 0, xs) / xs.length; }; // <- Utiliser telle quelle
 
 var averageDollarValue = function(cars) {
   var dollar_values = _.map(function(c) { return c.dollar_value; }, cars);
@@ -378,9 +392,10 @@ var averageDollarValue = function(cars) {
 };
 
 
-// Exercise 4:
+// Exercice 4:
 // ============
-// Write a function: sanitizeNames() using compose that returns a list of lowercase and underscored car's names: e.g: sanitizeNames([{name: "Ferrari FF", horsepower: 660, dollar_value: 700000, in_stock: true}]) //=> ["ferrari_ff"].
+// Écrire une fonction sanitizeNames() utilisant compose et retournant une liste de nom de
+voitures en snake_case (minuscules, mot séparés par un underscore). Par exemple: sanitizeNames([{name: "Ferrari FF", horsepower: 660, dollar_value: 700000, in_stock: true}]) //=> ["ferrari_ff"].
 
 var _underscore = _.replace(/\W+/g, '_'); //<-- leave this alone and use to sanitize
 
@@ -389,7 +404,7 @@ var sanitizeNames = undefined;
 
 // Bonus 1:
 // ============
-// Refactor availablePrices with compose.
+// Réecrire availablePrices à l'aide de compose.
 
 var availablePrices = function(cars) {
   var available_cars = _.filter(_.prop('in_stock'), cars);
@@ -401,7 +416,7 @@ var availablePrices = function(cars) {
 
 // Bonus 2:
 // ============
-// Refactor to pointfree. Hint: you can use _.flip()
+// Réecrire de façon *pointfree*. Astuce: _.flip() est votre ami.
 
 var fastestCar = function(cars) {
   var sorted = _.sortBy(function(car){ return car.horsepower }, cars);
