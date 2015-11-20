@@ -265,16 +265,19 @@ La théorie des catégories est suffisamment abstraite pour modéliser à peu pr
 Appliquons-là toutefois aux types et aux fonctions car c'est pour le moment, tout ce qui nous
 intéresse.
 
-**Une collection d'objets**
+**Une collection d'objets**  
+
 Les objets représentent nos différents types de données. Par exemple, ``String``, ``Boolean``,
 ``Number``, ``Object``, etc. Il est courant de parler des types comme de l'ensemble des valeurs
 qu'ils permettent de représenter. Considérer les types comme des ensembles est fort pratique
 lorsqu'on se réfère à la théorie des ensembles pour les manipuler.
 
-**Une collection de morphismes** 
+**Une collection de morphismes**   
+
 Les morphismes vont constituer nos fonctions pures telles que nous les avons définies.
 
-**Une notion de composition de ces morphismes**
+**Une notion de composition de ces morphismes**  
+
 Ici, vous l'aurez compris, il s'agit de notre nouveau jouet fétiche - `compose`. Nous savons de
 plus déjà que la fonction `compose` est associative ce qui, non fortuitement, est une propriété
 que doit posséder la composition en théorie des catégories.
@@ -292,7 +295,7 @@ var f = function(x){ return x === 4; };
 var isFourLetterWord = compose(f, g);
 ```
 
-**Un morphisme particulier appelé identité**
+**Un morphisme particulier appelé identité**   
 
 Faisons la connaissance d'une fonction bien pratique que nous appellerons `id`. Cette fonction
 prend simplement des entrées, et vous les recrache telles quelles. Voyez plutôt:
@@ -395,7 +398,9 @@ var averageDollarValue = function(cars) {
 // Exercice 4:
 // ============
 // Écrire une fonction sanitizeNames() utilisant compose et retournant une liste de nom de
-voitures en snake_case (minuscules, mot séparés par un underscore). Par exemple: sanitizeNames([{name: "Ferrari FF", horsepower: 660, dollar_value: 700000, in_stock: true}]) //=> ["ferrari_ff"].
+// voitures en snake_case (minuscules, mot séparés par un underscore). Par exemple: 
+// sanitizeNames([{name: "Ferrari FF", horsepower: 660, dollar_value: 700000, in_stock: true}]) 
+// => ["ferrari_ff"].
 
 var _underscore = _.replace(/\W+/g, '_'); //<-- leave this alone and use to sanitize
 
