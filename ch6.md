@@ -15,12 +15,12 @@ Pensez à SQL. Il n'y a pas de "Fait d'abord ceci, puis fait cela". Il
 y a une expression qui spécifie ce que l'on attend de la base de
 données. On ne décide pas la manière dont est fait le travail, _elle_
 décide. Quand la base de données est mise-à-jour et que le moteur SQL
-est optimisé, nous n'avons besoin de changer nos requêtes. Ceci parce
-qu'il existe de multiple façon d'interpréter nos spécifications et
-d'atteindre un même résultat.
+est optimisé, nous n'avons pas besoin de changer nos requêtes. Ceci
+parce qu'il existe de multiple façon d'interpréter nos spécifications
+et d'atteindre un même résultat.
 
-Pour certaines personnes, moi inclus, il est difficile de saisir le
-concept de la programmation déclarative du premier coup, alors
+Pour certaines personnes, moi inclus, il est difficile de saisir du
+premier coup l'idée de la programmation déclarative, alors
 familiarisons nous avec quelques exemples.
 
 ```js
@@ -37,32 +37,51 @@ var makes = cars.map(function(car){ return car.make; });
 
 La boucle impérative doit premièrement instancier le
 tableau. L'interpréteur doit évaluer cette instruction avant de
-continuer. Il itère ensuite directement sur la liste des voitures en
+continuer. Il itère ensuite directement sur la liste des voitures,
+incrémentant manuellement un compteur et faisant l'exposition vulgaire
+et explicite de ses méchanismes d'itération.
 
-The imperative loop must first instantiate the array. The interpreter must evaluate this statement before moving on. Then it directly iterates through the list of cars, manually increasing a counter and showing its bits and pieces to us in a vulgar display of explicit iteration.
+La version `map` est une seule expression. Elle n'impose pas d'ordre
+d'évaluation. Elle donne beaucoup de liberté à la fonction map pour
+itérer et assembler le tableau à retourner. Elle spécifie le *quoi* et
+non le *comment*. Elle arbore ainsi fièrement l'insigne du code déclaratif.
 
-The `map` version is one expression. It does not require any order of evaluation. There is much freedom here for how the map function iterates and how the returned array may be assembled. It specifies *what*, not *how*. Thus, it wears the shiny declarative sash.
+En plus d'être plus clair et concise, les entrailles de la fonction
+map peuvent être optimisées à souhait sans que jamais notre précieux
+code applicatif ne doive changer.
 
-In addition to being clearer and more concise, the map function may be optimized at will and our precious application code needn't change.
+Pour ceux parmi vous qui pensent "Certes, mais la boucle impérative
+est bien plus rapide", je suggère que vous vous renseigniez sur la
+manière dont le JIT optimise votre code. Voici une
+[vidéo géniale qui pourrait vous éclairer](https://www.youtube.com/watch?v=65-RbBwZQdU)
+(en anglais).
 
-For those of you who are thinking "Yes, but it's much faster to do the imperative loop", I suggest you educate yourself on how the JIT optimizes your code. Here's a [terrific video that may shed some light](https://www.youtube.com/watch?v=65-RbBwZQdU)
-
-Here is another example.
+Voici un autre exemple :
 
 ```js
-// imperative
+// impératif
 var authenticate = function(form) {
   var user = toUser(form);
   return logIn(user);
 };
 
-// declarative
+// déclaratif
 var authenticate = compose(logIn, toUser);
 ```
 
-Though there's nothing necessarily wrong with the imperative version, there is still an encoded step-by-step evaluation baked in. The `compose` expression simply states a fact: Authentication is the composition of `toUser` and `logIn`. Again, this leaves wiggle room for support code changes and results in our application code being a high level specification.
+Bien que la version impérative ne soit pas nécessairement mauvaise,
+elle garde une évaluation étape par étape inscrite dans son
+code. L'expression `compose` expose simplement un fait :
+l'authentification est la composition de `toUser` et `logIn`. Encore
+une fois, ça laisse la place à des ajustements du code utilitaire, et
+résume notre code applicatif à une spécification de haut niveau.
 
-Because we are not encoding order of evaluation, declarative coding lends itself to parallel computing. This coupled with pure functions is why FP is a good option for the parallel future - we don't really need to do anything special to achieve parallel/concurrent systems.
+Parce qu'il n'est écrit nulle part l'ordre d'évaluation, la
+programmation déclarative se prête aux calculs parallèles. Ceci,
+couplé aux fonctions pures, fait de la programmation fonctionnelle une
+bonne option pour une parallélisation future. Créer des systèmes
+concurrents/parallèles ne requiert pas d'action spéciale de notre
+part.
 
 ## Flickr en programmation fonctionnelle
 
