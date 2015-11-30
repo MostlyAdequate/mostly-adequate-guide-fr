@@ -1,6 +1,6 @@
-# Chapter 6: Example d'application
+# Chapter 6: Example d'application #
 
-## Un code déclaratif
+## Un code déclaratif ##
 
 Nous allons adopter une nouvelle attitude. À partir de maintenant,
 nous cesserons de dire à l'ordinateur ce qu'il doit faire, et
@@ -83,10 +83,14 @@ bonne option pour une parallélisation future. Créer des systèmes
 concurrents/parallèles ne requiert pas d'action spéciale de notre
 part.
 
-## Flickr en programmation fonctionnelle
+## Flickr en programmation fonctionnelle ##
 
-We will now build an example application in a declarative, composable way. We'll still cheat and use side effects for now, but we'll keep them minimal and separate from our pure codebase. We are going to build a browser widget that sucks in flickr images and displays them. Let's start by scaffolding the app. Here's the html:
-
+Nous allons maintenant construire un exemple d'application de manière
+déclarative et composable. Nous tricherons encore un peu et
+utiliserons des effets de bords, mais nous les réduirons à leur
+minimum et les garderons séparé de notre code pur. Nous allons
+construire un widget pour navigateur qui pompe des images flickr et
+les affiche. Commençons par la structure de l'application. Voici le HTML :
 
 ```html
 <!DOCTYPE html>
@@ -99,7 +103,7 @@ We will now build an example application in a declarative, composable way. We'll
 </html>
 ```
 
-And here's the flickr.js skeleton:
+Et voici la structure du fichier `flickr.js` :
 
 ```js
 requirejs.config({
@@ -118,20 +122,20 @@ require([
       console.log(tag, x);
       return x;
     });
-    // app goes here
+    // Code de l'application...
   });
 ```
 
-We're pulling in [ramda](http://ramdajs.com) instead of lodash or some other utility library. It includes `compose`, `curry`, and more. I've used requirejs, which may seem like overkill, but we'll be using it throughout the book and consistency is key. Also, I've started us off with our nice `trace` function for easy debugging.
+On utilisera [ramda](http://ramdajs.com) au lieu de lodash une autre librairie utilitaire. Elle inclut `compose`, `curry`, et d'autres. J'ai utilisé `requirejs`, ce qui peut sembler exagéré, mais nous l'utiliserons tout au long de ce livre, et l'uniformité est cruciale. Aussi, j'ai introduit directement notre belle fonction `trace` pour un débogage facile.
 
-Now that that's out of the way, on to the spec. Our app will do 4 things.
+Maintenant que ceci est bouclé, attaquons les spécifications. Notre application fera 4 choses :
 
-1. Construct a url for our particular search term
-2. Make the flickr api call
-3. Transform the resulting json into html images
-4. Place them on the screen
+1. Construire une URL pour notre terme de recherche
+2. Faire l'appel à l'API flickr
+3. Transformer le JSON de sortie en images HTML
+4. Placer les images sur l'écran
 
-There are 2 impure actions mentioned above. Do you see them? Those bits about getting data from the flickr api and placing it on the screen. Let's define those first so we can quarantine them.
+Deux des actions mentionnées sont impures. Pouvez-vous les repérer ? Ces bouts concernant la récupération de donnée depuis flickr et le placement sur l'écran. Allons pour les définir en premier, qu'on puisse ensuite les isoler.
 
 ```js
 var Impure = {
@@ -145,9 +149,9 @@ var Impure = {
 };
 ```
 
-Here we've simply wrapped jQuery's methods to be curried and we've swapped the arguments to a more favorable position. I've namespaced them with `Impure` so we know these are dangerous functions. In a future example, we will make these two functions pure.
+Nous avons simplement englobé les méthodes jQuery pour les currifier et nous avons interverti les arguments pour avoir un configuration plus favorable. Elles sont préfixées par `Impure` pour nous rappeler que ce sont des fonctions dangereuses. Dans un futur exemple, nous rendrons ces deux fonctions pures.
 
-Next we must construct a url to pass to our `Impure.getJSON` function.
+Ensuite, nous devons construire une URL à passer à notre fonction `Impure.getJSON`.
 
 ```js
 var url = function (term) {
@@ -156,9 +160,9 @@ var url = function (term) {
 };
 ```
 
-There are fancy and overly complex ways of writing `url` pointfree using monoids(we'll learn about these later) or combinators. We've chosen to stick with a readable version and assemble this string in the normal pointful fashion.
+Il y a des manières élégantes mais inutilement complexes d'écrire la fonction `url` TODO (pointfree) en utilisant les monoïdes TODO (nous en apprendrons plus à ce propos plus tard) ou les combinateurs. Nous avons opté pour une version lisible où nous assemblons la chaîne normalement TODO pointful.
 
-Let's write an app function that makes the call and places the contents on the screen.
+Écrivons une fonction `app` qui effectue l'appel et positionne le contenu à l'écran.
 
 ```js
 var app = _.compose(Impure.getJSON(trace("response")), url);
@@ -166,13 +170,13 @@ var app = _.compose(Impure.getJSON(trace("response")), url);
 app("cats");
 ```
 
-This calls our `url` function, then passes the string to our `getJSON` function, which has been partially applied with `trace`. Loading the app will show the response from the api call in the console.
+Cela appelle notre fonction `url`, puis passe la chaîne à notre fonction `getJSON`, qui a été partiellement appliquée avec `trace`. Au chargement de l'application, la réponse de l'API sera affichée dans la console.
 
 <img src="images/console_ss.png"/>
 
-We'd like to construct images out of this json. It looks like the srcs are buried in `items` then each `media`'s `m` property.
+Nous aimerions construire des images depuis ce JSON. On dirait que les sources `src` sont enfouies dans `items` puis dans la propriété `m` de chaque `media`
 
-Anyhow, to get at these nested properties we can use a nice universal getter function from ramda called `_.prop()`. Here's a homegrown version so you can see what's happening:
+Dans tous les cas, pour obtenir ces propriétés imbriquées on peut utiliser une fonction _getter_ universelle de ramda appelée `_.prop()`. En voici une version maison, pour que vous voyiez de quoi il en retourne :
 
 ```js
 var prop = _.curry(function(property, object){
@@ -180,7 +184,7 @@ var prop = _.curry(function(property, object){
 });
 ```
 
-It's quite dull actually. We just use `[]` syntax to access a property on whatever object. Let's use this to get at our srcs.
+Ce n'est pas bien compliqué. Nous utilisons juste la syntaxe `[]` pour accéder à la propriété d'un objet quelconque. Mettons cette fonction à l'oeuvre pour obtenir les `src`.
 
 ```js
 var mediaUrl = _.compose(_.prop('m'), _.prop('media'));
@@ -188,22 +192,24 @@ var mediaUrl = _.compose(_.prop('m'), _.prop('media'));
 var srcs = _.compose(_.map(mediaUrl), _.prop('items'));
 ```
 
-Once we gather the `items`, we must `map` over them to extract each media url. This results in a nice array of srcs. Let's hook this up to our app and print them on the screen.
+Une fois les `item` rassemblé, nous devons les _mapper_ pour en extraire les URL `media`. Le résultat est un joli tableau de `src`. Incluons ça dans notre application et affichons les à l'écran.
 
 ```js
 var renderImages = _.compose(Impure.setHtml("body"), srcs);
 var app = _.compose(Impure.getJSON(renderImages), url);
 ```
 
-All we've done is make a new composition that will call our `srcs` and set the body html with them. We've replaced the `trace` call with `renderImages` now that we have something to render besides raw json. This will crudely display our srcs directly in the body.
+Nous n'avons fait que créer une nouvelle composition qui va appeler nos `srcs` et les faire occuper le corps du HTML. Maintenant que nous avons autre chose à afficher qu'un JSON brut, nous avons remplacé l'appel à `trace` par `renderImages`. Les sources des images seront affichées vulgairement dans le `body`.
 
-Our final step is to turn these srcs into bonafide images. In a bigger application, we'd use a template/dom library like Handlebars or React. For this application though, we only need an img tag so let's stick with jQuery.
+L'étape finale est de transformer ces sources en jolies images. Dans une application plus grosse, nous utiliserions une librairie de template/DOM telle que Handlebars ou React. Cependant, ici, nous n'avons besoin que d'un tag `img` alors gardons jQuery.
 
 ```js
 var img = function (url) {
   return $('<img />', { src: url });
 };
 ```
+
+La méthode `html()` de jQuery accepte un tableau de tags. Nous avons juste besoin de transformer nos srcs en images et de les envoyer à travers `setHtml`.
 
 jQuery's `html()` method will accept an array of tags. We only have to transform our srcs into images and send them along to `setHtml`.
 
@@ -276,7 +282,7 @@ require([
 
 Now look at that. A beautifully declarative specification of what things are, not how they come to be. We now view each line as an equation with properties that hold. We can use these properties to reason about our application and refactor.
 
-## Un refactor s'impose
+## Un refactor s'impose ##
 
 There is an optimization available - we map over each item to turn it into a media url, then we map again over those srcs to turn them into img tags. There is a law regarding map and composition:
 
@@ -324,7 +330,7 @@ var mediaToImg = _.compose(img, mediaUrl);
 var images = _.compose(_.map(mediaToImg), _.prop('items'));
 ```
 
-## En bref
+## En bref ##
 
 We have seen how to put our new skills into use with a small, but real world app. We've used our mathematical framework to reason about and refactor our code. But what about error handling and code branching? How can we make the whole application pure instead of merely namespacing destructive functions? How can we make our app safer and more expressive? These are the questions we will tackle in part 2.
 
