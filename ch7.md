@@ -139,18 +139,33 @@ var map = curry(function(f, xs){
 ```
 
 La fonction `id` prend en argument n'importe quel type `a` et retourne quelque chose du même
-type `a`. 
+type `a`. Il est possible d'utiliser des variables au sein des types, comme on le ferait au
+sein du code. Des noms tels que `a` et `b` sont d'usage courants mais peuvent être
+arbitrairement remplacé par ce que qui vous semblera opportun. Une règle importante toutefois:
+si les variables sont les mêmes alors il doit s'agir du même type. Ainsi `a-> b` traduit une
+fonction de n'importe quel type `a` vers n'importe quel type `b` alors que, `a -> a` signifie
+qu'il s'agit du même type, en entrée comme en sortie. Par exemple, `id` peut être
+`String -> String` ou `Number -> Number` mais certainement pas `String -> Bool`.
 
+`map` utilise également des variables de type, avec cette fois-ci l'introduction de `b` qui
+peut être ou ne pas être du même type que `a`. On peut lire cette signature comme: `map` prend
+une fonction de n'importe quel type `a` vers le même type ou un type différent `b`, puis prend
+une liste de `a`, et retourne une liste de `b`.
 
-The `id` function takes any old type `a` and returns something of the same type `a`. We're able to use variables in types just like in code. Variable names like `a` and `b` are convention, but they are arbitrary and can be replaced with whatever name you'd like. If they are the same variable, they have to be the same type. That's an important rule so let's reiterate: `a -> b` can be any type `a` to any type `b`, but `a -> a` means it has to be the same type. For example, `id` may be `String -> String` or `Number -> Number`, but not `String -> Bool`.
+Vous voilà à présent subjugué par la beauté de l'expressivité de cette signature de type. Elle
+décrit littéralement ce que fait la fonction presque mot pour mot. Elle reçoit une fonction de
+`a` dans `b`, une liste de `a` et rend une liste de `b`. De toute évidence, la seule chose que
+`map` peut bien faire est d'appeler cette fichue fonction sur chaque élément `a`. Tout autre
+comportement serait complètement incongru. 
 
-`map` similarly uses type variables, but this time we introduce `b` which may or may not be the same type as `a`. We can read it as: `map` takes a function from any type `a` to the same or different type `b`, then takes an array of `a`'s and results in an array of `b`'s.
+Être capable de raisonner à propos des types et de leur impact est un savoir-faire qui vous
+mènvera loin dans le monde fonctionnel. Non seulement les articles, documentations et papiers
+scientifiques deviendront plus digeste, mais la signature elle-même vous donnera quasiment les
+fonctionnalités réalisées. Devenir un lecteur assuré vous demandera du temps, mais si vous
+prenez la peine de vous y appliquer, c'est un vaste monde de ressources qui vous deviendra
+accessible. 
 
-Hopefully, you've been overcome by the expressive beauty in this type signature. It literally tells us what the function does almost word for word. It's given a function from `a` to `b`, an array of `a`, and it delivers us an array of `b`. The only sensible thing for it to do is call the bloody function on each `a`. Anything else would be a bold face lie.
-
-Being able to reason about types and their implications is a skill that will take you far in the functional world. Not only will papers, blogs, docs, etc, become more digestible, but the signature itself will practically lecture you on its functionality. It takes practice to become a fluent reader, but if you stick with it, heaps of information will become available to you sans RTFMing.
-
-Here's a few more just to see if you can decipher them on your own.
+En voici quelques autres histoire que vous les décryptiez par vous-même.
 
 ```js
 //  head :: [a] -> a
@@ -166,11 +181,17 @@ var reduce = curry(function(f, x, xs){
   return xs.reduce(f, x);
 });
 ```
+`reduce` est sans doute la plus expressive de toutes. Elle est cependant complexe, ne vous
+sentez pas désemparé si elle vous donne du fil à retordre. Pour les plus curieux, je vais
+tâcher de l'expliquer en Français bien que faire travailler votre esprit sur la signature vous
+sera bien plus bénéfique. 
 
-`reduce` is perhaps, the most expressive of all. It's a tricky one, however, so don't feel inadequate should you struggle with it. For the curious, I'll try to explain in English though working through the signature on your own is much more instructive.
-
-Ahem, here goes nothing....looking at the signature, we see the first argument is a function that expects a `b`, an `a`, and produces a `b`. Where might it get these `a`s and `b`s? Well, the following arguments in the signature are a `b` and an array of `a`s so we can only assume that the `b` and each of those `a`s will be fed in. We also see that the result of the function is a `b` so the thinking here is our final incantation of the passed in function will be our output value. Knowing what reduce does, we can state that the above investigation is accurate.
-
+Bien... un coup d'oeil à la signature nous dit que la fontion attend en premier argument une
+fonction prenant un `b`, un `a` et produisant un `b`. D'où peuvent bien provenir ces `a` et `b`
+? Et bien, la suite de la signature fait référence à un `b` et une liste de `a`; on en déduit
+donc qu'ils serviront sans doute d'entrées à la première fonction. On voit aussi que le type de
+sortie est `b`, exactement comme celui de la fonction passée en paramètre. Sachant ce que fait
+en réalité la fonction `reduce`, l'explication précédente est relativement légitime. 
 
 ## Narrowing the possibility
 
