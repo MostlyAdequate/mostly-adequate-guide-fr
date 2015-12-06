@@ -30,9 +30,12 @@ nous nous efforcerons de fournir les outils nécessaires à l'écriture de code 
 conséquent, nous nous en tiendrons à l'utilisation du système de typage standard utilisé au
 sein du monde fonctionnel.
 
-## Tales from the cryptic
+## Récit d'un mystérieux monde
 
-From the dusty pages of math books, across the vast sea of white papers, amongst casual saturday morning blog posts, down into the source code itself, we find Hindley-Milner type signatures. The system is quite simple, but warrants a quick explanation and some practice to fully absorb the little language.
+Des pages poussiéreuses d'un livre de Maths au vaste océan de livres blancs en passant par les
+articles de blogs fortuits et même jusqu'au profondeur d'un code source, les signatures de
+types de Hindley-Milner sont partout. Le système est en lui-même assez simple mais mérite
+néanmoins quelques explications et un peu de pratique pour en maitriser toute l'essence. 
 
 ```js
 //  capitalize :: String -> String
@@ -44,11 +47,15 @@ capitalize("smurf");
 //=> "Smurf"
 ```
 
-Here, `capitalize` takes a `String` and returns a `String`. Never mind the implementation, it's the type signature we're interested in.
+Ici, `capitalize` prend une `String` et retourne une `String`. Ne regardez pas
+l'implémentation, c'est la signature de type qui nous intéresse ici. 
 
-In HM, functions are written as `a -> b` where `a` and `b` are variables for any type. So the signatures for `capitalize` can be read as "a function from `String` to `String`". In other words, it takes a `String` as its input and returns a `String` as its output.
+Au sein de HM, les fonctions sont écrites comme `a -> b` avec `a` et `b` étant des variables de
+n'importe quel type. Ainsi, la signature pour `capitalize` peut se lire "une fonction de
+`String` vers `String`. En d'autres termes, elle prend une `String` en entrée, et retourne une
+`String` en sortie. 
 
-Let's look at some more function signatures:
+Regardons de plus près quelques autres signatures:
 
 ```js
 //  strLength :: String -> Number
@@ -72,11 +79,15 @@ var replace = curry(function(reg, sub, s){
 });
 ```
 
-`strLength` is the same idea as before: we take a `String` and return you a `Number`.
+`strLength` est similaire à ce que nous avons vu précedemment: `String` vers `Number`. 
 
-The others might perplex you at first glance. Without fully understanding the details, you could always just view the last type as the return value. So for `match` you can interpret as: It takes a `Regex` and a `String` and returns you `[String]`. But an interesting thing is going on here that I'd like to take a moment to explain if I may.
+Les autres vous ont peut-être laissé un tantinet perplexe. Sans saisir les détails dans leur
+globalité, vous pouvez déjà considérer que le dernier type représente le type de retour de la
+fonction. De fait, `match` peut s'interpréter comme: prend une `Regex` et une `String` et
+retourne une `[String]`. Il y a néanmoins une petite subtilité que j'aimerais détailler un
+petit peu avec vous. 
 
-For `match` we are free to group the signature like so:
+Dans le cas de `match`, il est tout a fait légitime de grouper la signature de la sorte:
 
 ```js
 //  match :: Regex -> (String -> [String])
@@ -85,7 +96,12 @@ var match = curry(function(reg, s){
 });
 ```
 
-Ah yes, grouping the last part in parenthesis reveals more information. Now it is seen as a function that takes a `Regex` and returns us a function from `String` to `[String]`. Because of currying, this is indeed the case: give it a `Regex` and we get a function back waiting for its `String` argument. Of course, we don't have to think of it this way, but it is good to understand why the last type is the one returned.
+Intéressant ! Ce groupement nous révèle maintenant des informations supplémentaires sur la
+fonction. On peut voir la fonction comme une fonction qui prend une `Regex` et nous retourne
+une fonction d'une `String` vers une `[String]`. C'est effectivement le cas car la fonction est
+curryfiée: donnez lui une `Regex` et elle recrachera une nouvelle fonction prête à accueillir
+sa `String` en argument. Bien entendu, il n'est pas nécessaire de voir les choses comme cela,
+mais c'est une bonne intuition que de considérer le dernier type comme le type de retour.
 
 ```js
 //  match :: Regex -> (String -> [String])
@@ -94,7 +110,8 @@ Ah yes, grouping the last part in parenthesis reveals more information. Now it i
 var onHoliday = match(/holiday/ig);
 ```
 
-Each argument pops one type off the front of the signature. `onHoliday` is `match` that already has a `Regex`.
+Chaque argument éjecte un type du début de la signature. `onHoliday` est `match` qui est
+possède déjà une `Regex`.
 
 ```js
 //  replace :: Regex -> (String -> (String -> String))
@@ -103,10 +120,13 @@ var replace = curry(function(reg, sub, s){
 });
 ```
 
-As you can see with the full parenthesis on `replace`, the extra notation can get a little noisy and redundant so we simply omit them. We can give all the arguments at once if we choose so it's easier to just think of it as: `replace` takes a `Regex`, a `String`, another `String` and returns you a `String`.
+Comme vous pouvez le constater lorsqu'on indique explicitement toutes les parenthèses de la
+signature de `replace`, la notation devient un petit peu floue et redondante. C'est pourquoi
+nous les omettons tout simplement. On peut très bien donner tous les arguments en une fois
+auquel cas il est plus simple de voir la fonction comme: `replace` prend une `Regex`, une
+`String` et une autre `String` puis retourne une `String`.
 
-A few last things here:
-
+Encore un petit quelque chose ici :
 
 ```js
 //  id :: a -> a
@@ -117,6 +137,10 @@ var map = curry(function(f, xs){
   return xs.map(f);
 });
 ```
+
+La fonction `id` prend en argument n'importe quel type `a` et retourne quelque chose du même
+type `a`. 
+
 
 The `id` function takes any old type `a` and returns something of the same type `a`. We're able to use variables in types just like in code. Variable names like `a` and `b` are convention, but they are arbitrary and can be replaced with whatever name you'd like. If they are the same variable, they have to be the same type. That's an important rule so let's reiterate: `a -> b` can be any type `a` to any type `b`, but `a -> a` means it has to be the same type. For example, `id` may be `String -> String` or `Number -> Number`, but not `String -> Bool`.
 
