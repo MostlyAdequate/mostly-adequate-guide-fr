@@ -1,14 +1,34 @@
-# Hindley-Milner and Me
+# Hindley-Milner et moi
 
-## What's your type?
-If you're new to the functional world, it won't be long before you find yourself knee deep in type signatures. Types are the meta language that enables people from all different backgrounds to communicate succinctly and effectively. For the most part, they're written with a system called "Hindley-Milner", which we'll be examining together in this chapter.
+## Quel est ton type ?
+Si vous êtes encore jeune et un peu étranger au paradigme fonctionnel, il ne faudra pas
+longtemps pour que vous vous enlisiez jusqu'au cou, submergé par les signatures de types. Les
+types forment un meta-langage qui permet aux développeurs de différents horizons de communiquer
+promptement et efficacement. Dans la plupart des cas, c'est le système "Hindley-Milner" qui est
+utilisé pour traduire ces types; ce chapitre en fera l'étude. 
 
-When working with pure functions, type signatures have an expressive power to which the English language cannot hold a candle. These signatures whisper in your ear the intimate secrets of a function. In a single, compact line, they expose behaviour and intention. We can derive "free theorems" from them. Types can be inferred so there's no need for explicit type annotations. They can be tuned to fine point precision or left general and abstract. They are not only useful for compile time checks, but also turn out to be the best possible documentation available. Type signatures thus play an important part in functional programming - much more than you might first expect.
+Lorsqu'on travaille avec des fonctions pures, les signatures de types ont un pouvoir expressif
+bien au delà de n'importe quel langage courant. Ces signatures vous murmurent au creu de
+l'oreille les secrets les plus intimes d'une fonction. En une simple et concise ligne, elles
+en exposent le comportement et les intentions. Il est aisé d'en déduire des théorèmes. On peut
+inférer les types et il n'y a donc nullement besoin d'annotations contingentes. Une signature
+peut être rendue plus ou moins précise, plus ou moins abstraite. Elles ne sont pas seulement
+utiles au compilateur mais constituent vraisembablement la meilleure documentation disponible.
+De fait, les signatures de types jouent un rôle plus qu'important dans le monde fonctionnel -
+bien au delà de ce que vous pourriez imaginer de prime abord. 
 
-JavaScript is a dynamic language, but that does not mean we avoid types all together. We're still working with strings, numbers, booleans, and so on. It's just that there isn't any language level integration so we hold this information in our heads. Not to worry, since we're using signatures for documentation, we can use comments to serve our purpose.
+Le JavaScript est un langage dynamique, cela ne signifie pas pour autant que l'on s'affranchit
+totalement du typage. Les "strings", "numbers", "booleans" et autres types sont bien présents.
+Ces informations ne sont simplement pas explicitement relayé par le langage mais sont par
+ailleurs confinées dans un coin de notre esprit. Pas d'inquiétude à avoir, il suffit d'avoir
+recours à d'astucieux commentaires de documentation pour servir ces signatures au besoin. 
 
-There are type checking tools available for JavaScript such as [Flow](http://flowtype.org/) or the typed dialect, [TypeScript](http://www.typescriptlang.org/). The aim of this book is to equip one with the tools to write functional code so we'll stick with the standard type system used across FP languages.
-
+Il existe de nombreux outils de vérification de types en JavaScript.
+[Flow](http://flowtype.org/) par exemple en est un. On trouve aussi des dialectes du JavaScript
+fortement typés comme [TypeScript](http://www.typescriptlang.org/). Dans ce livre toutefois,
+nous nous efforcerons de fournir les outils nécessaires à l'écriture de code fonctionnel et par
+conséquent, nous nous en tiendrons à l'utilisation du système de typage standard utilisé au
+sein du monde fonctionnel.
 
 ## Tales from the cryptic
 
