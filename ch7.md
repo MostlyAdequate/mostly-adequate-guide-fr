@@ -193,25 +193,45 @@ donc qu'ils serviront sans doute d'entrées à la première fonction. On voit au
 sortie est `b`, exactement comme celui de la fonction passée en paramètre. Sachant ce que fait
 en réalité la fonction `reduce`, l'explication précédente est relativement légitime. 
 
-## Narrowing the possibility
+## Restreindre les possibilités
 
-Once a type variable is introduced, there emerges a curious property called *parametricity*(http://en.wikipedia.org/wiki/Parametricity). This property states that a function will *act on all types in a uniform manner*. Let's investigate:
+Lorsqu'on introduit les variables de type, on introduit également une curieuse propriété
+appelée *paramétricité*(http://en.wikipedia.org/wiki/Parametricity). Cette dernière stipule que
+la fonction concernée *doit se comportement de façon cohérente et uniforme pour n'importe quel
+type*. Investiguons:
 
 ```js
 // head :: [a] -> a
 ```
 
-Looking at `head`, we see that it takes `[a]` to `a`. Besides the concrete type `array`, it has no other information available and, therefore, its functionality is limited to working on the array alone. What could it possibly do with the variable `a` if it knows nothing about it? In other words, `a` says it cannot be a *specific* type, which means it can be *any* type, which leaves us with a function that must work uniformly for *every* conceivable type. This is what *parametricity* is all about. Guessing at the implementation, the only reasonable assumptions are that it takes the first, last, or a random element from that array. The name `head` should tip us off.
+Regardez `head`, elle prend `[a]` et retourne `a`. Derrière le type concrèt de liste, il n'y a
+aucune autre information disponible et de fait, sa portée se limite à la manipulation de la
+liste en question. Que serait-il possible de faire avec une variable de type `a` si l'on ne
+sait absolument rien de sa nature ? En d'autres termes, `a` stipule qu'il ne peux pas s'agir
+d'un type *spécifique* mais qu'il peut néanmoins s'agir de *n'importe quel* type. Il est
+résulte une fonction qui doit traiter de façon uniforme *chaque* type imaginable. C'est là le
+coeur de la *paramétricité*. Si l'on se penche sur l'implémentation ici, la seule hypothèse
+valable est que notre fonction doit sans doute récupérer le premier, le dernier ou un élément
+quelconque de la liste. Le nom `head` nous met toutefois sur une bonne piste.
 
-Here's another one:
+Voici une autre fonction:
 
 ```js
 // reverse :: [a] -> [a]
 ```
 
-From the type signature alone, what could `reverse` possibly be up to? Again, it cannot do anything specific to `a`. It cannot change `a` to a different type or we'd introduce a `b`. Can it sort? Well, no, it wouldn't have enough information to sort every possible type. Can it re-arrange?  Yes, I suppose it can do that, but it has to do so in exactly the same predictable way. Another possibility is that it may decide to remove or duplicate an element. In any case, the point is, the possible behaviour is massively narrowed by its polymorphic type.
+En s'appuyant à nouveau sur la signature, qu'est-il possible de déduire ? Encore une fois, il
+ne s'agit pas d'un traitement spécifique à un type `a`. La fonction ne peut pas changer `a` en
+un type différent - auquel cas l'on aurait introduit un `b`. Peut-elle ordonner ? Et bien, pas
+vraiment. Elle manquerait d'information essentiel pour ce faire. Peut-elle réorganiser ? Oui,
+on peut le supposer à condition qu'elle le fasse d'une façon hautement prédictible.
+Éventuellement, elle peut aussi retirer ou dupliquer des éléments. Dans tous les cas, ce qu'il
+faut percevoir, c'est que les possibles comportements sont contraints par le polymorphisme
+qu'impose le type.
 
-This narrowing of possibility allows us to use type signature search engines like [Hoogle](https://www.haskell.org/hoogle) to find a function we're after. The information packed tightly into a signature is quite powerful indeed.
+La restriction des possibilités nous permet d'utiliser des moteurs de recherches dédiés aux
+signatures comme [Hoogle](https://www.haskell.org/hoogle) afin de rechercher ce qui nous
+intéresse. Le condensé d'informations offert par une signature est tout à fait brillant.
 
 ## Free as in theorem
 
