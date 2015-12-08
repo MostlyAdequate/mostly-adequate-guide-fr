@@ -233,9 +233,11 @@ La restriction des possibilités nous permet d'utiliser des moteurs de recherche
 signatures comme [Hoogle](https://www.haskell.org/hoogle) afin de rechercher ce qui nous
 intéresse. Le condensé d'informations offert par une signature est tout à fait brillant.
 
-## Free as in theorem
+## Des théorèmes à la pelle
 
-Besides deducing implementation possibilities, this sort of reasoning gains us *free theorems*. What follows are a few random example theorems lifted directly from [Wadler's paper on the subject](http://ttic.uchicago.edu/~dreyer/course/papers/wadler.pdf).
+Au delà de simplement déduire des possibles implémentations, ce genre de raisonnement nous
+offrent des *théorèmes implicits*.  Ce qui suit constituent deux examples choisis au hasard et
+issues de [l'essai de Philip Wadler à ce sujet](http://ttic.uchicago.edu/~dreyer/course/papers/wadler.pdf).
 
 ```js
 // head :: [a] -> a
@@ -245,14 +247,28 @@ compose(f, head) == compose(head, map(f));
 compose(map(f), filter(compose(p, f))) == compose(filter(p), map(f));
 ```
 
+Il n'y a pas besoin de coder quoi que ce soit pour obtenir ces théorèmes, ils se déduisent des
+types directement. Le premier stipule que si l'on récupère l'élément de tête de notre liste et
+qu'on lui applique une fonction `f`, c'est tout autant équivalent à, et soit dit en passant
+bien plus rapide que, appliquer `f` via `map` sur à chaque élément puis de prendre l'élément de
+tête de la liste résultante.
 
-You don't need any code to get these theorems, they follow directly from the types. The first one says that if we get the `head` of our array, then run some function `f` on it, that is equivalent to, and incidentally, much faster than, if we first `map(f)` over every element then take the `head` of the result.
+Sans doute vous dites vous qu'il ne s'agit que de bon sens. Néanmoins, pour autant que je
+sache, les ordinateurs n'ont pas de notion du bon sens. De fait, ils ont besoin d'une façon
+formelle d'automatiser ce genre d'optimisation. Fort heureusement les Mathématiques possèdent
+de nombreuses façon de formaliser ces intuitions ce qui se révèle particulièrement utile à la
+logique un tant soit peu rigide de nos machines.
 
-You might think, well that's just common sense. But last I checked, computers don't have common sense. Indeed, they must have a formal way to automate these kind of code optimizations. Maths has a way of formalizing the intuitive, which is helpful amidst the rigid terrain of computer logic.
+Le théorème concernant `filter` est similaire. Il indique que composer `f` et `p` pour chercher
+quels éléments doivent être filtrés, puis appliquer `f` via `map` (rappelez-vous que filter ne
+transform pas les éléments - la signature assure que `a` restera inchangé), sera toujours
+équivalent à mapper notre fonction `f` puis à filtrer le ŕesultat à l'aide d'un prédicat `p`.
 
-The `filter` theorem is similar. It says that if we compose `f` and `p` to check which should be filtered, then actually apply the `f` via `map` (remember filter, will not transform the elements - its signature enforces that `a` will not be touched), it will always be equivalent to mapping our `f` then filtering the result with the `p` predicate.
-
-These are just two examples, but you can apply this reasoning to any polymorphic type signature and it will always hold. In JavaScript, there are some tools available to declare rewrite rules. One might also do this via the `compose` function itself. The fruit is low hanging and the possibilities are endless.
+Ces deux théorèmes sont deux exemples parmi tant d'autres. Vous pouvez toutefois appliquer ce
+raisonnement à n'importe quelle signature polymorphique et il demeure valable. En JavaScript,
+il existe quelques outils qui permettent de d'obtenir ces règles. On peut aussi simplement
+arriver à ces résultats via les propriétés de la fonction `compose` elles-mêmes. L'effort à
+faire n'est pas excessif et les bénéfices sont sans limite. 
 
 ## Constraints
 
