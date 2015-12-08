@@ -272,25 +272,35 @@ faire n'est pas excessif et les bénéfices sont sans limite.
 
 ## Constraints
 
-One last thing to note is that we can constrain types to an interface.
+Une dernière petite chose à remarquer: on peut contraindre les types à un certaine interface.
 
 ```js
 // sort :: Ord a => [a] -> [a]
 ```
 
-What we see on the left side of our fat arrow here is the statement of a fact: `a` must be an `Ord`. Or in other words, `a` must implement the `Ord` interface. What is `Ord` and where did it come from? In a typed language it would be a defined interface that says we can order the values. This not only tells us more about the `a` and what our `sort` function is up to, but also restricts the domain. We call these interface declarations *type constraints*.
+Ce que l'on apperçoit du côté gauche de notre grosse flèche est une déclaration de nature: `a`
+doit être un `Ord`. En d'autres termes, `a` doit implémenter l'interface `Ord`. Qu'est-ce qu'un
+`Ord` et d'où sort-il ? Dans un langage typé, elle représenterait une interface impliquant que
+des éléments puissent être ordonnés. Non seulement nous donne-t'elle plus d'information sur
+notre type `a` et ce à quoi la fonction `sort` se prédestine, mais aussi restreint-elle leur
+domaine. On appelle ce genre de déclarations d'interfaces des *contraintes de type*.
 
 ```js
 // assertEqual :: (Eq a, Show a) => a -> a -> Assertion
 ```
 
-Here, we have two constraints: `Eq` and `Show`. Those will ensure that we can check equality of our `a`s and print the difference if they are not equal.
+Dans cet exemple, il y a deux contraintes: `Eq` et `Show`. La première nous assure que l'on
+peut tester une égalité de deux `a` alors que la seconde assure qu'il est possible d'imprimer
+la différence en cas de non-égalité.
 
-We'll see more examples of constraints and the idea should take more shape in later chapters.
+Nous verrons plus d'exemples de contraintes et vous vous ferez davantage à l'idée dans les
+chapitres à venir.
 
+## En bref
 
-## In Summary
+Les signatures de types d'Hindley-Milner sont omniprésentes dans le monde fonctionnel. Bien
+qu'elles soient simple à lire et à écrire, il faut de la pratique pour déduire de leur
+seule interprétation le fonctionnement d'un programme. À partir de maintenant, nous les
+ajouterons à chaque ligne de code que nous écrirons.
 
-Hindley-Milner type signatures are ubiquitous in the functional world. Though they are simple to read and write, it takes time to master the technique of understanding programs through signatures alone. We will add type signatures to each line of code from here on out.
-
-[Chapter 8: Tupperware](ch8.md)
+[Chapitre 8: Tupperware](ch8.md)
