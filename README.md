@@ -106,11 +106,12 @@ Palmer Oliveira @expalmer
 ## Partie 2
 
 * [Chapitre 7: Hindley-Milner et Moi](ch7.md)
-  * [Quel est ton type ?](ch7.md#whats-your-type)
-  * [Récit d'un mystérieux monde](ch7.md#tales-from-the-cryptic)
-  * [Restreindre les possibilités](ch7.md#narrowing-the-possibility)
-  * [Des théorèmes à la pelle](ch7.md#free-as-in-theorem)
-  * [En bref](ch7.md#in-summary)
+  * [Quel est ton type ?](ch7.md#quel-est-ton-type)
+  * [Récit d'un mystérieux monde](ch7.md#récit-dun-mystérieux-monde)
+  * [Restreindre les possibilités](ch7.md#restreindre-les-possibilités)
+  * [Des théorèmes à la pelle](ch7.md#des-théorèmes-à-la-pelle)
+  * [Contraintes](ch7.md#contraintes)
+  * [En bref](ch7.md#en-bref)
 * [Chapitre 8: Tupperware](ch8.md)
   * [La boîte qui déboîte](ch8.md#the-mighty-container)
   * [Mon premier Foncteur](ch8.md#my-first-functor)
