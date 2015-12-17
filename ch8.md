@@ -67,9 +67,10 @@ Clarifions quelques points avant de creuser encore le sujet:
 Les motivations qui nous animent ici deviendront bientôt claires comme de l'eau de roche. Pour
 l'heure je vous demande de me faire confiance.
 
-## My First Functor
+## Mon premier foncteur
 
-Once our value, whatever it may be, is in the container, we'll need a way to run functions on it.
+Quelque soit notre valeur, une fois dans son contenant, il nous faut lui appliquer des
+fonctions.
 
 ```js
 // (a -> b) -> Container a -> Container b
@@ -78,7 +79,8 @@ Container.prototype.map = function(f){
 }
 ```
 
-Why, it's just like Array's famous `map`, except we have `Container a` instead of `[a]`. And it works essentially the same way:
+Grandemment inspirée de la fameuse méthode `map` propre aux listes, cette méthode fonctionne de
+façon similaire mais s'applique cependant à un `Container a` plutôt qu'à un `[a]`.
 
 ```js
 Container.of(2).map(function(two){ return two + 2 })
@@ -93,15 +95,33 @@ Container.of("bombs").map(_.concat(' away')).map(_.prop('length'))
 //=> Container(10)
 ```
 
-We can work with our value without ever having to leave the `Container`. This is a remarkable thing. Our value in the `Container` is handed to the `map` function so we can fuss with it and afterward, returned to its `Container` for safe keeping. As a result of never leaving the `Container`, we can continue to `map` away, running functions as we please. We can even change the type as we go along as demonstrated in the latter of the three examples.
+Il est donc possible de travailler avec notre valeur sans jamais avoir à quitter le contenant.
+C'est tout à fait prodigieux. La valeur au sein du contenant est simplement transmise à la
+fonction `map` de telle sorte que l'on puisse la manipuler à notre guise avant de la replacer
+au chaud dans sa boîte. Conserver la valeur au sein de son contenant a plusieurs avantages.
+Entre autre, il nous est possible de continuer à appliquer des fonctions à l'aide de `map`
+autant que nous le voulons. Il n'y a aucun problème non plus à changer le type de la valeur à
+l'intérieur du contenant comme l'ont montré les trois exemples précédents. 
 
-Wait a minute, if we keep calling `map`, it appears to be some sort of composition! What mathematical magic is at work here? Well chaps, we've just discovered *Functors*.
+Mais au fait, si l'on appelle `map`, c'est que quelque part sous le capot on fait appel à de la
+composition ! Quelle sorcellerie mathématiques est à l'oeuvre ici ? Bravo, nous venons de
+découvrir les *Foncteurs*.
 
-> A Functor is a type that implements `map` and obeys some laws
+> Un Foncteur est un type qui implémente `map` et obéit à quelques lois
 
-Yes, *Functor* is simply an interface with a contract. We could have just as easily named it *Mappable*, but now, where's the *fun* in that? Functors come from category theory and we'll look at the maths in detail toward the end of the chapter, but for now, let's work on intuition and practical uses for this bizarrely named interface.
+Oui, un *Foncteur* n'est rien de plus qu'une interface avec un contrat. On pourrait tout aussi
+bien l'avoir appelé `Mappable` mais *Foncteur* rime avec *bonheur*, n'est-ce pas ? Les
+Foncteurs proviennent tout droit de la théorie des catégories et bien entendu, nous aborderons
+les détails techniques mathématiques à ce sujet d'ici la fin du chapitre. Pour l'instant,
+tâchons d'en développer une intuition pratique et de comprendre ce qu'il se cache derrière
+cette interface un tant soit peu étrange.
 
-What reason could we possibly have for bottling up a value and using `map` to get at it? The answer reveals itself if we choose a better question: What do we gain from asking our container to apply functions for us? Well, abstraction of function application. When we `map` a function, we ask the container type to run it for us. This is a very powerful concept, indeed.
+Quelle raison saugrenue peut bien nous pousser à encapsuler une valeur de la sorte pour ensuite
+intéragir avec elle via `map` ? La réponse est dans la question pour peu qu'on prenne la peine
+de la reformuler: Que gagnons-nous à demander au contenant d'appliquer les fonctions à notre
+place ? Eh bien, c'est un niveau d'abstraction supplémentaire dans l'application de fonctions.
+Il nous suffit d'appliquer une fonction et le contenant se charge de l'appliquer pour nous en
+prenant soin de gérer le type. C'est un concept puissant, le voyez vous ? 
 
 ## Schrödinger's Maybe
 
