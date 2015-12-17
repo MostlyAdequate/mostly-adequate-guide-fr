@@ -1,12 +1,20 @@
 # Tupperware
 
-## The Mighty Container
+## La boîte qui déboîte
 
 <img src="images/jar.jpg" alt="http://blog.dwinegar.com/2011/06/another-jar.html" />
 
-We've seen how to write programs which pipe data through a series of pure functions. They are declarative specifications of behaviour. But what about control flow, error handling, asynchronous actions, state and, dare I say, effects?! In this chapter, we will discover the foundation upon which all of these helpful abstractions are built.
+Nous avons vu comment écrire des programmes qui acheminent des données au travers de fonctions
+pures. Ils consituent une forme déclarative des spécifications de comportements attendus. Qu'en
+est-il de la gestion des erreurs, du contrôle de l'exécution, des actions asynchrones, des états
+et, allons jusque là, des effets ?! Dans ce chapitre, nous bâtirons les fondations au dessus
+desquelles sont construites toutes ces abstractions importantes. 
 
-First we will create a container. This container must hold any type of value; a ziplock that holds only tapioca pudding is rarely useful. It will be an object, but we will not give it properties and methods in the OO sense. No, we will treat it like a treasure chest - a special box that cradles our valuable data.
+En premier lieu, nous allons créer un contenant. Il doit pouvoir contenir n'importe quel type
+de valeur; Il y a fort à parier qu'un bocal qui ne peut contenir que du pâté serve énormément.
+Il s'agira d'un objet bien que nous nous refuserons à lui affecter des propriétés et des
+méthodes au sens de l'orientée-objet. Non, nous le traiterons comme un coffre au trésor - une
+boîte singulière qui renferme notre bien-aimée donnée. 
 
 ```js
 var Container = function(x) {
@@ -16,9 +24,12 @@ var Container = function(x) {
 Container.of = function(x) { return new Container(x); };
 ```
 
-Here is our first container. We've thoughtfully named it `Container`. We will use `Container.of` as a constructor which saves us from having to write that god awful `new` keyword all over the place. There's more to the `of` function than meets the eye, but for now, think of it as the proper way to place values into our container.
+Voilà notre premier contenant. Nous l'avons en toute connaissance de causes nommé `Container`.
+Nous utiliserons `Container.of` comme constructeur en lieu et place de l'horrible mot-clé
+`new`. Il y a plus à raconter sur cette fonction `of` qu'il n'y paraît, pour le moment
+ceci-dit, elle n'est qu'une façon propre de placer une valeur au sein du contenant.
 
-Let's examine our brand new box...
+Jouons un peu avec notre nouvelle boîte flambant neuve...
 
 ```js
 Container.of(3)
@@ -33,17 +44,28 @@ Container.of(Container.of({name: "yoda"}))
 //=> Container(Container({name: "yoda" }))
 ```
 
-If you are using node, you will see `{__value: x}` even though we've got ourselves a `Container(x)`. Chrome will output the type properly, but no matter; as long as we understand what a `Container` looks like, we'll be fine. In some environments you can overwrite the `inspect` method if you'd like, but we will not be so thorough. For this book, we will write the conceptual output as if we'd overwritten `inspect` as it's much more instructive than `{__value: x}` for pedagogical as well as aesthetic reasons.
+Si vous utilisez *node*, vous verrez `{__value: x}` bien qu'il s'agissent d'un `Container(x)`.
+Chrome affichera le type correctement mais peu importe tant que nous comprenons ce à quoi
+ressemble un `Container`. Au sein de certain environnement, vous avez la possiblité de réecrire
+la methode `inspect` mais nous n'irons pas jusque là. Pour les besoins du livre ceci dit, nous
+présenterons la valeur de sortie théorique comme si nous avions modifié la méthode `inspect` en
+conséquence; ce sera au moins plus intuitif que `{__value: x}` sinon à la fois plus esthétique
+et pédagogique.
 
-Let's make a few things clear before we move on:
+Clarifions quelques points avant de creuser encore le sujet:
 
-* `Container` is an object with one property. Lots of containers just hold one thing, though they aren't limited to one. We've arbitrarily named its property `__value`.
+* `Container` est un objet avec une unique propriété. De nombreux contenants ne contiennent
+  qu'une seule chose mais n'en faites pas un état de fait. Nous avons de plus complétement
+  arbitrairement appelé cette propriété `__value`.
 
-* The `__value` cannot be one specific type or our `Container` would hardly live up to the name.
+* La valeur `__value` ne peut être restreinte à un type spécifique. Le cas échéant, nous
+  aurions défini un bien piètre contenant.
 
-* Once data goes into the `Container` it stays there. We *could* get it out by using `.__value`, but that would defeat the purpose.
+* Une fois capturée par le `Container`, la donnée y reste. Il serait *hypothétiquement
+  envisageable* d'y accéder via `__value` mais ce serait violer l'essence même du contenant.
 
-The reasons we're doing this will become clear as a mason jar, but for now, bear with me.
+Les motivations qui nous animent ici deviendront bientôt claires comme de l'eau de roche. Pour
+l'heure je vous demande de me faire confiance.
 
 ## My First Functor
 
