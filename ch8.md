@@ -123,11 +123,16 @@ place ? Eh bien, c'est un niveau d'abstraction supplémentaire dans l'applicatio
 Il nous suffit d'appliquer une fonction et le contenant se charge de l'appliquer pour nous en
 prenant soin de gérer le type. C'est un concept puissant, le voyez vous ? 
 
-## Schrödinger's Maybe
+## Schrödinger, une histoire de Maybe
 
 <img src="images/cat.png" alt="cool cat, need reference" />
 
-`Container` is fairly boring. In fact, it is usually called `Identity` and has about the same impact as our `id` function(again there is a mathematical connection we'll look at when the time is right). However, there are other functors, that is, container-like types that have a proper `map` function, which can provide useful behaviour whilst mapping. Let's define one now.
+`Container` est relativement morne. En réalité, on le présente d'ordinaire comme `Identity` et
+agit de façon similaire à la fonction `id` (au risque de me répéter, sachez qu'il y a également
+un lien mathématique entre ces deux entités, lien que nous expliciterons en temps voulus). Il
+existe néanmoins bien d'autres foncteurs c'est à dire, des contenants typés qui possède leur
+propre implémentation de la fonction `map` laquelle leur confère des propriétés intéressantes.
+Voyons-en un nouveau dès à présent:
 
 ```js
 var Maybe = function(x) {
@@ -163,9 +168,15 @@ Maybe.of({name: "Dinah", age: 14}).map(_.prop("age")).map(add(10));
 //=> Maybe(24)
 ```
 
-Notice our app doesn't explode with errors as we map functions over our null values. This is because `Maybe` will take care to check for a value each and every time it applies a function.
+Vous remarquerez que notre application ne s'effondre pas dès lors que l'on applique nos
+fonctions sur des valeurs nulles via `map`. C'est en effet le rôle du `Maybe` de vérifier la
+présence ou non d'une valeur au sein du contenant avant d'y appliquer la fonction passée en
+argument. 
 
-This dot syntax is perfectly fine and functional, but for reasons mentioned in Part 1, we'd like to maintain our pointfree style. As it happens, `map` is fully equipped to delegate to whatever functor it receives:
+En outre, cette syntaxe n'est pas des plus fines et fonctionnelles; par conséquent et en accord
+avec ce qui fut mentionné en première partie de ce livre, il serait bon d'encourager une
+écriture *pointfree*. Comme par hasard, `map` est parfaitement équipée pour pallier ce
+contretemps et déléguer le travail au foncteur qu'elle reçoit:
 
 ```js
 //  map :: Functor f => (a -> b) -> f a -> f b
@@ -174,7 +185,13 @@ var map = curry(function(f, any_functor_at_all) {
 });
 ```
 
-This is delightful as we can carry on with composition per usual and `map` will work as expected. This is the case with ramda's `map` as well. We'll use dot notation when it's instructive and the pointfree version when it's convenient. Did you notice that? I've sneakily introduced extra notation into our type signature. The `Functor f =>` tells us that `f` must be a Functor. Not that difficult, but I felt I should mention it.
+C'est fantastque car nous pouvons désormais à nouveau procéder à des compositions et `map`
+fonctionnera comme prévue. C'est par ailleurs aussi le cas avec la méthode `map` fournie par
+ramda. Nous utiliserons la notation "classique" avec point lorsqu'elle est forte de sens, et la
+notation *pointfree* le reste du temps car plus pratique. Au fait, avez-vous remarqué
+quelque chose de singulier ? J'ai introduit en douce une petite notation dans la signature de
+type. La partie `Functor f =>` indique que `f` désigne une foncteur dans le reste de la
+signature. Intuitif mais une petite explication ne fait pas de mal. 
 
 ## Use cases
 
