@@ -193,9 +193,10 @@ quelque chose de singulier ? J'ai introduit en douce une petite notation dans la
 type. La partie `Functor f =>` indique que `f` désigne une foncteur dans le reste de la
 signature. Intuitif mais une petite explication ne fait pas de mal. 
 
-## Use cases
+## Cas d'utilisation
 
-In the wild, we'll typically see `Maybe` used in functions which might fail to return a result.
+Dans la nature, on utilise essentiellement `Maybe` avec des fonctions dont l'issue n'est pas a
+priori garantie. 
 
 ```js
 //  safeHead :: [a] -> Maybe(a)
@@ -212,10 +213,20 @@ streetName({addresses: [{street: "Shady Ln.", number: 4201}]});
 // Maybe("Shady Ln.")
 ```
 
-`safeHead` is like our normal `_.head`, but with added type safety. A curious thing happens when `Maybe` is introduced into our code; we are forced to deal with those sneaky `null` values. The `safeHead` function is honest and up front about its possible failure - there's really nothing to be ashamed of - and so it returns a `Maybe` to inform us of this matter. We are more than merely *informed*, however, because we are forced to `map` to get at the value we want since it is tucked away inside the `Maybe` object. Essentially, this is a `null` check enforced by the `safeHead` function itself. We can now sleep better at night knowing a `null` value won't rear its ugly, decapitated head when we least expect it. Apis like this will upgrade a flimsy application from paper and tacks to wood and nails. They will guarantee safer software.
+`safeHead` agit comme notre classique `_.head`, sauf que la valeur de retour est encapsulée
+dans un type plus sûr. L'introduction du `Maybe` dans notre code fait curieusement apparaître
+quelque chose; il nous faut désormais traiter les valeurs nulles pourvant surgir inopinément.
+La fonction `safeHead` est transparente et nous affiche clairement sa propension à l'erreur en
+retournant un `Maybe`. D'ailleurs, non seulement nous informe-t-elle d'un retour
+potentiellement erroné mais aussi nous oblige-t-elle à utiliser `map` pour accéder à la valeur
+retournée emprisonnée dans son contenant. Intuitivement, il s'agit d'une vérification de la
+présence de la valeur dictée par la fonction `safeHead` elle-même. On peut ainsi dormir sur nos
+deux oreilles sachant qu'il ne risque pas de surgir de valeur nulle comme par magie. Ce genre
+de méthodes peut significativement améliorer une application faite de bric et de broc en
+quelque chose de nettement plus robuste. Par ce procédé, on garantit un programme plus sûr.
 
-
-Sometimes a function might return a `Maybe(null)` explicitly to signal failure. For instance:
+Parfois une fonction retournera un `Maybe(null)` afin de signaler explicitement un cas
+d'erreur. Par exemple:
 
 ```js
 //  withdraw :: Number -> Account -> Maybe(Account)
@@ -240,9 +251,17 @@ getTwenty({ balance: 10.00});
 // Maybe(null)
 ```
 
-`withdraw` will tip its nose at us and return `Maybe(null)` if we're short on cash. This function also communicates its fickleness and leaves us no choice, but to `map` everything afterwards. The difference is that the `null` was intentional here. Instead of a `Maybe(String)`, we get the `Maybe(null)` back to signal failure and our application effectively halts in its tracks. This is important to note: if the `withdraw` fails, then `map` will sever the rest of our computation since it doesn't ever run the mapped functions, namely `finishTransaction`. This is precisely the intended behaviour as we'd prefer not to update our ledger or show a new balance if we hadn't successfully withdrawn funds.
+Si nous somme à court d'argent, `withdraw` nous le fera savoir en remontant un `Maybe(null)`.
+Elle le fera de telle sorte que son caprice sera entendu jusqu'en bout de chaîne en nous
+obligeant à appliquer `map` pour chaque fonction en suivant. À la fin, nous rendons
+effectivement compte de l'erreur et c'est notre application qui s'arrête correctement. S'il y a
+bien quelque chose à comprendre de cet exemple, c'est que si `withdraw` échoue, alors les
+appels à `map` servent de bouclier et empêche l'exécution de tout autre fonction (comme
+`finishTransaction`). C'est précisément le comportement que nous espérons. Mettre à jour le
+solde de notre compte alors que nous possédons des fonds insuffisants n'est pas du meilleur
+effet. 
 
-## Releasing the value
+## Libérez le Kraken
 
 One thing people often miss is that there will always be an end of the line; some effecting function that sends JSON along, or prints to the screen, or alters our filesystem, or what have you. We cannot deliver the output with `return`, we must run some function or another to send it out into the world. We can phrase it like a Zen Buddhist koan: "If a program has no observable effect, does it even run?". Does it run correctly for its own satisfaction? I suspect it merely burns some cycles and goes back to sleep...
 
