@@ -263,11 +263,28 @@ effet.
 
 ## Libérez le Kraken
 
-One thing people often miss is that there will always be an end of the line; some effecting function that sends JSON along, or prints to the screen, or alters our filesystem, or what have you. We cannot deliver the output with `return`, we must run some function or another to send it out into the world. We can phrase it like a Zen Buddhist koan: "If a program has no observable effect, does it even run?". Does it run correctly for its own satisfaction? I suspect it merely burns some cycles and goes back to sleep...
+Ce que les gens oublient parfois c'est qu'à un moment donné, on atteint le bout de la chaîne;
+des fonctions effectives qui transmettent du JSON, affichent à l'écran ou encore altère le
+système de fichiers. À ce moment précis, il nous est impossible de retourner un résultat, il
+nous faut exécuter des fonctions qui pourront communiquer avec le monde extérieur. Tel un sage
+Buddhiste, nous pouvons le formuler comme le Kôan Zen suivant: "Si un programme ne possède
+aucun effet observable, s'exécute-t-il seulement ? ". S'exécute-t-il pour selon son propre
+désir ? Sans effet observable, il consomme au mieux quelques cycles CPU avant de retourner au
+repos. 
 
-Our application's job is to retrieve, transform, and carry that data along until it's time to say goodbye and the function which does so may be mapped, thus the value needn't leave the warm womb of its container. Indeed, a common error is to try to remove the value from our `Maybe` one way or another as if the possible value inside will suddenly materialize and all will be forgiven. We must understand it may be a branch of code where our value is not around to live up to its destiny.  Our code, much like Schrödinger's cat, is in two states at once and should maintain that fact until the final function. This gives our code a linear flow despite the logical branching.
+Le rôle de notre application est de récupérer, transformer et d'amener un ensemble de données
+jusqu'à ce qu'il soit l'heure de leur dire au revoir. Ce faisant, nous appliquons
+successivement des fonctions grâce à `map` de telle sorte que les données n'ont guère besoin de
+quitter leur chaleureux contenant. Une erreur assez commune consiste à essayer de retirer la
+valeur du 'Maybe' d'une façon ou d'une autre en espérant que celle-ci se matérialise comme par
+enchantement. Il faut bien comprendre qu'il existe potentiellement une exécution du programme
+dans laquelle la valeur n'ira pas vivre sa destinée. Notre code est comme le chat de
+Schrödinger, simultanément dans deux états et nous nous devons de maintenir cette distinction
+jusqu'à l'exécution de la fonction finale. De cette façon le code demeure linéaire et l'on
+s'évite des branchements logiques.
 
-There is, however, an escape hatch. If we would rather return a custom value and continue on, we can use a little helper called `maybe`.
+Il existe toutefois une échappatoire. Si l'on souhaite effectivement retourner une valeur
+particulière et continuer, on peut le faire grâce à la petite fonction suivante:
 
 ```js
 //  maybe :: b -> (a -> b) -> Maybe a -> b
@@ -288,13 +305,31 @@ getTwenty({ balance: 10.00});
 // "You're broke!"
 ```
 
-We will now either return a static value (of the same type that `finishTransaction` returns) or continue on merrily finishing up the transaction sans `Maybe`. With `maybe`, we are witnessing the equivalent of an `if/else` statement whereas with `map`, the imperative analog would be: `if (x !== null) { return f(x) }`.
+Dorénavant, nous retournons ou bien une valeur statique (néanmoins du même type que celle
+retournée par `finishTransaction`) ou bien, nous menons la transaction à bien cette fois-ci
+sans `Maybe`. Avec `Maybe`, nous reflétons un branchement équivalent à un `if/else` pour lequel
+`map` correspond de façon moins impérative à: `if (x !== null) { return f(x) }`.
 
-The introduction of `Maybe` can cause some initial discomfort. Users of Swift and Scala will know what I mean as it's baked right into the core libraries under the guise of `Option(al)`. When pushed to deal with `null` checks all the time (and there are times we know with absolute certainty the value exists), most people can't help, but feel it's a tad laborious. However, with time, it will become second nature and you'll likely appreciate the safety. After all, most of the time it will prevent cut corners and save our hides.
+L'introduction de `Maybe` peut être dure à appréhender de premier abord. Les utilisateurs de
+Swift et Scala savent bien de quoi je parle vu que le même concept est présent via les
+bibliothèques native au travers des `Option(al)`. Lorsque l'on en vient à devoir traiter un
+ensemble de vérification à `null` à la suite (même lorsque l'on sait parfois que la valeur ne
+peut simplement pas être nulle), la plupart des gens n'ont aucune solution mais ressentent
+toutefois bien la pénibilité de l'écriture d'un tel code. Avec `Maybe`, vous prendez vite
+l'habitude à tel point que c'en deviendra une seconde nature. Après tout, la plupart du temps
+ce sera un bien pour un moindre mal.
 
-Writing unsafe software is like taking care to paint each egg with pastels before hurling it into traffic; like building a retirement home with materials warned against by three little pigs. It will do us well to put some safety into our functions and `Maybe` helps us do just that.
+Développer un programme non fiable, c'est tout aussi stupide que de prendre le temps de décorer
+des oeufs avec de la peinture avant de les jetez au milieu de la route. C'est une bonne chose
+que de vouloir apporter un peu de robustesse à nos fonctions et `Maybe` est la pour ça.
 
-I'd be remiss if I didn't mention that the "real" implementation will split `Maybe` into two types: one for something and the other for nothing. This allows us to obey parametricity in `map` so values like `null` and `undefined` can still be mapped over and the universal qualification of the value in a functor will be respected. You'll often see types like `Some(x) / None` or `Just(x) / Nothing` instead of a `Maybe` that does a `null` check on its value.
+Je manquerais à mes responsabilité si je ne vous précisais pas que la "réelle" implémentation
+de `Maybe` séparera effectivement la valeur selon deux types: un pour ladite valeur, et l'autre
+pour l'absence de cette valeur. Ceci nous offre une plus grande souplesse dans l'application
+dans l'utilisation de `map` en permettant à des valeurs nulles comme `null` ou `undefined`
+d'être également *mappées*. Ainsi, la dénomination universelle de foncteur est respectée. Vous
+rencontrerez plus fréquemment des types tels que `Some(x) / None` ou `Just(x) / Nothing` plutôt
+qu'un `Maybe` qui effectue une bête comparaison à `null`.
 
 ## Pure Error Handling
 
