@@ -331,11 +331,16 @@ d'être également *mappées*. Ainsi, la dénomination universelle de foncteur e
 rencontrerez plus fréquemment des types tels que `Some(x) / None` ou `Just(x) / Nothing` plutôt
 qu'un `Maybe` qui effectue une bête comparaison à `null`.
 
-## Pure Error Handling
+## Gestion d'erreur pure
 
 <img src="images/fists.jpg" alt="pick a hand... need a reference" />
 
-It may come as a shock, but `throw/catch` is not very pure. When an error is thrown, instead of returning an output value, we sound the alarms! The function attacks, spewing thousands of 0's and 1's like shields & spears in an electric battle against our intruding input. With our new friend `Either`, we can do better than to declare war on input, we can respond with a polite message. Let's take a look:
+Ce peut être surprenant mais, `throw/catch` n'est pas vraiment pur. Lorsqu'une erreur surgit,
+nous tirons la sonnette d'alarme plutôt que de retourner une valeur de sortie ! La fonction
+agresse d'une millier de 1 et de 0 notre application en réponse à l'entrée qu'on lui a fourni.
+Avec l'aide de notre nouvel ami `Either`, nous pouvons faire mieux que de déclarer la guerre à
+nos entrées. Nous pouvons répondre un message à la fois poli et plus adéquat. Regardons cela de
+plus près.
 
 ```js
 var Left = function(x) {
@@ -363,7 +368,9 @@ Right.prototype.map = function(f) {
 }
 ```
 
-`Left` and `Right` are two subclasses of an abstract type we call `Either`. I've skipped the ceremony of creating the `Either` superclass as we won't ever use it, but it's good to be aware. Now then, there's nothing new here besides the two types. Let's see how they act:
+`Left` et `Right` sont deux sous-classes d'un type plus abstrait que nous appelons `Either`. 
+
+are two subclasses of an abstract type we call `Either`. I've skipped the ceremony of creating the `Either` superclass as we won't ever use it, but it's good to be aware. Now then, there's nothing new here besides the two types. Let's see how they act:
 
 ```js
 Right.of("rain").map(function(str){ return "b"+str; });
