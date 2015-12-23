@@ -386,10 +386,15 @@ Right.of({host: 'localhost', port: 80}).map(_.prop('host'));
 Left.of("rolls eyes...").map(_.prop("host"));
 // Left('rolls eyes...')
 ```
+`Left` matérialise l'adolescent en crise et refuse toute communication et requête via `map`.
+`Right` fonctionne de façon similaire à `Container` (a.k.a `Identity). L'intérêt ici vient de
+la capacité de `Left` à stocker un message d'erreur. 
 
-`Left` is the teenagery sort and ignores our request to `map` over it. `Right` will work just like `Container` (a.k.a Identity). The power comes from the ability to embed an error message within the `Left`.
-
-Suppose we have a function that might not succeed. How about we calculate an age from a birth date. We could use `Maybe(null)` to signal failure and branch our program, however, that doesn't tell us much. Perhaps, we'd like to know why it failed. Let's write this using `Either`.
+Faisons l'hypothèse d'une fonction qui a des chances d'échouer à l'exécution. Considérons le
+calcul d'un âge depuis une date de naissance. On peut utiliser `Maybe(null)` afin de signaler
+une erreur et aiguiller la suite de notre programme en conséquence mais l'information eset
+maigre. En connaître davantage sur la nature de l'erreur, voilà ce qui nous intéresse. Voyons
+ce que cela donne en utilisant `Either`.
 
 ```js
 var moment = require('moment');
@@ -442,9 +447,10 @@ date de naissance. Il se lit toutefois d'un trait, linéairement sans avoir à v
 jongler entre les accolades d'une structure conditionnelle. On préférera usuellement déporter
 l'appel à `console.log` en dehors de notre fonction `zoltar` pour l'appliquer via `map` au
 niveau de chaque appel. C'est toutefois intéressant de rendre compte de la divergence de la
-branche droite `Right`. Dans la signature de type de cette même branche, nous utilisons `_`
+branche droite `Right`. Dans la signature de type de cette même branche, nous utilisons `\_`
 pour désigner un type qui n'a aucune importance car ignoré. (Dans certains navigateurs, vous
 aurez à utiliser `console.log.bind(console)` afin de l'utiliser en first-class). 
+
 
 I'd like to take this opportunity to point out something you may have missed: `fortune`, despite its use with `Either` in this example, is completely ignorant of any functors milling about. This was also the case with `finishTransaction` in the previous example. At the time of calling, a function can be surrounded by `map`, which transforms it from a non-functory function to a functory one, in informal terms. We call this process *lifting*. Functions tend to be better off working with normal data types rather than container types, then *lifted* into the right container as deemed necessary. This leads to simpler, more reusable functions that can be altered to work with any functor on demand.
 
