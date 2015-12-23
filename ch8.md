@@ -368,9 +368,10 @@ Right.prototype.map = function(f) {
 }
 ```
 
-`Left` et `Right` sont deux sous-classes d'un type plus abstrait que nous appelons `Either`. 
-
-are two subclasses of an abstract type we call `Either`. I've skipped the ceremony of creating the `Either` superclass as we won't ever use it, but it's good to be aware. Now then, there's nothing new here besides the two types. Let's see how they act:
+`Left` et `Right` sont deux sous-classes d'un type plus abstrait nommé `Either`. Je vous
+épargne la création de la classe mère `Either` étant donné que nous n'allons que peu l'utiliser
+en tant que telle; n'hésitez pas à la regarder pour vous faire une idée cela dit. Ceci étant
+dit, vous constaterez qu'il n'y a hormis les types que peu de nouveautés. Jetons-y un oeil:
 
 ```js
 Right.of("rain").map(function(str){ return "b"+str; });
@@ -407,7 +408,13 @@ getAge(moment(), {birthdate: '20010704'});
 // Left("Birth date could not be parsed")
 ```
 
-Now, just like `Maybe(null)`, we are short circuiting our app when we return a `Left`. The difference, is now we have a clue as to why our program has derailed. Something to notice is that we return `Either(String, Number)`, which holds a `String` as its left value and a `Number` as its `Right`. This type signature is a bit informal as we haven't taken the time to define an actual `Either` superclass, however, we learn a lot from the type. It informs us that we're either getting an error message or the age back.
+De la même façon qu'avec `Maybe(null)` nous court-circuitons l'application en retournant un
+`Left`. Une petite différence, forte de sens néanmoins, c'est que l'on peut maintenant
+caractériser avec davantage de précision la nature de l'interruption. Ainsi, vous remarquerez
+que l'on indique à présent dans la signature `Either(String, Number)` indiquant que le foncteur
+renferme un `String` en partie gauche, et un `Number` en partie droite. Cette signature peut
+sembler légérement informel vu que nous n'avons pas présenté la classe mère `Either`. C'est
+pourtant assez transparent et l'on comprend aisément ce dont il s'agit. 
 
 ```js
 //  fortune :: Number -> String
