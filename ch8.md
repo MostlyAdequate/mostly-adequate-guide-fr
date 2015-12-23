@@ -431,9 +431,20 @@ zoltar({birthdate: 'balloons!'});
 // Left("Birth date could not be parsed")
 ```
 
-When the `birthdate` is valid, the program outputs its mystical fortune to the screen for us to behold. Otherwise, we are handed a `Left` with the error message plain as day though still tucked away in its container. That acts just as if we'd thrown an error, but in a calm, mild manner fashion as opposed to losing its temper and screaming like a child when something goes wrong.
+Lorsque `birthdate` est valide, le programme nous dévoile sa mystérieuse bonne fortune. Sinon,
+nous récupérons un bon vieux message d'erreur cependant encore dans son contenant. D'une
+certaine façon, c'est un peu comme avant lorsqu'une erreur était levée sauf qu'à présent elle
+l'est calmement, poliement et sans excès là oú autrefois elle nous hurlait à la figure sans
+aucun respect à la manière d'une enfant turbulent. 
 
-In this example, we are logically branching our control flow depending on the validity of the birth date, yet it reads as one linear motion from right to left rather than climbing through the curly braces of a conditional statement. Usually, we'd move the `console.log` out of our `zoltar` function and `map` it at the time of calling, but it's helpful to see how the `Right` branch differs. We use `_` in the right branch's type signature to indicate it's a value that should be ignored(In some browsers you have to use `console.log.bind(console)` to use it first class).
+Dans cet exemple, nous effectuons un branchement logique selon la potentielle validité de la
+date de naissance. Il se lit toutefois d'un trait, linéairement sans avoir à visuellement
+jongler entre les accolades d'une structure conditionnelle. On préférera usuellement déporter
+l'appel à `console.log` en dehors de notre fonction `zoltar` pour l'appliquer via `map` au
+niveau de chaque appel. C'est toutefois intéressant de rendre compte de la divergence de la
+branche droite `Right`. Dans la signature de type de cette même branche, nous utilisons `_`
+pour désigner un type qui n'a aucune importance car ignoré. (Dans certains navigateurs, vous
+aurez à utiliser `console.log.bind(console)` afin de l'utiliser en first-class). 
 
 I'd like to take this opportunity to point out something you may have missed: `fortune`, despite its use with `Either` in this example, is completely ignorant of any functors milling about. This was also the case with `finishTransaction` in the previous example. At the time of calling, a function can be surrounded by `map`, which transforms it from a non-functory function to a functory one, in informal terms. We call this process *lifting*. Functions tend to be better off working with normal data types rather than container types, then *lifted* into the right container as deemed necessary. This leads to simpler, more reusable functions that can be altered to work with any functor on demand.
 
