@@ -451,14 +451,36 @@ branche droite `Right`. Dans la signature de type de cette même branche, nous u
 pour désigner un type qui n'a aucune importance car ignoré. (Dans certains navigateurs, vous
 aurez à utiliser `console.log.bind(console)` afin de l'utiliser en first-class). 
 
+J'aimerai prendre quelques mots pour mettre l'accent sur quelque chose qui vous a probablement
+échappé: La fonction `fortune` ici, bien qu'utilisée de paire avec `Either`, n'a aucune
+connaissance a priori d'une quelconque association avec un foncteur. C'était aussi le cas avec
+`finishTransaction` dans l'exemple précédent. On peut dire sans trop de formalisme qu'une
+fonction classique peut être grâce à `map` transformée` en une fonction de foncteur. On dénomme
+ce procédé `lifting`. Il est souvent plus simple pour des fonctions de travailler avec des
+types normaux plutôt que des contenants, puis, d'être *liftées* vers un contenant adéquat. Il
+s'en suit une plus grande simplicité et réutilisabilité dans le code.
 
-I'd like to take this opportunity to point out something you may have missed: `fortune`, despite its use with `Either` in this example, is completely ignorant of any functors milling about. This was also the case with `finishTransaction` in the previous example. At the time of calling, a function can be surrounded by `map`, which transforms it from a non-functory function to a functory one, in informal terms. We call this process *lifting*. Functions tend to be better off working with normal data types rather than container types, then *lifted* into the right container as deemed necessary. This leads to simpler, more reusable functions that can be altered to work with any functor on demand.
+En somme, `Either` est approprié pour la gestion des erreurs communes comme les résultats d'une
+validation, tout autant qu'il l'est dans la gestion d'erreurs complexes qui conduisent
+normalement à une interruption de l'exécution (un fichier manquant ou une socket inaccessible
+par exemple). Essayez de remplacer quelques uns des `Maybe` précédents par `Either` pour en
+améliorer le retour d'information. 
 
-`Either` is great for casual errors like validation as well as more serious, stop the show errors like missing files or broken sockets. Try replacing some of the `Maybe` examples with `Either` to give better feedback.
+En outre, j'ai l'impression d'avoir présenté `Either` d'une façon un peu réductrice. Non
+seulement nous sert-il à mieux gérer les erreurs, mais aussi représente-il une disjonction
+logique  (a.k.a `||`) au sein d'un type. il matérialise également l'idée de *Coproduit* en
+théorie des catégories (point que nous n'aborderons pas dans ce livre mais qu'il reste
+intéressant de connaître ne serait-ce que pour explorer les propriétés à en exploiter). C'est
+une représentation canonique de la somme (ou de l'union disjointe de deux ensembles) en tant
+qu'union des quantités représentées par l'association des deux types contenus (je me doute que
+ceci doit vous paraître obscure, n'hésitez pas à jetez un oeil à cet [excellent
+article](https://www.fpcomplete.com/school/to-infinity-and-beyond/pick-of-the-week/sum-types)).
+`Either` peut donc représenter de nombreuse chose mais en tant que foncteur, on l'associe
+naturellement à la gestion d'erreur. 
 
-Now, I can't help, but feel I've done `Either` a disservice by introducing it as merely a container for error messages. It captures logical disjunction (a.k.a `||`) in a type. It also encodes the idea of a *Coproduct* from category theory, which won't be touched on in this book, but is well worth reading up on as there's properties to be exploited. It is the canonical sum type (or disjoint union of sets) because its amount of possible inhabitants is the sum of the two contained types(I know that's a bit hand wavy so here's a [great article](https://www.fpcomplete.com/school/to-infinity-and-beyond/pick-of-the-week/sum-types). There are many things `Either` can be, but as a functor, it is used for its error handling.
-
-Just like with `Maybe`, we have little `either`, which behaves similarly, but takes two functions instead of one and a static value. Each function should return the same type:
+Enfin, tout comme avec `Maybe`, nous considérons la petite `either` qui agit similairement mais
+cette fois-ci à l'aide de deux fonctions et d'une valeur statique. Chaque fonction doit
+bien-entendu avoir un même type de retour. 
 
 ```js
 //  either :: (a -> c) -> (b -> c) -> Either a b -> c
@@ -481,7 +503,12 @@ zoltar({birthdate: 'balloons!'});
 // undefined
 ```
 
-Finally, a use for that mysterious `id` function. It simply parrots back the value in the `Left` to pass the error message to `console.log`. We've made our fortune telling app more robust by enforcing error handling from within `getAge`. We either slap the user with a hard truth like a high five from a palm reader or we carry on with our process. And with that, we're ready to move on to an entirely different type of functor.
+Finalement une utilisation de cette mystérieuse fonction `id`. Rien de plus qu'un simple
+perroquet qui retransmet la valeur contenue dans `Left` afin d'être affichée via `console.log`.
+En renforçant la gestion de nos erreurs depuis `getAge`, nous avons rendu notre diseuse de
+bonne fortune plus robuste. Ou bien nous mettons l'utilisateur devant le fait accompli en lui
+révélant la dure vérité liée à son erreur, ou bien nous exécutons la suite d'actions attendues.
+À présent, nous voilà prêt à migrer vers une nouvelle famille de foncteurs.
 
 ## Old McDonald had Effects...
 
