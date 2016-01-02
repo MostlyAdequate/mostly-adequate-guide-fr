@@ -119,7 +119,7 @@ Palmer Oliveira @expalmer
   * [Cas d'utilisation](ch8.md#cas-dutilisation)
   * [Libérez le Kraken](ch8.md#libérez-le-kraken)
   * [Gestion d'erreur pure](ch8.md#gestion-derreur-pure)
-  * [Le vieux McDonald à des effets](ch8.md#le-vieux-mcdonald-à-des-effets)
+  * [Le vieux McDonald a des effets](ch8.md#le-vieux-mcdonald-a-des-effets)
   * [Les tâches asynchrones](ch8.md#les-tâches-asynchrones)
   * [Un brin de théorie](ch8.md#un-brin-de-théorie)
   * [En bref](ch8.md#en-bref)
