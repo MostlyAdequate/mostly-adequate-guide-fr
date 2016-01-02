@@ -510,11 +510,13 @@ bonne fortune plus robuste. Ou bien nous mettons l'utilisateur devant le fait ac
 révélant la dure vérité liée à son erreur, ou bien nous exécutons la suite d'actions attendues.
 À présent, nous voilà prêt à migrer vers une nouvelle famille de foncteurs.
 
-## Old McDonald had Effects...
+## Le vieux McDonald a des effets
 
 <img src="images/dominoes.jpg" alt="dominoes.. need a reference" />
 
-In our chapter about purity we saw a peculiar example of a pure function. This function contained a side-effect, but we dubbed it pure by wrapping its action in another function. Here's another example of this:
+Dans le chapitre à propos de la pureté nous avons écrit une fonction relativement étrange. La
+fonction original possédait un effet de bord et nous l'avons encapsulé dans une autre fonction
+qui retournait la première. Dans la même idée, nous avons:
 
 ```js
 //  getFromStorage :: String -> (_ -> String)
@@ -525,9 +527,16 @@ var getFromStorage = function(key) {
 }
 ```
 
-Had we not surrounded its guts in another function, `getFromStorage` would vary its output depending on external circumstance. With the sturdy wrapper in place, we will always get the same output per input: a function that, when called, will retrieve a particular item from `localStorage`. And just like that (maybe throw in a few Hail Mary's) we've cleared our conscience and all is forgiven.
+Si l'on n'avait pas emprisonné les entrailles de notre fonction dans une autre, sa réponse
+pourrait vraissemblement varier selon le contexte. En revanche, notre petit mécanisme nous
+assure une réponse toujours identique (pour une même entrée bien-entendu) qui n'est ni plus ni
+moins qu'une fonction qui ne fois appelée nous retournera une entrée contenue dans notre
+`localStorage`. Grâce à cela, nous continuous l'esprit tranquile le reste de notre application.
 
-Except, this isn't particularly useful now is it. Like a collectable action figure in its original packaging, we can't actually play with it. If only there were a way to reach inside of the container and get at its contents... Enter `IO`.
+Toutefois il faut bien avouer que telle quelle la fonction ne nous sert pas à grand chose. Tout
+comme la figurine maintenue dans son emballage il nous est impossible de jouer avec. Si
+seulement il nous était possible d'attendre le contenu de ce paquet sans attendre la fin pour
+tout déballer... C'est ici que `IO` entre en jeu.
 
 ```js
 var IO = function(f) {
@@ -545,9 +554,16 @@ IO.prototype.map = function(f) {
 }
 ```
 
-`IO` differs from the previous functors in that the `__value` is always a function. We don't think of its `__value` as a function, however - that is an implementation detail and we best ignore it. What is happening is exactly what we saw with the `getFromStorage` example: `IO` delays the impure action by capturing it in a function wrapper. As such, we think of `IO` as containing the return value of the wrapped action and not the wrapper itself. This is apparent in the `of` function: we have an `IO(x)`, the `IO(function(){ return x })` is just necessary to avoid evaluation.
+`IO` se distingue des précédents foncteurs de par la nature de sa valeur `\_\_value`, toujours
+une fonction. C'est toutefois davantage un détail d'implémentation et l'on s'y réfère comme à
+une fonction. Ce que l'on observe réellement c'est que tout comme `getFromStorage`, `IO`
+retarde l'exécution de l'action impure en la capturant au sein d'une fonction. Par conséquent
+on perçoit `IO` comme contenant le résultat de l'action encapsulée plutôt que la fonction
+englobante. Cela saute aux yeux avec la méthode `of`: nous obtenons un `IO(x)` même si sous le
+capot, le mécanisme `IO(function(){ return x })` est nécessaire pour éviter l'évaluation
+précoce.
 
-Let's see it in use:
+Regardons tout ceci en action.
 
 ```js
 //  io_window :: IO Window
@@ -569,15 +585,32 @@ $('#myDiv').map(head).map(function(div){ return div.innerHTML; });
 // IO('I am some inner html')
 ```
 
-Here, `io_window` is an actual `IO` that we can `map` over straight away, whereas `$` is a function that returns an `IO` after its called. I've written out the *conceptual* return values to better express the `IO`, though, in reality, it will always be `{ __value: [Function] }`. When we `map` over our `IO`, we stick that function at the end of a composition which, in turn, becomes the new `__value` and so on. Our mapped functions do not run, they get tacked on the end of a computation we're building up, function by function, like carefully placing dominoes that we don't dare tip over. The result is reminiscent of Gang of Four's command pattern or a queue.
+Ici, `io\_window` est bel et bien un `IO` sur lequel on peut *mapper* directement alors que `$`
+est une fonction qui retourne un `IO` une fois invoquée. Remarequez que j'ai exposé les valeurs
+*conceptuelles* afin de rendre les expression plus explicites bien qu'en réalité les `IO`
+s'exprimeront toujours comme `{ \_\_value: [Function] }`. Lorsqu'on `map` sur notre `IO`, on ne
+fait qu'agréger une fonction en bout d'une composition qui devient la valeur d'un nouvel `IO`.
+Notre fonction n'est pas exécutée, elle prend simplement sa place au milieu d'une chaîne de
+calculs que l'on construit, fonction après fonction à l'image d'un ensemble de domino que l'on
+place bout à bout sans les renverser. Le résultat rappelle le *pattern* commande du Gang of Four.
 
-Take a moment to channel your functor intuition. If we see past the implementation details, we should feel right at home mapping over any container no matter its quirks or idiosyncrasies. We have the functor laws, which we will explore toward the end of the chapter, to thank for this pseudo-psychic power. At any rate, we can finally play with impure values without sacrificing our precious purity.
+Prenez une minute et faites fonctionner votre intuition sur les foncteurs. Si l'on regarde nos
+expériences passées, on se sent bien confortable à pouvoir *mapper* sur des contenants dont les
+bizarreries intrinsèques ne nous sont bien que contingentes. 
 
-Now, we've caged the beast, but we'll still have to set it free at some point. Mapping over our `IO` has built up a mighty impure computation and running it is surely going to disturb the peace. So where and when can we pull the trigger? Is it even possible to run our `IO` and still wear white at our wedding? The answer is yes, if we put the onus on the calling code. Our pure code, despite the nefarious plotting and scheming, maintains its innocence and it's the caller who gets burdened with the responsibility of actually running the effects. Let's see an example to make this concrete.
+En outre, il est bien beau d'avoir emprisonné la bête, il faudra tôt ou tard la libérer. En
+composant notre `IO` avec de nouvelles fonctions, nous avons créer une bien puissante
+quoiqu'impure fonction dont l'invocation risque fort de troubler l'ordre établi. À quel moment
+est-il donc adéquat de libérer le Kraken ? Est-il ne serait-ce que possible d'exécuter
+notre `IO` sans provoquer la fin du monde ? La réponse est oui à partir du moment où le code en
+charge de l'appel en prend la responsabilité. Il faut que notre code pur en dépit de sa
+fourberie soit préservé et maintenu innocent. C'est l'appelant qui doit également accepter le
+fardeau et les responsabilités qui viennent avec les effets de bords liés à l'exécution.
+Illustrons concrètement cela par un exemple:
 
 ```js
 
-////// Our pure library: lib/params.js ///////
+////// Notre ressource de code pure: lib/params.js ///////
 
 //  url :: IO String
 var url = new IO(function() { return window.location.href; });
@@ -593,16 +626,24 @@ var findParam = function(key) {
   return map(compose(Maybe.of, filter(compose(eq(key), head)), params), url);
 };
 
-////// Impure calling code: main.js ///////
+////// La partie de code impure: main.js ///////
 
 // run it by calling __value()!
 findParam("searchTerm").__value();
 // Maybe([['searchTerm', 'wafflehouse']])
 ```
+Notre bibliothèque se dédouane de toute responsabilité et conserve sa pureté en encapsulant
+`url` au sein d'un `IO` avant de passer le relais. Vous avez sans doute remarqué que nous avons
+comme qui dirait empilé nos contenants; c'est toutefois tout à fait raisonnable d'avoir un
+`IO(Maybe([x]))` qui se révèle être un foncteur à trois niveaux riche de sens (`Array`
+peut somme toute s'interpréter comme un contenant sur lequel `map` s'applique).
 
-Our library keeps its hands clean by wrapping `url` in an `IO` and passing the buck to the caller. You might have also noticed that we have stacked our containers; it's perfectly reasonable to have a `IO(Maybe([x]))`, which is three functors deep(`Array` is most definitely a mappable container type) and exceptionally expressive.
-
-There's something that's been bothering me and we should rectify it immediately: `IO`'s `__value` isn't really its contained value, nor is it a private property as the underscore prefix suggests. It is the pin in the grenade and it is meant to be pulled by a caller in the most public of ways. Let's rename this property to `unsafePerformIO` to remind our users of its volatility.
+Il demeure néanmoins un aspect dangereux qui me démange de rectifier dans la précédente
+notation. La valeur contenue dans `IO` n'est pas vraiment une valeur, ni un quelconque attribut
+privé comme le suggererait le préfixe devant son nom `\_\_value`. En effet, elle représente
+sinon une grenade qui attend d'être dégoupillée du moins une portion de code qui mérite d'être
+désignée en conséquence. Renommons celle-ci en `unsafePerformIO` afin de ne pas perdre de vue
+son potentiel destructeur. 
 
 ```js
 var IO = function(f) {
@@ -614,10 +655,12 @@ IO.prototype.map = function(f) {
 }
 ```
 
-There, much better. Now our calling code becomes `findParam("searchTerm").unsafePerformIO()`, which is clear as day to users (and readers) of the application.
+Voilà qui est bien mieux. Notre code appelant se transforme en
+`findParam("searchTerm").unsafePerformIO()` ce qui est de prime abord bien plus alertant. 
 
-`IO` will be a loyal companion, helping us tame those feral impure actions. Next, we'll see a type similar in spirit, but has a drastically different use case.
-
+`IO` sera notre fidèle compagnon qui nous aidera à apprivoiser toutes ces féroces actions
+impures à venir. Maintenant, nous armons nous d'un autre type poursuit un but bien différent
+mais dans un esprit similaire. 
 
 ## Asynchronous Tasks
 
