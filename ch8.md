@@ -826,9 +826,11 @@ et nous ne possédons pour l'heure aucun outil nous permettant de faire face à 
 Cela viendra très prochainement lorsque nous attaquerons les Monades et leurs amis, mais pour
 l'instant, il nous faut regarder d'un peu plus près les Maths qui rendent tout cela possible.
 
-## A Spot of Theory
+## Un brin de théorie
 
-As mentioned before, functors come from category theory and satisfy a few laws. Let's first explore these useful properties.
+Nous l'avons évoqué précédemment, les foncteurs proviennent de la thérorie des catégories et
+par conséquent répondent à des lois perticulières. Dans un premier temps, explorons ces
+propriétés:
 
 ```js
 // identity
@@ -838,7 +840,8 @@ map(id) === id;
 compose(map(f), map(g)) === map(compose(f, g));
 ```
 
-The *identity* law is simple, but important. These laws are runnable bits of code so we can try them on our own functors to validate their legitimacy.
+La loi d'identité est immédiate mais importante. Vous remarquerez que ces lois sont des
+portions de code que l'on peut exécuter afin d'asseoir leur légitimité.
 
 ```js
 var idLaw1 = map(id);
@@ -851,7 +854,7 @@ idLaw2(Container.of(2));
 //=> Container(2)
 ```
 
-You see, they are equal. Next let's look at composition.
+Ça fonctionne à merveille ! Passons à la composition:
 
 ```js
 var compLaw1 = compose(map(concat(" world")), map(concat(" cruel")));
@@ -864,19 +867,42 @@ compLaw2(Container.of("Goodbye"));
 //=> Container(' world cruelGoodbye')
 ```
 
-In category theory, functors take the objects and morphisms of a category and map them to a different category. By definition, this new category must have an identity and the ability to compose morphisms, but we needn't check because the aforementioned laws ensure these are preserved.
+En théorie des catégories les foncteurs prennent des éléments et des morphismes d'une catégorie
+et leur associent une catégorie différente. Par définition, cette nouvelle catégorie se doit de
+posséder une loi d'identité et de composition pour les morphismes mais ce sont deux propriétés
+assurées de part deux lois que l'on vient de voir. 
 
-Perhaps our definition of a category is still a bit fuzzy. You can think of a category as a network of objects with morphisms that connect them. So a functor would map the one category to the other without breaking the network. If an object `a` is in our source category `C`, when we map it to category `D` with functor `F`, we refer to that object as `F a` (If you put it together what does that spell?!). Perhaps, it's better to look at a diagram:
+Notre définition de catégorie est sans doute quelque peu vague. Sommairement, une catégorie est
+une sorte de réseau d'éléments interconnectés par des morphismes. Ainsi, une foncteur associera
+les éléments d'une catégorie à une autre mais en conservant la structure de ce réseau. Soit un
+élément `a` d'une catégorie source `C` que l'on associe à une categorie `D` par le foncteur
+`F`; on se réfère alors au nouvel élément comme `F a` (que retrouve-t-on mis bout-à-bout ?).
+C'est peut-etre plus clair avec un dessin:
 
-<img src="images/catmap.png" alt="Categories mapped" />
+<img src="images/catmap.png" alt="Association de catégories" />
 
-For instance, `Maybe` maps our category of types and functions to a category where each object may not exist and each morphism has a `null` check. We accomplish this in code by surrounding each function with `map` and each type with our functor. We know that each of our normal types and functions will continue to compose in this new world. Technically, each functor in our code maps to a sub category of types and functions which makes all functors a particular brand called endofunctors, but for our purposes, we'll think of it as a different category.
+Par exemple, `Maybe` associe notre catégorie de types et de fonctions vers une catégorie où
+chaque élément peut ne pas exister et où chaque morphisme effectue une vérification à null. Du
+point de vue du code, cela se traduit par deux choses: l'utilisation de `map` pour passer des
+fonctions et l'encapsulation de nos types à l'intérieur de foncteurs. Au sein de ce nouveau
+monde, les lois précédentes nous assurent que nos types classiques et nos fonctions seront
+encore composables. Techniquement, chaque foncteur de notre code nous amène vers une
+sous-catégorie de types et de fonctions de telle façon que l'on nomme ces foncteurs des
+endofoncteurs. Afin de conserver les choses aussi simple que possible nous considérerons ces
+sous-catégories comme de nouvelles catégories à part entière.
 
-We can also visualize the mapping of a morphism and its corresponding objects with this diagram:
+Il est possible de visualiser les associations d'un morphisme et de ses éléments correspondant
+au travers du schéma suivant:
 
-<img src="images/functormap.png" alt="functor diagram" />
+<img src="images/functormap.png" alt="Schéma d'un foncteur" />
 
-In addition to visualizing the mapped morphism from one category to another under the functor `F`, we see that the diagram commutes, which is to say, if you follow the arrows each route produces the same result. The different routes means different behavior, but we always end at the same type. This formalism gives us principled ways to reason about our code - we can boldly apply formulas without having to parse and examine each individual scenario. Let's take a concrete example.
+Non seulement nous visualisation l'association d'un morphisme vers une nouvelle catégorie au
+moyen du foncteur `F`, mais nous pouvons aussi constater que le diagramme commute, c'est-à-dire
+que l'ordre dans lequel on emprunte les flèches n'a pas d'importance, on arrive au même
+résultat. Des chemins différents reflètent des comportements différents mais aboutissent en fin
+de compte à un même type. Ce formalisme nous offre par ailleurs une certaine aptitude à
+raisonner sur notre code sans avoir à réellement examiner tous les scénarios possibles vu
+qu'ils conduisent tous au même résultat. Prenons un petit exemple:
 
 ```js
 //  topRoute :: String -> Maybe String
@@ -893,13 +919,11 @@ bottomRoute("hi");
 // Maybe("ih")
 ```
 
-Or visually:
+Ou encore plus visuellement:
 
-<img src="images/functormapmaybe.png" alt="functor diagram 2" />
+<img src="images/functormapmaybe.png" alt="Schéma d'un foncteur #2" />
 
-We can instantly see and refactor code based on properties held by all functors.
-
-Functors can stack:
+Les foncteurs peuvent aussi s'accumuler ainsi:
 
 ```js
 var nested = Task.of([Right.of("pillows"), Left.of("no sleep for you")]);
@@ -908,7 +932,12 @@ map(map(map(toUpperCase)), nested);
 // Task([Right("PILLOWS"), Left("no sleep for you")])
 ```
 
-What we have here with `nested` is a future array of elements that might be errors. We `map` to peel back each layer and run our function on the elements. We see no callbacks, if/else's, or for loops; just an explicit context. We do, however, have to `map(map(map(f)))`. We can instead compose functors. You heard me correctly:
+Ce que nous avons ici est une liste d'éléments potentiellement en erreur imbriquée dans une
+future. On applique map chaque fois pour pénétrer l'une des structures afin d'appliquer notre
+fonction sur les éléments en racine. Il n'y a aucun callback, ni if/else, ni boucle
+d'ailleurs; ni plus ni moins qu'une contexte explicite. Il nous faut toutefois appliquer trois
+fois l'opérateur `map` ce qui, je vous l'accorde, est un peu exagéré. On peut en revanche
+composer des foncteurs pour y remédier. Oui, vous m'avez bien entendu:
 
 ```js
 var Compose = function(f_g_x){
@@ -930,10 +959,17 @@ ctmd.getCompose;
 // Task(Maybe("Rock over London, rock on, Chicago"))
 ```
 
-There, one `map`. Functor composition is associative and earlier, we defined `Container`, which is actually called the `Identity` functor. If we have identity and associative composition we have a category. This particular category has categories as objects and functors as morphisms, which is enough to make one's brain perspire. We won't delve too far into this, but it's nice to appreciate the architectural implications or even just the simple abstract beauty in the pattern.
+Il n'y a ici plus qu'un seul appel à `map`. La composition sur les foncteurs est de plus
+associative. Souvenez-vous plus tôt, nous avions défini un foncteur particulier que nous avions
+appelé `Container` mais qui n'est en'realité rien de plus que le foncteur `Identité`.
+Normalement, cela sonne une petite cloche en vous: si nous avons l'identité et l'associativité
+sur la composition alors nous avons de quoi définir une catégorie. Et cette catégorie
+particulière possède des catégories comme élément et des foncteurs comme morphisme; il n'en
+faudra guère plus pour faire exploser notre cerveau. Nous ne creuserons pas plus loin de ce
+côté là mais fort est de constater la puissance et la beauté de ce que toute cette théorie
+implique et permet d'exprimer.
 
-
-## In Summary
+## En bref
 
 We've seen a few different functors, but there are infinitely many. Some notable omissions are iterable data structures like trees, lists, maps, pairs, you name it. eventstreams and observables are both functors. Others can be for encapsulation or even just type modelling. Functors are all around us and we'll use them extensively throughout the book.
 
