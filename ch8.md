@@ -971,40 +971,51 @@ implique et permet d'exprimer.
 
 ## En bref
 
-We've seen a few different functors, but there are infinitely many. Some notable omissions are iterable data structures like trees, lists, maps, pairs, you name it. eventstreams and observables are both functors. Others can be for encapsulation or even just type modelling. Functors are all around us and we'll use them extensively throughout the book.
+Nous avons vu quelques foncteurs mais vous vous doutez bien qu'il en existe une infinité
+d'autres. Parmi les omissions notables on retrouve les structures itérables comme les arbres,
+les listes, les tableaux associatifs, les couples et qu'on se le dise, les streams d'événements
+et les observables ont aussi leur place chez les foncteurs. Quelques autres servent à
+l'encapsulation ou expriment tout simplement des types particuliers. Les foncteurs sont
+omniprésents et nous en ferons désormais une utilisation extensive tout au long de ce livre.
 
-What about calling a function with multiple functor arguments? How about working with an order sequence of impure or async actions? We haven't yet acquired the full tool set for working in this boxed up world. Next, we'll cut right to the chase and look at monads.
+Quelques questions se posent maintenant: 
 
-[Chapter 9: Monadic Onions](ch9.md)
+- Peut-on appeler une fonction avec de multiples foncteurs en arguments ? 
+- Comment gérer une liste ordonnée d'actions asynchrones impures ? 
 
-## Exercises
+Nous n'avons pas encore toutes les clés en mains pour nous aventurer dans ce monde là. Il nous
+faut à présent porter notre attention sur les monades. 
+
+[Chapter 9: Monade ou Oignon ?](ch9.md)
+
+## Exercices
 
 ```js
 require('../../support');
 var Task = require('data.task');
 var _ = require('ramda');
 
-// Exercise 1
+// Exercice 1
 // ==========
-// Use _.add(x,y) and _.map(f,x) to make a function that increments a value
-// inside a functor
+// Utiliser _.add(x,y) et _.map(f,x) pour créer une fonction qui incrémente une valeur à
+// l'intérieur d'un foncteur
 
 var ex1 = undefined
 
 
 
-//Exercise 2
+//Exercice 2
 // ==========
-// Use _.head to get the first element of the list
+// Utiliser _.head pour récupérer le premier élément de la liste
 var xs = Identity.of(['do', 'ray', 'me', 'fa', 'so', 'la', 'ti', 'do']);
 
 var ex2 = undefined
 
 
 
-// Exercise 3
+// Exercice 3
 // ==========
-// Use safeProp and _.head to find the first initial of the user
+// Utiliser safeProp et _.head afin de récupérer la première lettre du prénom de l'utilisateur.
 var safeProp = _.curry(function (x, o) { return Maybe.of(o[x]); });
 
 var user = { id: 2, name: "Albert" };
@@ -1012,9 +1023,9 @@ var user = { id: 2, name: "Albert" };
 var ex3 = undefined
 
 
-// Exercise 4
+// Exercice 4
 // ==========
-// Use Maybe to rewrite ex4 without an if statement
+// Récrire l'exercice 4 à l'aide de Maybe afin d'éviter l'emploi d'une structure conditionnelle
 
 var ex4 = function (n) {
   if (n) { return parseInt(n); }
@@ -1024,9 +1035,9 @@ var ex4 = undefined
 
 
 
-// Exercise 5
+// Exercice 5
 // ==========
-// Write a function that will getPost then toUpperCase the post's title
+// Écrire une fonction qui récupérera un article (getPost) et mettra en majuscule le title de l'article
 
 // getPost :: Int -> Future({id: Int, title: String})
 var getPost = function (i) {
@@ -1041,10 +1052,11 @@ var ex5 = undefined
 
 
 
-// Exercise 6
+// Exercice 6
 // ==========
-// Write a function that uses checkActive() and showWelcome() to grant access
-// or return the error
+
+// En utilisant checkActive() et showWelcome(), écrire une fonction qui débloque un accès ou
+// retourne une erreur.
 
 var showWelcome = _.compose(_.add( "Welcome "), _.prop('name'))
 
@@ -1056,10 +1068,10 @@ var ex6 = undefined
 
 
 
-// Exercise 7
+// Exercice 7
 // ==========
-// Write a validation function that checks for a length > 3. It should return
-// Right(x) if it is greater than 3 and Left("You need > 3") otherwise
+// Écrire une fonction de validation qui vérifie que length > 3. La fonction doit retourner un
+// Right(x) le cas échéant ou un Left("You need > 3") sinon.
 
 var ex7 = function(x) {
   return undefined // <--- write me. (don't be pointfree)
@@ -1067,11 +1079,11 @@ var ex7 = function(x) {
 
 
 
-// Exercise 8
+// Exercice 8
 // ==========
-// Use ex7 above and Either as a functor to save the user if they are valid or
-// return the error message string. Remember either's two arguments must return
-// the same type.
+// Utiliser l'ex7 précédent et Either en tant que foncteur afin d'enregistrer l'utilisateur
+// s'il est valide ou échouer en fournissant un message d'erreur. Gardez à l'esprit que les deux
+// arguments d'either doivent retourner le même type.
 
 var save = function(x){
   return new IO(function(){
