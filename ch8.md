@@ -5,15 +5,15 @@
 <img src="images/jar.jpg" alt="http://blog.dwinegar.com/2011/06/another-jar.html" />
 
 Nous avons vu comment écrire des programmes qui acheminent des données au travers de fonctions
-pures. Ils consituent une forme déclarative des spécifications de comportements attendus. Qu'en
+pures. Ils constituent une forme déclarative des spécifications de comportements attendus. Qu'en
 est-il de la gestion des erreurs, du contrôle de l'exécution, des actions asynchrones, des états
-et, allons jusque là, des effets ?! Dans ce chapitre, nous bâtirons les fondations au dessus
+et, allons jusque-là, des effets ?! Dans ce chapitre, nous bâtirons les fondations au-dessus
 desquelles sont construites toutes ces abstractions importantes. 
 
 En premier lieu, nous allons créer un contenant. Il doit pouvoir contenir n'importe quel type
 de valeur; Il y a fort à parier qu'un bocal qui ne peut contenir que du pâté serve énormément.
 Il s'agira d'un objet bien que nous nous refuserons à lui affecter des propriétés et des
-méthodes au sens de l'orientée-objet. Non, nous le traiterons comme un coffre au trésor - une
+méthodes au sens de l'orientée-objet. Non, nous le traiterons comme un coffre-fort - une
 boîte singulière qui renferme notre bien-aimée donnée. 
 
 ```js
@@ -44,10 +44,10 @@ Container.of(Container.of({name: "yoda"}))
 //=> Container(Container({name: "yoda" }))
 ```
 
-Si vous utilisez *node*, vous verrez `{__value: x}` bien qu'il s'agissent d'un `Container(x)`.
-Chrome affichera le type correctement mais peu importe tant que nous comprenons ce à quoi
-ressemble un `Container`. Au sein de certain environnement, vous avez la possiblité de réecrire
-la methode `inspect` mais nous n'irons pas jusque là. Pour les besoins du livre ceci dit, nous
+Si vous utilisez *node*, vous verrez `{__value: x}` bien qu'il s'agisse d'un `Container(x)`.
+*Chrome* affichera le type correctement mais peu importe tant que nous comprenons ce à quoi
+ressemble un `Container`. Au sein de certains environnements, vous avez la possibilité de réécrire
+la méthode `inspect` mais nous n'irons pas jusque-là. Pour les besoins du livre ceci dit, nous
 présenterons la valeur de sortie théorique comme si nous avions modifié la méthode `inspect` en
 conséquence; ce sera au moins plus intuitif que `{__value: x}` sinon à la fois plus esthétique
 et pédagogique.
@@ -79,7 +79,7 @@ Container.prototype.map = function(f){
 }
 ```
 
-Grandemment inspirée de la fameuse méthode `map` propre aux listes, cette méthode fonctionne de
+Grandement inspirée de la fameuse méthode `map` propre aux listes, cette méthode fonctionne de
 façon similaire mais s'applique cependant à un `Container a` plutôt qu'à un `[a]`.
 
 ```js
@@ -99,12 +99,12 @@ Il est donc possible de travailler avec notre valeur sans jamais avoir à quitte
 C'est tout à fait prodigieux. La valeur au sein du contenant est simplement transmise à la
 fonction `map` de telle sorte que l'on puisse la manipuler à notre guise avant de la replacer
 au chaud dans sa boîte. Conserver la valeur au sein de son contenant a plusieurs avantages.
-Entre autre, il nous est possible de continuer à appliquer des fonctions à l'aide de `map`
+Entre autres, il nous est possible de continuer à appliquer des fonctions à l'aide de `map`
 autant que nous le voulons. Il n'y a aucun problème non plus à changer le type de la valeur à
 l'intérieur du contenant comme l'ont montré les trois exemples précédents. 
 
 Mais au fait, si l'on appelle `map`, c'est que quelque part sous le capot on fait appel à de la
-composition ! Quelle sorcellerie mathématiques est à l'oeuvre ici ? Bravo, nous venons de
+composition ! Quelle sorcellerie mathématique est à l'oeuvre ici ? Bravo, nous venons de
 découvrir les *Foncteurs*.
 
 > Un Foncteur est un type qui implémente `map` et obéit à quelques lois
@@ -117,11 +117,11 @@ tâchons d'en développer une intuition pratique et de comprendre ce qu'il se ca
 cette interface un tant soit peu étrange.
 
 Quelle raison saugrenue peut bien nous pousser à encapsuler une valeur de la sorte pour ensuite
-intéragir avec elle via `map` ? La réponse est dans la question pour peu qu'on prenne la peine
+interagir avec elle via `map` ? La réponse est dans la question pour peu qu'on prenne la peine
 de la reformuler: Que gagnons-nous à demander au contenant d'appliquer les fonctions à notre
 place ? Eh bien, c'est un niveau d'abstraction supplémentaire dans l'application de fonctions.
 Il nous suffit d'appliquer une fonction et le contenant se charge de l'appliquer pour nous en
-prenant soin de gérer le type. C'est un concept puissant, le voyez vous ? 
+prenant soin de gérer le type. C'est un concept puissant, le voyez-vous ? 
 
 ## Schrödinger, une histoire de Maybe
 
@@ -130,7 +130,7 @@ prenant soin de gérer le type. C'est un concept puissant, le voyez vous ?
 `Container` est relativement morne. En réalité, on le présente d'ordinaire comme `Identity` et
 agit de façon similaire à la fonction `id` (au risque de me répéter, sachez qu'il y a également
 un lien mathématique entre ces deux entités, lien que nous expliciterons en temps voulus). Il
-existe néanmoins bien d'autres foncteurs c'est à dire, des contenants typés qui possède leur
+existe néanmoins bien d'autres foncteurs c'est-à-dire, des contenants typés qui possèdent leur
 propre implémentation de la fonction `map` laquelle leur confère des propriétés intéressantes.
 Voyons-en un nouveau dès à présent:
 
@@ -152,7 +152,10 @@ Maybe.prototype.map = function(f) {
 }
 ```
 
-Now, `Maybe` looks a lot like `Container` with one minor change: it will first check to see if it has a value before calling the supplied function. This has the effect of side stepping those pesky nulls as we `map`(Note that this implementation is simplied for teaching).
+`Maybe` ressemble presque trait pour trait à `Container` avec pour seule petite différence
+qu'il vérifie la présence d'une valeur avant d'y appliquer la fonction fournie. De cette façon,
+les valeurs `null` ou `undefined` sont écartées du traitement (en outre, cette implémentation
+est une version simplifié pour les besoins de l'apprentissage).
 
 ```js
 Maybe.of("Malkovich Malkovich").map(match(/a/ig));
@@ -169,11 +172,11 @@ Maybe.of({name: "Dinah", age: 14}).map(_.prop("age")).map(add(10));
 ```
 
 Vous remarquerez que notre application ne s'effondre pas dès lors que l'on applique nos
-fonctions sur des valeurs nulles via `map`. C'est en effet le rôle du `Maybe` de vérifier la
-présence ou non d'une valeur au sein du contenant avant d'y appliquer la fonction passée en
+fonctions sur des valeurs nulles via `map`. C'est en effet le rôle du `Maybe` que de vérifier la
+présence d'une valeur au sein du contenant avant d'y appliquer la fonction passée en
 argument. 
 
-En outre, cette syntaxe n'est pas des plus fines et fonctionnelles; par conséquent et en accord
+Par ailleurs, cette syntaxe n'est pas des plus fines et fonctionnelles; par conséquent et en accord
 avec ce qui fut mentionné en première partie de ce livre, il serait bon d'encourager une
 écriture *pointfree*. Comme par hasard, `map` est parfaitement équipée pour pallier ce
 contretemps et déléguer le travail au foncteur qu'elle reçoit:
@@ -186,7 +189,7 @@ var map = curry(function(f, any_functor_at_all) {
 ```
 
 C'est fantastque car nous pouvons désormais à nouveau procéder à des compositions et `map`
-fonctionnera comme prévue. C'est par ailleurs aussi le cas avec la méthode `map` fournie par
+fonctionnera comme prévue. C'est d'ailleurs aussi le cas avec la méthode `map` fournie par
 ramda. Nous utiliserons la notation "classique" avec point lorsqu'elle est forte de sens, et la
 notation *pointfree* le reste du temps car plus pratique. Au fait, avez-vous remarqué
 quelque chose de singulier ? J'ai introduit en douce une petite notation dans la signature de
@@ -215,7 +218,7 @@ streetName({addresses: [{street: "Shady Ln.", number: 4201}]});
 
 `safeHead` agit comme notre classique `_.head`, sauf que la valeur de retour est encapsulée
 dans un type plus sûr. L'introduction du `Maybe` dans notre code fait curieusement apparaître
-quelque chose; il nous faut désormais traiter les valeurs nulles pourvant surgir inopinément.
+quelque chose; il nous faut désormais traiter les valeurs nulles pouvant surgir inopinément.
 La fonction `safeHead` est transparente et nous affiche clairement sa propension à l'erreur en
 retournant un `Maybe`. D'ailleurs, non seulement nous informe-t-elle d'un retour
 potentiellement erroné mais aussi nous oblige-t-elle à utiliser `map` pour accéder à la valeur
@@ -237,7 +240,7 @@ var withdraw = curry(function(amount, account) {
 });
 
 //  finishTransaction :: Account -> String
-var finishTransaction = compose(remainingBalance, updateLedger);  // <- these composed functions are hypothetical, not implemented here...
+var finishTransaction = compose(remainingBalance, updateLedger);  // <- ces fonctions composées sont hypothétiques et non-encore implémentées.
 
 //  getTwenty :: Account -> Maybe(String)
 var getTwenty = compose(map(finishTransaction), withdraw(20));
@@ -256,7 +259,7 @@ Elle le fera de telle sorte que son caprice sera entendu jusqu'en bout de chaîn
 obligeant à appliquer `map` pour chaque fonction en suivant. À la fin, nous rendons
 effectivement compte de l'erreur et c'est notre application qui s'arrête correctement. S'il y a
 bien quelque chose à comprendre de cet exemple, c'est que si `withdraw` échoue, alors les
-appels à `map` servent de bouclier et empêche l'exécution de tout autre fonction (comme
+appels à `map` servent de bouclier et empêchent l'exécution de tout autre fonction (comme
 `finishTransaction`). C'est précisément le comportement que nous espérons. Mettre à jour le
 solde de notre compte alors que nous possédons des fonds insuffisants n'est pas du meilleur
 effet. 
@@ -264,19 +267,18 @@ effet.
 ## Libérez le Kraken
 
 Ce que les gens oublient parfois c'est qu'à un moment donné, on atteint le bout de la chaîne;
-des fonctions effectives qui transmettent du JSON, affichent à l'écran ou encore altère le
+des fonctions effectives qui transmettent du JSON, affichent à l'écran ou encore altèrent le
 système de fichiers. À ce moment précis, il nous est impossible de retourner un résultat, il
 nous faut exécuter des fonctions qui pourront communiquer avec le monde extérieur. Tel un sage
 Buddhiste, nous pouvons le formuler comme le Kôan Zen suivant: "Si un programme ne possède
-aucun effet observable, s'exécute-t-il seulement ? ". S'exécute-t-il pour selon son propre
-désir ? Sans effet observable, il consomme au mieux quelques cycles CPU avant de retourner au
-repos. 
+aucun effet observable, s'exécute-t-il seulement ? ". S'exécute-t-il selon son propre désir ?
+Sans effet observable, il consomme au mieux quelques cycles CPU avant de retourner au repos. 
 
 Le rôle de notre application est de récupérer, transformer et d'amener un ensemble de données
 jusqu'à ce qu'il soit l'heure de leur dire au revoir. Ce faisant, nous appliquons
 successivement des fonctions grâce à `map` de telle sorte que les données n'ont guère besoin de
 quitter leur chaleureux contenant. Une erreur assez commune consiste à essayer de retirer la
-valeur du 'Maybe' d'une façon ou d'une autre en espérant que celle-ci se matérialise comme par
+valeur du `Maybe` d'une façon ou d'une autre en espérant que celle-ci se matérialise comme par
 enchantement. Il faut bien comprendre qu'il existe potentiellement une exécution du programme
 dans laquelle la valeur n'ira pas vivre sa destinée. Notre code est comme le chat de
 Schrödinger, simultanément dans deux états et nous nous devons de maintenir cette distinction
@@ -312,10 +314,10 @@ sans `Maybe`. Avec `Maybe`, nous reflétons un branchement équivalent à un `if
 
 L'introduction de `Maybe` peut être dure à appréhender de premier abord. Les utilisateurs de
 Swift et Scala savent bien de quoi je parle vu que le même concept est présent via les
-bibliothèques native au travers des `Option(al)`. Lorsque l'on en vient à devoir traiter un
-ensemble de vérification à `null` à la suite (même lorsque l'on sait parfois que la valeur ne
+bibliothèques natives au travers des `Option(al)`. Lorsque l'on en vient à devoir traiter un
+ensemble de vérifications à `null` à la suite (même lorsque l'on sait parfois que la valeur ne
 peut simplement pas être nulle), la plupart des gens n'ont aucune solution mais ressentent
-toutefois bien la pénibilité de l'écriture d'un tel code. Avec `Maybe`, vous prendez vite
+toutefois bien la pénibilité de l'écriture d'un tel code. Avec `Maybe`, vous prendrez vite
 l'habitude à tel point que c'en deviendra une seconde nature. Après tout, la plupart du temps
 ce sera un bien pour un moindre mal.
 
@@ -323,7 +325,7 @@ Développer un programme non fiable, c'est tout aussi stupide que de prendre le 
 des oeufs avec de la peinture avant de les jetez au milieu de la route. C'est une bonne chose
 que de vouloir apporter un peu de robustesse à nos fonctions et `Maybe` est la pour ça.
 
-Je manquerais à mes responsabilité si je ne vous précisais pas que la "réelle" implémentation
+Je manquerais à mes responsabilités si je ne vous précisais pas que la "réelle" implémentation
 de `Maybe` séparera effectivement la valeur selon deux types: un pour ladite valeur, et l'autre
 pour l'absence de cette valeur. Ceci nous offre une plus grande souplesse dans l'application
 dans l'utilisation de `map` en permettant à des valeurs nulles comme `null` ou `undefined`
@@ -335,12 +337,12 @@ qu'un `Maybe` qui effectue une bête comparaison à `null`.
 
 <img src="images/fists.jpg" alt="pick a hand... need a reference" />
 
-Ce peut être surprenant mais, `throw/catch` n'est pas vraiment pur. Lorsqu'une erreur surgit,
+Ce peut être surprenant mais, `throw/catch` n'est pas vraiment pure. Lorsqu'une erreur surgit,
 nous tirons la sonnette d'alarme plutôt que de retourner une valeur de sortie ! La fonction
-agresse d'une millier de 1 et de 0 notre application en réponse à l'entrée qu'on lui a fourni.
+agresse d'un millier de 1 et de 0 notre application en réponse à l'entrée qu'on lui a fourni.
 Avec l'aide de notre nouvel ami `Either`, nous pouvons faire mieux que de déclarer la guerre à
-nos entrées. Nous pouvons répondre un message à la fois poli et plus adéquat. Regardons cela de
-plus près.
+nos entrées. Nous pouvons répondre un message à la fois plus poli et plus adéquat. Regardons
+cela de plus près.
 
 ```js
 var Left = function(x) {
@@ -370,7 +372,7 @@ Right.prototype.map = function(f) {
 
 `Left` et `Right` sont deux sous-classes d'un type plus abstrait nommé `Either`. Je vous
 épargne la création de la classe mère `Either` étant donné que nous n'allons que peu l'utiliser
-en tant que telle; n'hésitez pas à la regarder pour vous faire une idée cela dit. Ceci étant
+en tant que telle; n'hésitez pas à la regarder pour vous faire une idée néanmoins. Ceci étant
 dit, vous constaterez qu'il n'y a hormis les types que peu de nouveautés. Jetons-y un oeil:
 
 ```js
@@ -386,13 +388,13 @@ Right.of({host: 'localhost', port: 80}).map(_.prop('host'));
 Left.of("rolls eyes...").map(_.prop("host"));
 // Left('rolls eyes...')
 ```
-`Left` matérialise l'adolescent en crise et refuse toute communication et requête via `map`.
+`Left` matérialise l'adolescent en crise qui refuse toute communication et requête via `map`.
 `Right` fonctionne de façon similaire à `Container` (a.k.a `Identity). L'intérêt ici vient de
 la capacité de `Left` à stocker un message d'erreur. 
 
 Faisons l'hypothèse d'une fonction qui a des chances d'échouer à l'exécution. Considérons le
 calcul d'un âge depuis une date de naissance. On peut utiliser `Maybe(null)` afin de signaler
-une erreur et aiguiller la suite de notre programme en conséquence mais l'information eset
+une erreur et aiguiller la suite de notre programme en conséquence mais l'information est
 maigre. En connaître davantage sur la nature de l'erreur, voilà ce qui nous intéresse. Voyons
 ce que cela donne en utilisant `Either`.
 
@@ -418,7 +420,7 @@ De la même façon qu'avec `Maybe(null)` nous court-circuitons l'application en 
 caractériser avec davantage de précision la nature de l'interruption. Ainsi, vous remarquerez
 que l'on indique à présent dans la signature `Either(String, Number)` indiquant que le foncteur
 renferme un `String` en partie gauche, et un `Number` en partie droite. Cette signature peut
-sembler légérement informel vu que nous n'avons pas présenté la classe mère `Either`. C'est
+sembler légérement informelle vu que nous n'avons pas présenté la classe mère `Either`. C'est
 pourtant assez transparent et l'on comprend aisément ce dont il s'agit. 
 
 ```js
@@ -458,24 +460,24 @@ connaissance a priori d'une quelconque association avec un foncteur. C'était au
 fonction classique peut être grâce à `map` transformée` en une fonction de foncteur. On dénomme
 ce procédé `lifting`. Il est souvent plus simple pour des fonctions de travailler avec des
 types normaux plutôt que des contenants, puis, d'être *liftées* vers un contenant adéquat. Il
-s'en suit une plus grande simplicité et réutilisabilité dans le code.
+s'ensuit une plus grande simplicité et réutilisabilité dans le code.
 
 En somme, `Either` est approprié pour la gestion des erreurs communes comme les résultats d'une
 validation, tout autant qu'il l'est dans la gestion d'erreurs complexes qui conduisent
 normalement à une interruption de l'exécution (un fichier manquant ou une socket inaccessible
-par exemple). Essayez de remplacer quelques uns des `Maybe` précédents par `Either` pour en
+par exemple). Essayez de remplacer quelques-uns des `Maybe` précédents par `Either` pour en
 améliorer le retour d'information. 
 
 En outre, j'ai l'impression d'avoir présenté `Either` d'une façon un peu réductrice. Non
-seulement nous sert-il à mieux gérer les erreurs, mais aussi représente-il une disjonction
-logique  (a.k.a `||`) au sein d'un type. il matérialise également l'idée de *Coproduit* en
+seulement nous sert-il à mieux gérer les erreurs, mais aussi représente-t-il une disjonction
+logique  (a.k.a `||`) au sein d'un type. Il matérialise également l'idée de *Coproduit* en
 théorie des catégories (point que nous n'aborderons pas dans ce livre mais qu'il reste
 intéressant de connaître ne serait-ce que pour explorer les propriétés à en exploiter). C'est
 une représentation canonique de la somme (ou de l'union disjointe de deux ensembles) en tant
 qu'union des quantités représentées par l'association des deux types contenus (je me doute que
-ceci doit vous paraître obscure, n'hésitez pas à jetez un oeil à cet [excellent
+ceci doive vous paraître obscure, n'hésitez pas à jeter un oeil à cet [excellent
 article](https://www.fpcomplete.com/school/to-infinity-and-beyond/pick-of-the-week/sum-types)).
-`Either` peut donc représenter de nombreuse chose mais en tant que foncteur, on l'associe
+`Either` peut donc représenter de nombreuses choses mais en tant que foncteur, on l'associe
 naturellement à la gestion d'erreur. 
 
 Enfin, tout comme avec `Maybe`, nous considérons la petite `either` qui agit similairement mais
@@ -515,7 +517,7 @@ révélant la dure vérité liée à son erreur, ou bien nous exécutons la suit
 <img src="images/dominoes.jpg" alt="dominoes.. need a reference" />
 
 Dans le chapitre à propos de la pureté nous avons écrit une fonction relativement étrange. La
-fonction original possédait un effet de bord et nous l'avons encapsulé dans une autre fonction
+fonction original possédait un effet de bord et nous l'avons encapsulée dans une autre fonction
 qui retournait la première. Dans la même idée, nous avons:
 
 ```js
@@ -528,14 +530,14 @@ var getFromStorage = function(key) {
 ```
 
 Si l'on n'avait pas emprisonné les entrailles de notre fonction dans une autre, sa réponse
-pourrait vraissemblement varier selon le contexte. En revanche, notre petit mécanisme nous
+pourrait vraisemblablement varier selon le contexte. En revanche, notre petit mécanisme nous
 assure une réponse toujours identique (pour une même entrée bien-entendu) qui n'est ni plus ni
 moins qu'une fonction qui ne fois appelée nous retournera une entrée contenue dans notre
-`localStorage`. Grâce à cela, nous continuous l'esprit tranquile le reste de notre application.
+`localStorage`. Grâce à cela, nous continuons l'esprit tranquille le reste de notre application.
 
-Toutefois il faut bien avouer que telle quelle la fonction ne nous sert pas à grand chose. Tout
+Toutefois il faut bien avouer que telle quelle la fonction ne nous sert pas à grand-chose. Tout
 comme la figurine maintenue dans son emballage il nous est impossible de jouer avec. Si
-seulement il nous était possible d'attendre le contenu de ce paquet sans attendre la fin pour
+seulement il nous était possible d'atteindre le contenu de ce paquet sans attendre la fin pour
 tout déballer... C'est ici que `IO` entre en jeu.
 
 ```js
@@ -586,20 +588,20 @@ $('#myDiv').map(head).map(function(div){ return div.innerHTML; });
 ```
 
 Ici, `io\_window` est bel et bien un `IO` sur lequel on peut *mapper* directement alors que `$`
-est une fonction qui retourne un `IO` une fois invoquée. Remarequez que j'ai exposé les valeurs
-*conceptuelles* afin de rendre les expression plus explicites bien qu'en réalité les `IO`
+est une fonction qui retourne un `IO` une fois invoquée. Remarquez que j'ai exposé les valeurs
+*conceptuelles* afin de rendre les expressions plus explicites bien qu'en réalité les `IO`
 s'exprimeront toujours comme `{ \_\_value: [Function] }`. Lorsqu'on `map` sur notre `IO`, on ne
 fait qu'agréger une fonction en bout d'une composition qui devient la valeur d'un nouvel `IO`.
 Notre fonction n'est pas exécutée, elle prend simplement sa place au milieu d'une chaîne de
-calculs que l'on construit, fonction après fonction à l'image d'un ensemble de domino que l'on
+calculs que l'on construit, fonction après fonction à l'image d'un ensemble de dominos que l'on
 place bout à bout sans les renverser. Le résultat rappelle le *pattern* commande du Gang of Four.
 
 Prenez une minute et faites fonctionner votre intuition sur les foncteurs. Si l'on regarde nos
 expériences passées, on se sent bien confortable à pouvoir *mapper* sur des contenants dont les
 bizarreries intrinsèques ne nous sont bien que contingentes. 
 
-En outre, il est bien beau d'avoir emprisonné la bête, il faudra tôt ou tard la libérer. En
-composant notre `IO` avec de nouvelles fonctions, nous avons créer une bien puissante
+En outre, il est bien beau d'avoir emprisonnée la bête, il faudra tôt ou tard la libérer. En
+composant notre `IO` avec de nouvelles fonctions, nous avons créé une bien puissante
 quoiqu'impure fonction dont l'invocation risque fort de troubler l'ordre établi. À quel moment
 est-il donc adéquat de libérer le Kraken ? Est-il ne serait-ce que possible d'exécuter
 notre `IO` sans provoquer la fin du monde ? La réponse est oui à partir du moment où le code en
@@ -635,12 +637,12 @@ findParam("searchTerm").__value();
 Notre bibliothèque se dédouane de toute responsabilité et conserve sa pureté en encapsulant
 `url` au sein d'un `IO` avant de passer le relais. Vous avez sans doute remarqué que nous avons
 comme qui dirait empilé nos contenants; c'est toutefois tout à fait raisonnable d'avoir un
-`IO(Maybe([x]))` qui se révèle être un foncteur à trois niveaux riche de sens (`Array`
+`IO(Maybe([x]))` qui se révèle être un foncteur à trois niveaux riches de sens (`Array`
 peut somme toute s'interpréter comme un contenant sur lequel `map` s'applique).
 
 Il demeure néanmoins un aspect dangereux qui me démange de rectifier dans la précédente
 notation. La valeur contenue dans `IO` n'est pas vraiment une valeur, ni un quelconque attribut
-privé comme le suggererait le préfixe devant son nom `\_\_value`. En effet, elle représente
+privé comme le suggèrerait le préfixe devant son nom `\_\_value`. En effet, elle représente
 sinon une grenade qui attend d'être dégoupillée du moins une portion de code qui mérite d'être
 désignée en conséquence. Renommons celle-ci en `unsafePerformIO` afin de ne pas perdre de vue
 son potentiel destructeur. 
@@ -722,16 +724,16 @@ et `then` avec `Task` tenant ici le rôle de Promise. Ne vous prenez toutefois p
 les Promises, nous n'en utiliserons pas pour la simple et bonne raison qu'elles ne sont pas
 pures mais l'analogie reste valable. 
 
-À l'instar d'`IO`, `Task` attendra patiemment notre feu vert avec de s'éxécuter conrètement. En
-fait, en raison de cette attente, `Task` peut se subsituer assez facilement à `IO` pour
-n'importe quel travail asynchrone; `readfile` et `getJSON` ne recquierent aucun `IO` superflu
+À l'instar d'`IO`, `Task` attendra patiemment notre feu vert avec de s'exécuter conrètement. En
+fait, en raison de cette attente, `Task` peut se substituer assez facilement à `IO` pour
+n'importe quel travail asynchrone; `readfile` et `getJSON` ne requièrent aucun `IO` superflu
 afin d'être purs. Cerise sur le gâteau, `Task` fonctionne parfaitement bien avec `map`; on y
 dépose des directives futures comme une liste de tâches dans une capsule temporelle - il s'agit
 là d'un exemple manifeste de procrastination technologiquement sophistiquée.  
 
 Afin de démarrer le processus il nous faut appeler `fork` qui agit pareillement à
-`unsafePerformIO`. En outre, comme son nom le suggère, cette méthode va exécutera la tâches
-sans interrompre le processus courrant. De fait on peut voir ici de nombreuses façon
+`unsafePerformIO`. En outre, comme son nom le suggère, cette méthode va exécuter la tâche
+sans interrompre le processus courant. De fait on peut voir ici de nombreuses façons
 d'implémenter ce comportement, notamment à l'aide de Threads, mais il ne s'agira ici que d'un
 appel asynchrone classique qui trouvera sa place au milieu de l'Even-Loop déjà en marche.
 Penchons-nous sur `fork` un peu plus:
@@ -761,23 +763,23 @@ blog({}).fork(
 $('#spinner').show();
 ```
 
-À l'appel de `fork`, notre tâches s'active et s'efforce à nous ramener dans les plus brefs
-délais quelqes articles à afficher sur notre page. Entre parenthèses, il est tout à fait
+À l'appel de `fork`, notre tâche s'active et s'efforce à nous ramener dans les plus brefs
+délais quelques articles à afficher sur notre page. Entre parenthèses, il est tout à fait
 bienvenu d'afficher une bête animation de chargement pendant ce temps là; nous sommes libre de
 le faire étant donné que l'appel à `fork` n'est pas bloquant. À la suite de ce petit temps
 d'attente, à moins de voir surgir une erreur inopinée,  nous afficherons la page. 
 
-Arrêtez-vous quelques instant à présent et prenez le temps d'admirer ô combien le flot
+Arrêtez-vous quelques instants à présent et prenez le temps d'admirer ô combien le flot
 d'exécution paraît linéaire ici. Tout se lit de haut en bas, de gauche à droite même si
 techniquement l'exécution n'est pas vraiment séquentielle en fin de compte. Laissons ces sauts
 être exécutés par le programme et gardons pour nous cette lecture qui nous offre une force de
 réflexion et de raisonnement immense. 
 
-Doux Jésus! Avez-vous vu cela également ? `Task` rend tout simplement `Either` caduque dans ce
-cas-ci. Et il le faut car notre précédent flot de contrôle ne s'appliquent plus vraiment dans
+Doux Jésus ! Avez-vous vu cela également ? `Task` rend tout simplement `Either` caduque dans ce
+cas-ci. Et il le faut car notre précédent flot de contrôle ne s'applique plus vraiment dans
 le monde asynchrone où l'on doit traiter avec des erreurs potentielles cependant incertaines.
-Par chance (si tant est que la chance est à voir la dedans), les tâches ou futures nous
-fournissent d'ores et déjà des méchanismes de gestion d'erreurs.
+Par chance (si tant est que la chance est à voir là-dedans), les tâches ou futures nous
+fournissent d'ores et déjà des mécanismes de gestion d'erreurs.
 
 Loin de moi l'idée de mettre à la retraite nos `IO` et `Either` après de si courtes carrières
 toutefois. Je vous prie d'accepter ce petit exemple qui atténue certains aspects complexes pour
@@ -812,11 +814,11 @@ getConfig("db.json").fork(
 );
 ```
 
-Ce petit exemple illustre bien l'utilisation concommitante de `Either` et `IO` pour gérer la
+Ce petit exemple illustre bien l'utilisation concomitante de `Either` et `IO` pour gérer la
 partie en succès de notre tâche. `Task` s'occupe de gérer les impuretés liées à la lecture d'un
 fichier de façon asynchrone tandis que nous devons toujours gérer la cohérence de la
-configuration à l'aide d'`Either` ainsi que la connection chancelante avec la base de données
-via une `IO`. De fait, toutes ces structures sont toujours en course lorsque l'on a affaire à
+configuration à l'aide d'`Either` ainsi que la connexion chancelante avec la base de données
+via un `IO`. De fait, toutes ces structures sont toujours en course lorsque l'on a affaire à
 du code synchrone. 
 
 On pourrait continuer encore longtemps mais il n'y a plus tellement à raconter à présent. 
@@ -828,8 +830,8 @@ l'instant, il nous faut regarder d'un peu plus près les Maths qui rendent tout 
 
 ## Un brin de théorie
 
-Nous l'avons évoqué précédemment, les foncteurs proviennent de la thérorie des catégories et
-par conséquent répondent à des lois perticulières. Dans un premier temps, explorons ces
+Nous l'avons évoqué précédemment, les foncteurs proviennent de la théorie des catégories et
+par conséquent répondent à des lois particulières. Dans un premier temps, explorons ces
 propriétés:
 
 ```js
@@ -870,14 +872,14 @@ compLaw2(Container.of("Goodbye"));
 En théorie des catégories les foncteurs prennent des éléments et des morphismes d'une catégorie
 et leur associent une catégorie différente. Par définition, cette nouvelle catégorie se doit de
 posséder une loi d'identité et de composition pour les morphismes mais ce sont deux propriétés
-assurées de part deux lois que l'on vient de voir. 
+assurées de par les deux lois que l'on vient de voir. 
 
 Notre définition de catégorie est sans doute quelque peu vague. Sommairement, une catégorie est
-une sorte de réseau d'éléments interconnectés par des morphismes. Ainsi, une foncteur associera
+une sorte de réseau d'éléments interconnectés par des morphismes. Ainsi, un foncteur associera
 les éléments d'une catégorie à une autre mais en conservant la structure de ce réseau. Soit un
-élément `a` d'une catégorie source `C` que l'on associe à une categorie `D` par le foncteur
+élément `a` d'une catégorie source `C` que l'on associe à une catégorie `D` par le foncteur
 `F`; on se réfère alors au nouvel élément comme `F a` (que retrouve-t-on mis bout-à-bout ?).
-C'est peut-etre plus clair avec un dessin:
+C'est peut-être plus clair avec un dessin:
 
 <img src="images/catmap.png" alt="Association de catégories" />
 
@@ -888,15 +890,15 @@ fonctions et l'encapsulation de nos types à l'intérieur de foncteurs. Au sein 
 monde, les lois précédentes nous assurent que nos types classiques et nos fonctions seront
 encore composables. Techniquement, chaque foncteur de notre code nous amène vers une
 sous-catégorie de types et de fonctions de telle façon que l'on nomme ces foncteurs des
-endofoncteurs. Afin de conserver les choses aussi simple que possible nous considérerons ces
-sous-catégories comme de nouvelles catégories à part entière.
+endofoncteurs. Afin de conserver les choses aussi simples que possible nous considérerons ces
+sous-catégories comme de nouvelles catégories à parts entières.
 
 Il est possible de visualiser les associations d'un morphisme et de ses éléments correspondant
 au travers du schéma suivant:
 
 <img src="images/functormap.png" alt="Schéma d'un foncteur" />
 
-Non seulement nous visualisation l'association d'un morphisme vers une nouvelle catégorie au
+Non seulement nous visualisons l'association d'un morphisme vers une nouvelle catégorie au
 moyen du foncteur `F`, mais nous pouvons aussi constater que le diagramme commute, c'est-à-dire
 que l'ordre dans lequel on emprunte les flèches n'a pas d'importance, on arrive au même
 résultat. Des chemins différents reflètent des comportements différents mais aboutissent en fin
@@ -933,9 +935,9 @@ map(map(map(toUpperCase)), nested);
 ```
 
 Ce que nous avons ici est une liste d'éléments potentiellement en erreur imbriquée dans une
-future. On applique map chaque fois pour pénétrer l'une des structures afin d'appliquer notre
+future. On utilise `map` chaque fois pour pénétrer l'une des structures afin d'appliquer notre
 fonction sur les éléments en racine. Il n'y a aucun callback, ni if/else, ni boucle
-d'ailleurs; ni plus ni moins qu'une contexte explicite. Il nous faut toutefois appliquer trois
+d'ailleurs; ni plus ni moins qu'un contexte explicite. Il nous faut toutefois appliquer trois
 fois l'opérateur `map` ce qui, je vous l'accorde, est un peu exagéré. On peut en revanche
 composer des foncteurs pour y remédier. Oui, vous m'avez bien entendu:
 
@@ -961,10 +963,10 @@ ctmd.getCompose;
 
 Il n'y a ici plus qu'un seul appel à `map`. La composition sur les foncteurs est de plus
 associative. Souvenez-vous plus tôt, nous avions défini un foncteur particulier que nous avions
-appelé `Container` mais qui n'est en'realité rien de plus que le foncteur `Identité`.
+appelé `Container` mais qui n'est en realité rien de plus que le foncteur `Identité`.
 Normalement, cela sonne une petite cloche en vous: si nous avons l'identité et l'associativité
 sur la composition alors nous avons de quoi définir une catégorie. Et cette catégorie
-particulière possède des catégories comme élément et des foncteurs comme morphisme; il n'en
+particulière possède des catégories comme éléments et des foncteurs comme morphismes; il n'en
 faudra guère plus pour faire exploser notre cerveau. Nous ne creuserons pas plus loin de ce
 côté là mais fort est de constater la puissance et la beauté de ce que toute cette théorie
 implique et permet d'exprimer.
@@ -983,7 +985,7 @@ Quelques questions se posent maintenant:
 - Peut-on appeler une fonction avec de multiples foncteurs en arguments ? 
 - Comment gérer une liste ordonnée d'actions asynchrones impures ? 
 
-Nous n'avons pas encore toutes les clés en mains pour nous aventurer dans ce monde là. Il nous
+Nous n'avons pas encore toutes les clés en main pour nous aventurer dans ce monde là. Il nous
 faut à présent porter notre attention sur les monades. 
 
 [Chapter 9: Monade ou Oignon ?](ch9.md)
