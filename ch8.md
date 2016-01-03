@@ -662,11 +662,18 @@ Voilà qui est bien mieux. Notre code appelant se transforme en
 impures à venir. Maintenant, nous armons nous d'un autre type poursuit un but bien différent
 mais dans un esprit similaire. 
 
-## Asynchronous Tasks
+## Les tâches asynchrones
 
-Callbacks are the narrowing spiral staircase to hell. They are control flow as designed by M.C. Escher. With each nested callback squeezed in between the jungle gym of curly braces and parenthesis, they feel like limbo in an oubliette(how low can we go!). I'm getting claustrophobic chills just thinking about them. Not to worry, we have a much better way of dealing with asynchronous code and it starts with an "F".
+Emprunter la voie des callbacks c'est prendre un aller simple vers l'Enfer. Tels qu'imaginés
+par M.C. Escher, ils contrôlent le flot d'exécution de l'application. Chacun d'eux tentant de
+se dépatouiller parmi une jungle hostile d'accolades et de parenthèses. Je deviens malade rien
+qu'à y penser. Pas d'inquiétude à avoir cela dit, nous avons dans nos rangs des structures bien
+plus appropriés pour gérer du code asynchrones, et cela commence par un "F". 
 
-The internals are a bit too complicated to spill out all over the page here so we will use `Data.Task` (previously `Data.Future`) from Quildreen Motta's fantastic [Folktale](http://folktalejs.org/). Behold some example usage:
+Vous exposer dès à présent à la machinerie sur laquelle tout ceci repose serait un tantinet
+rude. Ainsi nous utiliserons pour l'instant les `Data.Task` (autrefois `Data.Future`) de
+Quildreen Motta et de sa fantastique bibliothèque [Folktale](http://folktalejs.org/). En voici
+quelques usages:
 
 ```js
 // Node readfile example:
@@ -687,9 +694,8 @@ readFile("metamorphosis").map(split('\n')).map(head);
 // Task("One morning, as Gregor Samsa was waking up from anxious dreams, he discovered that
 // in bed he had been changed into a monstrous verminous bug.")
 
-
-// jQuery getJSON example:
-//========================
+// Exemple avec getJSON de JQuery:
+//================================
 
 //  getJSON :: String -> {} -> Task Error JSON
 var getJSON = curry(function(url, params) {
@@ -701,21 +707,37 @@ var getJSON = curry(function(url, params) {
 getJSON('/video', {id: 10}).map(_.prop('title'));
 // Task("Family Matters ep 15")
 
-// We can put normal, non futuristic values inside as well
+// Fonctionne aussi avec des valeurs non asynchrones et complètement déterministes
 Task.of(3).map(function(three){ return three + 1 });
 // Task(4)
 ```
 
-The functions I'm calling `reject` and `result` are our error and success callbacks, respectively. As you can see, we simply `map` over the `Task` to work on the future value as if it was right there in our grasp. By now `map` should be old hat.
+Les fonctions que je désigne par `reject` et `result` matérialisent respectivement nos
+*callbacks* d'erreur et de succès. Comme vous pouvez le constater, nous appliquons nos
+fonctions sur la `Task` en travaillant avec les valeurs à venir comme si elles étaient déjà à
+portée de main. `map` doit à présent vous paraître bien familier.
 
-If you're familiar with promises, you might recognize the function `map` as `then` with `Task` playing the role of our promise. Don't fret if you aren't familiar with promises, we won't be using them anyhow because they are not pure, but the analogy holds nonetheless.
+Si vous êtes de plus déjà accoutumé des Promises vous ferez assez vite l'analogie entre `map`
+et `then` avec `Task` tenant ici le rôle de Promise. Ne vous prenez toutefois pas le chou avec
+les Promises, nous n'en utiliserons pas pour la simple et bonne raison qu'elles ne sont pas
+pures mais l'analogie reste valable. 
 
-Like `IO`, `Task` will patiently wait for us to give it the green light before running. In fact, because it waits for our command, `IO` is effectively subsumed by `Task` for all things asynchronous; `readFile` and `getJSON` don't require an extra `IO` container to be pure. What's more, `Task` works in a similar fashion when we `map` over it: we're placing instructions for the future like a chore chart in a time capsule - an act of sophisticated technological procrastination.
+À l'instar d'`IO`, `Task` attendra patiemment notre feu vert avec de s'éxécuter conrètement. En
+fait, en raison de cette attente, `Task` peut se subsituer assez facilement à `IO` pour
+n'importe quel travail asynchrone; `readfile` et `getJSON` ne recquierent aucun `IO` superflu
+afin d'être purs. Cerise sur le gâteau, `Task` fonctionne parfaitement bien avec `map`; on y
+dépose des directives futures comme une liste de tâches dans une capsule temporelle - il s'agit
+là d'un exemple manifeste de procrastination technologiquement sophistiquée.  
 
-To run our `Task`, we must call the method `fork`. This works like `unsafePerformIO`, but as the name suggests, it will fork our process and evaluation continues on without blocking our thread. This can be implemented in numerous ways with threads and such, but here it acts as a normal async call would and the big wheel of the event loop keeps on turning. Let's look at `fork`:
+Afin de démarrer le processus il nous faut appeler `fork` qui agit pareillement à
+`unsafePerformIO`. En outre, comme son nom le suggère, cette méthode va exécutera la tâches
+sans interrompre le processus courrant. De fait on peut voir ici de nombreuses façon
+d'implémenter ce comportement, notamment à l'aide de Threads, mais il ne s'agira ici que d'un
+appel asynchrone classique qui trouvera sa place au milieu de l'Even-Loop déjà en marche.
+Penchons-nous sur `fork` un peu plus:
 
 ```js
-// Pure application
+// Application pure
 //=====================
 // blogTemplate :: String
 
@@ -729,7 +751,7 @@ var renderPage = compose(blogPage, sortBy('date'));
 var blog = compose(map(renderPage), getJSON('/posts'));
 
 
-// Impure calling code
+// Exécutions impures
 //=====================
 blog({}).fork(
   function(error){ $("#error").html(error.message); },
@@ -739,20 +761,34 @@ blog({}).fork(
 $('#spinner').show();
 ```
 
-Upon calling `fork`, the `Task` hurries off to find some posts and render the page. Meanwhile, we show a spinner since `fork` does not wait for a response. Finally, we will either display an error or render the page onto the screen depending if the `getJSON` call succeeded or not.
+À l'appel de `fork`, notre tâches s'active et s'efforce à nous ramener dans les plus brefs
+délais quelqes articles à afficher sur notre page. Entre parenthèses, il est tout à fait
+bienvenu d'afficher une bête animation de chargement pendant ce temps là; nous sommes libre de
+le faire étant donné que l'appel à `fork` n'est pas bloquant. À la suite de ce petit temps
+d'attente, à moins de voir surgir une erreur inopinée,  nous afficherons la page. 
 
-Take a moment to consider how linear the control flow is here. We just read bottom to top, right to left even though the program will actually jump around a bit during execution. This makes reading and reasoning about our application simpler than having to bounce between callbacks and error handling blocks.
+Arrêtez-vous quelques instant à présent et prenez le temps d'admirer ô combien le flot
+d'exécution paraît linéaire ici. Tout se lit de haut en bas, de gauche à droite même si
+techniquement l'exécution n'est pas vraiment séquentielle en fin de compte. Laissons ces sauts
+être exécutés par le programme et gardons pour nous cette lecture qui nous offre une force de
+réflexion et de raisonnement immense. 
 
-Goodness, would you look at that, `Task` has also swallowed up `Either`! It must do so in order to handle futuristic failures since our normal control flow does not apply in the async world. This is all well and good as it provides sufficient and pure error handling out of the box.
+Doux Jésus! Avez-vous vu cela également ? `Task` rend tout simplement `Either` caduque dans ce
+cas-ci. Et il le faut car notre précédent flot de contrôle ne s'appliquent plus vraiment dans
+le monde asynchrone où l'on doit traiter avec des erreurs potentielles cependant incertaines.
+Par chance (si tant est que la chance est à voir la dedans), les tâches ou futures nous
+fournissent d'ores et déjà des méchanismes de gestion d'erreurs.
 
-Even with `Task`, our `IO` and `Either` functors are not out of a job. Bear with me on a quick example that leans toward the more complex and hypothetical side, but is useful for illustrative purposes.
+Loin de moi l'idée de mettre à la retraite nos `IO` et `Either` après de si courtes carrières
+toutefois. Je vous prie d'accepter ce petit exemple qui atténue certains aspects complexes pour
+mettre l'accent sur les propos précédents:
 
 ```js
 // Postgres.connect :: Url -> IO DbConnection
 // runQuery :: DbConnection -> ResultSet
 // readFile :: String -> Task Error String
 
-// Pure application
+// Application pure
 //=====================
 
 //  dbUrl :: Config -> Either Error Url
@@ -769,19 +805,26 @@ var connectDb = compose(map(Postgres.connect), dbUrl);
 var getConfig = compose(map(compose(connectDb, JSON.parse)), readFile);
 
 
-// Impure calling code
+// Exécution impure
 //=====================
 getConfig("db.json").fork(
   logErr("couldn't read file"), either(console.log, map(runQuery))
 );
 ```
 
-In this example, we still make use of `Either` and `IO` from within the success branch of `readFile`. `Task` takes care of the impurities of reading a file asynchronously, but we still deal with validating the config with `Either` and wrangling the db connection with `IO`. So you see, we're still in business for all things synchronous.
+Ce petit exemple illustre bien l'utilisation concommitante de `Either` et `IO` pour gérer la
+partie en succès de notre tâche. `Task` s'occupe de gérer les impuretés liées à la lecture d'un
+fichier de façon asynchrone tandis que nous devons toujours gérer la cohérence de la
+configuration à l'aide d'`Either` ainsi que la connection chancelante avec la base de données
+via une `IO`. De fait, toutes ces structures sont toujours en course lorsque l'on a affaire à
+du code synchrone. 
 
-I could go on, but that's all there is to it. Simple as `map`.
+On pourrait continuer encore longtemps mais il n'y a plus tellement à raconter à présent. 
 
-In practice, you'll likely have multiple asynchronous tasks in one workflow and we haven't yet acquired the full container apis to tackle this scenario. Not to worry, we'll look at monads and such soon, but first, we must examine the maths that make this all possible.
-
+En pratique vous en conviendrez, il faudra gérer de multiples tâches asynchrones en même temps
+et nous ne possédons pour l'heure aucun outil nous permettant de faire face à un tel scénario.
+Cela viendra très prochainement lorsque nous attaquerons les Monades et leurs amis, mais pour
+l'instant, il nous faut regarder d'un peu plus près les Maths qui rendent tout cela possible.
 
 ## A Spot of Theory
 
