@@ -61,85 +61,19 @@ brew cask install calibre
 gitbook mobi . ./functional.mobi
 ```
 
-# Autres langues
+## Sommaire
 
-- [English (Anglais)](https://github.com/MostlyAdequate/mostly-adequate-guide) version originale par Brian Lonsdorf @DrBoolean
-- [中文版 (Chinois)](https://github.com/llh911001/mostly-adequate-guide-chinese)  par Linghao
-Li @llh911001
-- [Русский (Russe)](https://github.com/MostlyAdequate/mostly-adequate-guide-ru) par Maksim
-Filippov @maksimf
-- [Português (Portuguais)](https://github.com/MostlyAdequate/mostly-adequate-guide-pt-BR) par
-Palmer Oliveira @expalmer
+[SUMMARY.md](SUMMARY.md)
 
-# Sommaire
+## Comment contribuer ?
 
-## Partie 1
+[CONTRIBUTING.md](CONTRIBUTING.md)
 
-* [Chapitre 1: De quoi s'agit-il exactement ?](ch1.md)
-  * [Introductions](ch1.md#introductions)
-  * [Première confrontation](ch1.md#première-confrontation)
-* [Chapitre 2: Les fonctions dites First-Class](ch2.md)
-  * [Bref résumé](ch2.md#bref-résumé)
-  * [De l'importance du premier ordre](ch2.md#de-limportance-du-premier-ordre)
-* [Chapitre 3: Du pur bonheur avec du pur fonctionnel](ch3.md)
-  * [Soyez pur à nouveau](ch3.md#soyez-pur-à-nouveau)
-  * [Les effets de bord c'est aussi...](ch3.md#les-effets-de-bord-cest-aussi)
-  * [BAC + 8 de Maths](ch3.md#bac8-de-maths)
-  * [Plaidoyer en faveur de la pureté](ch3.md#plaidoyer-en-faveur-de-la-pureté)
-  * [En bref](ch3.md#en-bref)
-* [Chapitre 4: Curryfication](ch4.md)
-  * [Can't live if livin' is without you](ch4.md#cant-live-if-livin-is-without-you)
-  * [Plus qu'un jeu de mots ou une sauce délicieuse](ch4.md#plus-quun-jeu-de-mots-ou-une-sauce-délicieuse)
-  * [En bref](ch4.md#en-bref)
-* [Chapitre 5: Composer, c'est coder](ch5.md)
-  * [L'élevage de fonctions](ch5.md#lélevage-de-fonctions)
-  * [Pointfree](ch5.md#pointfree)
-  * [Débuggage](ch5.md#débuggage)
-  * [La théorie des Catégories](ch5.md#la-théorie-des-catégories)
-  * [En bref](ch5.md#en-bref)
-* [Chapitre 6: Exemple d'application](ch6.md)
-  * [Un code déclaratif](ch6.md#declarative-coding)
-  * [Flickr en programmation fonctionnelle](ch6.md#a-flickr-of-functional-programming)
-  * [Un refactor s'impose](ch6.md#a-principled-refactor)
-  * [En bref](ch6.md#in-summary)
+## Traductions
 
-## Partie 2
+[TRANSLATIONS.md](TRANSLATIONS.md)
 
-* [Chapitre 7: Hindley-Milner et Moi](ch7.md)
-  * [Quel est ton type ?](ch7.md#quel-est-ton-type)
-  * [Récit d'un mystérieux monde](ch7.md#récit-dun-mystérieux-monde)
-  * [Restreindre les possibilités](ch7.md#restreindre-les-possibilités)
-  * [Des théorèmes à la pelle](ch7.md#des-théorèmes-à-la-pelle)
-  * [Contraintes](ch7.md#contraintes)
-  * [En bref](ch7.md#en-bref)
-* [Chapitre 8: Tupperware](ch8.md)
-  * [La boîte qui déboîte](ch8.md#la-boîte-qui-déboîte)
-  * [Mon premier Foncteur](ch8.md#mon-premier-foncteur)
-  * [Schrödinger, une histoire de Maybe](ch8.md#schrödinger-une-histoire-de-maybe)
-  * [Cas d'utilisation](ch8.md#cas-dutilisation)
-  * [Libérez le Kraken](ch8.md#libérez-le-kraken)
-  * [Gestion d'erreur pure](ch8.md#gestion-derreur-pure)
-  * [Le vieux McDonald a des effets](ch8.md#le-vieux-mcdonald-a-des-effets)
-  * [Les tâches asynchrones](ch8.md#les-tâches-asynchrones)
-  * [Un brin de théorie](ch8.md#un-brin-de-théorie)
-  * [En bref](ch8.md#en-bref)
-* [Chapitre 9: Monade ou Oignon ?](ch9.md)
-  * [La fabrique à Foncteurs pointés](ch9.md#pointy-functor-factory)
-  * [Mélangeons les métaphores](ch9.md#mixing-metaphors)
-  * [My chain hits my chest](ch9.md#my-chain-hits-my-chest)
-  * [Théorie](ch9.md#theory)
-  * [En bref](ch9.md#in-summary)
-* [Chapitre 10: Foncteur applicatif](ch10.md)
-  * [Appliquer des applicatives](ch10.md#applying-applicatives)
-  * [Des navires en bouteille](ch10.md#ships-in-bottles)
-  * [Coordination et motivation](ch10.md#coordination-motivation)
-  * [Bro, do you even lift?](ch10.md#bro-do-you-even-lift)
-  * [Ouvre-bouteille gratuit](ch10.md#free-can-openers)
-  * [Lois](ch10.md#laws)
-  * [En bref](ch10.md#in-summary)
-
-
-# Planification
+## Planification
 
 - **La première partie** introduit les notions de base. Elle est mise à jour fréquemment
   lorsque des erreurs sont trouvées. Toute aide est la bienvenue !
@@ -152,18 +86,4 @@ Palmer Oliveira @expalmer
   Nous traiterons des comonades, des f-algebres, des monades libres, du lemme de Yoneda et
   d'autres éléments propres à la théorie des catégories.
 
-# Comment contribuer ?
 
-Pour contribuer, je vous demande de procéder comme suis:
-
-- Forkez ce repository
-- Regardez parmi les issues existantes ce qui se fait
-- Rejoignez une tâche déjà en cours ou ouvrez une issue pour signalez le début d'une
-  nouvelle en décrivant votre objectif
-- Pour les traductions pensez à vérifier le sommaire sur le `README` d'accueil et
-  surtout, renseignez le `CHANGELOG` en précisant le hash du commit du repository anglais
-  source utilisé pour la traduction ainsi que sa date
-- Une fois votre travail accompli, effectuez une pull request et indiquez quelles issues sont
-  concernées
-
-Un grand merci !
