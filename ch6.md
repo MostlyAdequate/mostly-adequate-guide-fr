@@ -160,7 +160,7 @@ var url = function (term) {
 };
 ```
 
-Il y a des manières élégantes mais inutilement complexes d'écrire la fonction `url` TODO (pointfree) en utilisant les monoïdes TODO (nous en apprendrons plus à ce propos plus tard) ou les combinateurs. Nous avons opté pour une version lisible où nous assemblons la chaîne normalement TODO pointful.
+Il y a des manières élégantes mais inutilement complexes d'écrire la fonction `url` dans un style pointfree (sans mentionner les paramètres) en utilisant les monoïdes (nous en apprendrons plus à ce propos plus tard) ou les combinateurs. Nous avons opté pour une version lisible où nous assemblons la chaîne classiquement.
 
 Écrivons une fonction `app` qui effectue l'appel et positionne le contenu à l'écran.
 
@@ -209,9 +209,7 @@ var img = function (url) {
 };
 ```
 
-La méthode `html()` de jQuery accepte un tableau de tags. Nous avons juste besoin de transformer nos srcs en images et de les envoyer à travers `setHtml`.
-
-jQuery's `html()` method will accept an array of tags. We only have to transform our srcs into images and send them along to `setHtml`.
+La méthode `html()` de jQuery accepte un tableau de balises. Nous avons juste besoin de transformer nos srcs en images et de les envoyer à travers `setHtml`.
 
 ```js
 var images = _.compose(_.map(img), srcs);
@@ -219,11 +217,11 @@ var renderImages = _.compose(Impure.setHtml("body"), images);
 var app = _.compose(Impure.getJSON(renderImages), url);
 ```
 
-And we're done!
+Et voilà !
 
 <img src="images/cats_ss.png" />
 
-Here is the finished script:
+Voici le script terminé :
 ```js
 requirejs.config({
   paths: {
@@ -279,23 +277,21 @@ require([
     app("cats");
   });
 ```
-
-Now look at that. A beautifully declarative specification of what things are, not how they come to be. We now view each line as an equation with properties that hold. We can use these properties to reason about our application and refactor.
+Regardez-moi ça. Une magnifique spécification déclarative de ce que sont les choses, et non comment elles le deviennent. On peut maintenant lire chaque ligne comme une équation dont les propriétés sont assurées. On peut se servir de ces propriétés pour raisonner à propos de notre application et la refondre.
 
 ## Un refactor s'impose ##
 
-There is an optimization available - we map over each item to turn it into a media url, then we map again over those srcs to turn them into img tags. There is a law regarding map and composition:
-
+Une optimisation existe quelque part : nous mappons les items pour les convertir en URLs, puis nous mappons encore une fois pour obtenir des balises img. Il existe une loi concernant map et la composition :
 
 ```js
-// map's composition law
-var law = compose(map(f), map(g)) == map(compose(f, g));
+// Loi de la composition de map
+var loi = compose(map(f), map(g)) == map(compose(f, g));
 ```
 
-We can use this property to optimize our code. Let's have a principled refactor.
+Nous pouvons utiliser cette propriété pour optimiser notre code. Lançons-nous dans un refactor raisonné.
 
 ```js
-// original code
+// Code original
 var mediaUrl = _.compose(_.prop('m'), _.prop('media'));
 
 var srcs = _.compose(_.map(mediaUrl), _.prop('items'));
@@ -304,7 +300,7 @@ var images = _.compose(_.map(img), srcs);
 
 ```
 
-Let's line up our maps. We can inline the call to `srcs` in `images` thanks to equational reasoning and purity.
+Alignons nos maps. On peut remplacer `srcs` dans `images` par son équivalent, grâce à la pureté des fonctions et au raisonnement basé sur les équations.
 
 ```js
 var mediaUrl = _.compose(_.prop('m'), _.prop('media'));
@@ -312,7 +308,7 @@ var mediaUrl = _.compose(_.prop('m'), _.prop('media'));
 var images = _.compose(_.map(img), _.map(mediaUrl), _.prop('items'));
 ```
 
-Now that we've lined up our `map`'s we can apply the composition law.
+Maintenant que les maps sont chaînés, on peut appliquer la loi de composition.
 
 ```js
 var mediaUrl = _.compose(_.prop('m'), _.prop('media'));
@@ -320,7 +316,7 @@ var mediaUrl = _.compose(_.prop('m'), _.prop('media'));
 var images = _.compose(_.map(_.compose(img, mediaUrl)), _.prop('items'));
 ```
 
-Now the bugger will only loop once while turning each item into an img. Let's just make it a little more readable by extracting the function out.
+À présent, uen seule itération suffit pour convertir chaque item en une img. Améliorons juste la lisibilité en extrayant la fonction.
 
 ```js
 var mediaUrl = _.compose(_.prop('m'), _.prop('media'));
@@ -332,6 +328,6 @@ var images = _.compose(_.map(mediaToImg), _.prop('items'));
 
 ## En bref ##
 
-We have seen how to put our new skills into use with a small, but real world app. We've used our mathematical framework to reason about and refactor our code. But what about error handling and code branching? How can we make the whole application pure instead of merely namespacing destructive functions? How can we make our app safer and more expressive? These are the questions we will tackle in part 2.
+Nous avons vu comment mettre nos compétences en oeuvre avec une petite, mais réelle, application. Nous avons utiliser notre cadre mathématique pour raisonner et refactorer notre code. Mais qu'en est-il de la gestion d'erreur et du contrôle de flux ? Comment peut-on rendre pure l'application entière au lieu de simplement cacher les fonction destructrices derrière des espaces de noms ? Comment faire pour rendre notre application plus fiable et expressive ? Ce sont des question que nous aborderons dans la partie 2.
 
 [Chapter 7: Hindley-Milner et Moi](ch7.md)
