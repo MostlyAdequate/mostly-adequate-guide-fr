@@ -85,5 +85,3 @@ gitbook mobi . ./functional.mobi
 - **La dernière partie** sera à cheval entre le savoir pratique et les absurdités académiques.
   Nous traiterons des comonades, des f-algebres, des monades libres, du lemme de Yoneda et
   d'autres éléments propres à la théorie des catégories.
-
-

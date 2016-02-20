@@ -25,10 +25,10 @@
   * [La théorie des Catégories](ch5.md#la-théorie-des-catégories)
   * [En bref](ch5.md#en-bref)
 * [Chapitre 6: Exemple d'application](ch6.md)
-  * [Un code déclaratif](ch6.md#declarative-coding)
-  * [Flickr en programmation fonctionnelle](ch6.md#a-flickr-of-functional-programming)
-  * [Un refactor s'impose](ch6.md#a-principled-refactor)
-  * [En bref](ch6.md#in-summary)
+  * [Un code déclaratif](ch6.md#un-code-déclaratif)
+  * [Flickr en programmation fonctionnelle](ch6.md#flickr-en-programmation-fonctionnelle)
+  * [Un refactor s'impose](ch6.md#un-refactor-simpose)
+  * [En bref](ch6.md#en-bref)
 
 ## Partie 2
 
