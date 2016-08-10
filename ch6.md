@@ -299,7 +299,8 @@ Nous pouvons utiliser cette propriété pour optimiser notre code. Lançons-nous
 raisonné.
 
 ```js 
-// Code original var mediaUrl = _.compose(_.prop('m'), _.prop('media'));
+// Code original 
+var mediaUrl = _.compose(_.prop('m'), _.prop('media'));
 
 var srcs = _.compose(_.map(mediaUrl), _.prop('items'));
 
