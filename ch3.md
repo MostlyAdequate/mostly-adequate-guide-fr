@@ -186,7 +186,7 @@ mathématique et c'est ce sur quoi se fonde fondamentalement la programmation fo
 Programmer à l'aide de ces petites bêtes sages apporte d'énormes avantages. Regardons quelques
 raisons qui justifient notre irrémédiable envie de préserver la pureté de nos fonctions.
 
-## Plaidoyer en en faveur de la pureté
+## Plaidoyer en faveur de la pureté
 
 ### Mise en cache
 
