@@ -264,7 +264,7 @@ appels à `map` servent de bouclier et empêchent l'exécution de tout autre fon
 solde de notre compte alors que nous possédons des fonds insuffisants n'est pas du meilleur
 effet. 
 
-## Libérez le Kraken
+## Libérer la valeur
 
 Ce que les gens oublient parfois c'est qu'à un moment donné, on atteint le bout de la chaîne;
 des fonctions effectives qui transmettent du JSON, affichent à l'écran ou encore altèrent le
