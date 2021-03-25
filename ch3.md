@@ -206,7 +206,7 @@ squareNumber(4); // retourne la valeur cachée pour l'entrée 4
 squareNumber(5);
 //=> 25
 
-squareNumber(5); // retourne la valeur cachée pour l'entrée 4
+squareNumber(5); // retourne la valeur cachée pour l'entrée 5
 //=> 25
 ```
 
